@@ -1,7 +1,7 @@
-﻿using HeroeOfLegends.Data.Interfaces;
-using HeroeOfLegends.Models;
+﻿using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Models;
 
-namespace HeroeOfLegends.Data.Repositories
+namespace HeroesOfLegends.Data.Repositories
 {
     public class RaceRepository : GenericCRUD<Race,HoLDbContext>, IRaceRepository
     {

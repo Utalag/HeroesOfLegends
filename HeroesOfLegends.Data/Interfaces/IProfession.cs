@@ -1,4 +1,4 @@
-﻿namespace HeroeOfLegends.Data.Interfaces
+﻿namespace HeroesOfLegends.Data.Interfaces
 {
     public interface IProfession
     {

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace HeroeOfLegends.Models
+namespace HeroesOfLegends.Models
 {
     public class Narrative
     {

@@ -1,5 +1,5 @@
-﻿using HeroeOfLegends.Businsess.Interfaces;
-using HeroeOfLegends.Businsess.Models;
+﻿using HeroesOfLegends.Businsess.Interfaces;
+using HeroesOfLegends.Businsess.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CharacterBook.Controllers.Api

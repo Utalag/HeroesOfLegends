@@ -1,15 +1,18 @@
-﻿using HeroeOfLegends.Businsess.Interfaces;
-using HeroeOfLegends.Businsess.Managers;
-using HeroeOfLegends.Businsess.Models;
-using HeroeOfLegends.Data;
-using HeroeOfLegends.Data.Interfaces;
-using HeroeOfLegends.Data.Repositories;
-using HeroeOfLegends.Models;
+﻿using HeroesOfLegends.Businsess.Interfaces;
+using HeroesOfLegends.Businsess.Managers;
+using HeroesOfLegends.Businsess.Models;
+using HeroesOfLegends.Data;
+using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Data.Repositories;
+using HeroesOfLegends.Models;
 using HeroesOfLegends.Client.Pages;
 using HeroesOfLegends.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Text.Json.Serialization;
+using Microsoft.Build.Framework;
+using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensibility;
 
 namespace HeroesOfLegends
 {
@@ -66,6 +69,8 @@ namespace HeroesOfLegends
             builder.Services.AddScoped<IWorldManager,WorldManager>();
             builder.Services.AddScoped<IProfessionManager,ProfessionManager>();
             builder.Services.AddScoped<ICharacterManager,CharacterManager>();
+
+           // builder.Services.AddScoped<IWorldManager>();
 
             // registrase automapperu
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));

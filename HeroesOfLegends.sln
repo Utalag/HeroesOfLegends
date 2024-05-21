@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroesOfLegends.Client", "H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroesOfLegends.Data", "HeroesOfLegends.Data\HeroesOfLegends.Data.csproj", "{DB4A46B0-C939-4E73-865F-5A66A7190FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroesOfLegends.Businsess", "HeroesOfLegends.Businsess\HeroesOfLegends.Businsess.csproj", "{7FE7506E-72C5-45C6-90E0-47FDF5C84151}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroessOfLegends.Businsess", "HeroesOfLegends.Businsess\HeroessOfLegends.Businsess.csproj", "{7FE7506E-72C5-45C6-90E0-47FDF5C84151}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

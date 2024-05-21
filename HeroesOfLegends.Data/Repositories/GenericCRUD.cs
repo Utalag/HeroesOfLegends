@@ -1,9 +1,9 @@
 ﻿
-using HeroeOfLegends.Data.Interfaces;
+using HeroesOfLegends.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace HeroeOfLegends.Data.Repositories
+namespace HeroesOfLegends.Data.Repositories
 {
 	public abstract class GenericCRUD<TEntity, Databaze> : IGenericCRUD<TEntity>
 

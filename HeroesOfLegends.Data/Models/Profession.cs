@@ -1,6 +1,6 @@
-﻿using HeroeOfLegends.Data.Interfaces;
+﻿using HeroesOfLegends.Data.Interfaces;
 
-namespace HeroeOfLegends.Models
+namespace HeroesOfLegends.Models
 {
     public enum GenerateSystem
     {

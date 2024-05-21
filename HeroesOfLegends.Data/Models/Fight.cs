@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HeroeOfLegends.Models
+namespace HeroesOfLegends.Models
 {
 	public class Fight
 	{

@@ -1,8 +1,8 @@
 ﻿
 
-using HeroeOfLegends.Models;
+using HeroesOfLegends.Models;
 
-namespace HeroeOfLegends.Data.Interfaces
+namespace HeroesOfLegends.Data.Interfaces
 {
 	public interface ICharacterRepository : IGenericCRUD<Character>
 	{

@@ -1,9 +1,9 @@
 ﻿
 
 using AutoMapper;
-using HeroeOfLegends.Models;
+using HeroesOfLegends.Models;
 
-namespace HeroeOfLegends.Businsess.Models
+namespace HeroesOfLegends.Businsess.Models
 {
     public class AutoMapperConfigurationProfile : Profile
     {

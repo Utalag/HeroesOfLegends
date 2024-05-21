@@ -1,4 +1,4 @@
-﻿namespace HeroeOfLegends.Models
+﻿namespace HeroesOfLegends.Models
 {
     internal class ProfessionSkill
     {

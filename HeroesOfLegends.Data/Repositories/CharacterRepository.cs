@@ -1,9 +1,9 @@
-﻿using HeroeOfLegends.Data.Interfaces;
-using HeroeOfLegends.Models;
+﻿using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Models;
 using Microsoft.EntityFrameworkCore;
 
 
-namespace HeroeOfLegends.Data.Repositories
+namespace HeroesOfLegends.Data.Repositories
 {
     public class CharacterRepository : GenericCRUD<Character,HoLDbContext>, ICharacterRepository
     {

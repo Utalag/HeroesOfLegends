@@ -1,10 +1,10 @@
-﻿using HeroeOfLegends.Models;
+﻿using HeroesOfLegends.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 
-namespace HeroeOfLegends.Data
+namespace HeroesOfLegends.Data
 {
     public class HoLDbContext : IdentityDbContext
     {

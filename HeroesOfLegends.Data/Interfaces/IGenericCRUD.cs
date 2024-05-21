@@ -1,5 +1,5 @@
 ﻿
-namespace HeroeOfLegends.Data.Interfaces
+namespace HeroesOfLegends.Data.Interfaces
 {
 	public interface IGenericCRUD<TEntity> where TEntity : class
 	{

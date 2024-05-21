@@ -7,9 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroesOfLegends.Businsess.csproj" />
+    <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroessOfLegends.Businsess.csproj" />
     <ProjectReference Include="..\..\HeroesOfLegends.Data\HeroesOfLegends.Data.csproj" />
     <ProjectReference Include="..\HeroesOfLegends.Client\HeroesOfLegends.Client.csproj" />
+	  
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.5" />
@@ -22,6 +23,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

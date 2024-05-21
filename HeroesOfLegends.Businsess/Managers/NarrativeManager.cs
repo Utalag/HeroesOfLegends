@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using HeroeOfLegends.Businsess.Interfaces;
-using HeroeOfLegends.Businsess.Models;
-using HeroeOfLegends.Data.Interfaces;
-using HeroeOfLegends.Models;
+using HeroesOfLegends.Businsess.Interfaces;
+using HeroesOfLegends.Businsess.Models;
+using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Models;
 
-namespace HeroeOfLegends.Businsess.Managers
+namespace HeroesOfLegends.Businsess.Managers
 {
     public class NarrativeManager : INarrativeManager
     {

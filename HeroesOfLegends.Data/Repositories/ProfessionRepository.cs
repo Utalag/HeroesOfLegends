@@ -1,9 +1,9 @@
-﻿using HeroeOfLegends.Data.Interfaces;
-using HeroeOfLegends.Data.Repositories;
-using HeroeOfLegends.Models;
+﻿using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Data.Repositories;
+using HeroesOfLegends.Models;
 using System.Data;
 
-namespace HeroeOfLegends.Data.Repositories
+namespace HeroesOfLegends.Data.Repositories
 {
     public class ProfessionRepository : GenericCRUD<Profession,HoLDbContext>, IProfessionRepository
     {

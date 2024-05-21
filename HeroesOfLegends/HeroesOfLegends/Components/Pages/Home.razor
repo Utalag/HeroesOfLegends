@@ -1,7 +1,31 @@
 ﻿@page "/"
+@inject IWorldManager WorldManager;
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<PageTitle>Server Side Page</PageTitle>
 
-Welcome to your new app.
+
+
+<WorldCard></WorldCard>
+
+
+@code
+{
+    // protected override void OnInitialized()
+    // {
+    //     var world = WorldManager.GetAllWorld();
+
+    //    worldName = world.FirstOrDefault().WorldName;
+    //    worldId = world.FirstOrDefault().Id;
+    // }
+    // string worldName = "dddd";
+    // int worldId = 0;
+
+
+
+}
+
+
+
+
+

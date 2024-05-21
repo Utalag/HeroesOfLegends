@@ -1,6 +1,6 @@
-﻿using HeroeOfLegends.Businsess.Models;
+﻿using HeroesOfLegends.Businsess.Models;
 
-namespace HeroeOfLegends.Businsess.Interfaces
+namespace HeroesOfLegends.Businsess.Interfaces
 {
 	public interface IProfessionManager
 	{

@@ -1,0 +1,56 @@
+﻿@page "/worldCard"
+@inject IWorldManager WorldManager;
+
+<PageTitle>Server Side Page</PageTitle>
+
+
+@if(!Worlds.Any())
+
+{
+    <p>Vesmír je prázdný!</p>
+}
+else
+{
+
+    foreach(var item in Worlds)
+    {
+        <div class="col-4">
+            <div class="card">
+                <img src="@BaseImage" width="@WidthImage" height="@HeightImage" alt="Obrázek světa" class="img-thumbnail ">
+                <div class="card-body">
+                    <h3 class="card-title">Name: @item.WorldName </h3>
+                    <p class="card-text">Id:@item.Id  </p>
+
+                </div>
+            </div>
+        </div>
+
+    }
+}
+
+
+
+
+@code
+{
+    [Parameter]
+    public IList<WorldDto>? Worlds { get; set; }
+
+    protected override void OnInitialized()
+    {
+       var world = WorldManager.GetAllWorld();
+        Worlds = world;
+    }
+
+    
+
+
+
+    [Parameter]
+    public int WidthImage{ get; set; } = 200;
+    [Parameter]
+    public int HeightImage { get; set; } = 200;
+    [Parameter]
+    public string BaseImage { get; set; } = "Images/PlaceholderImg.png";
+
+}
