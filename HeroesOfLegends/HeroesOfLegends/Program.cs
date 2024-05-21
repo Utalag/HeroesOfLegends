@@ -14,7 +14,29 @@ namespace HeroesOfLegends
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
+            //pøidání swaggeru
+            builder.Services.AddSwaggerGen();
+
+
+
+
+
+
+
+
+
+
+
+
+
             var app = builder.Build();
+
+            //konfigurace swaageru
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json","HeroesOfLegends API V1");
+            });
 
             // Configure the HTTP request pipeline.
             if(app.Environment.IsDevelopment())
