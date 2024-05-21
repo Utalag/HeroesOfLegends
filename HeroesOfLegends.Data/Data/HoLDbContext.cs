@@ -1,11 +1,12 @@
 ﻿using HeroeOfLegends.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 
-namespace CharacterBook.Data
+namespace HeroeOfLegends.Data
 {
-    public class HoLDbContext : DbContext
+    public class HoLDbContext : IdentityDbContext
     {
         public DbSet<Race>? Races { get; set; }
         public DbSet<Narrative>? Naratives { get; set; }

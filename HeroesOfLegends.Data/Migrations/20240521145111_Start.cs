@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CharacterBook.Data.Migrations
+namespace HeroesOfLegends.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class NewStart : Migration
+    public partial class Start : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -64,6 +64,30 @@ namespace CharacterBook.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fights", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Professions",
+                columns: table => new
+                {
+                    ProfessionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    GetHpDiceRoll = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    HpAllDiceRolls = table.Column<bool>(type: "bit", nullable: false),
+                    HpPointeded = table.Column<int>(type: "int", nullable: false),
+                    GetProfessionPointedDiceRoll = table.Column<int>(type: "int", nullable: false),
+                    AtributePointed = table.Column<int>(type: "int", nullable: false),
+                    ProfessionPoint = table.Column<int>(type: "int", nullable: false),
+                    ManaWizardBool = table.Column<bool>(type: "bit", nullable: false),
+                    ManaAlchemistBool = table.Column<bool>(type: "bit", nullable: false),
+                    ManaRengerBool = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Professions", x => x.ProfessionId);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,8 +192,8 @@ namespace CharacterBook.Data.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -213,8 +237,8 @@ namespace CharacterBook.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -225,6 +249,48 @@ namespace CharacterBook.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Characters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RaceId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionId = table.Column<int>(type: "int", nullable: false),
+                    Strength = table.Column<int>(type: "int", nullable: false),
+                    Agility = table.Column<int>(type: "int", nullable: false),
+                    Constitution = table.Column<int>(type: "int", nullable: false),
+                    Intelligence = table.Column<int>(type: "int", nullable: false),
+                    Charisma = table.Column<int>(type: "int", nullable: false),
+                    St_DiceRoll = table.Column<int>(type: "int", nullable: false),
+                    Ag_DiceRoll = table.Column<int>(type: "int", nullable: false),
+                    Co_DiceRoll = table.Column<int>(type: "int", nullable: false),
+                    In_DiceRoll = table.Column<int>(type: "int", nullable: false),
+                    Cha_DiceRoll = table.Column<int>(type: "int", nullable: false),
+                    St_Primar = table.Column<int>(type: "int", nullable: false),
+                    Ag_Primar = table.Column<int>(type: "int", nullable: false),
+                    Co_Primar = table.Column<int>(type: "int", nullable: false),
+                    In_Primar = table.Column<int>(type: "int", nullable: false),
+                    Cha_Primar = table.Column<int>(type: "int", nullable: false),
+                    St_bool = table.Column<bool>(type: "bit", nullable: false),
+                    Ag_bool = table.Column<bool>(type: "bit", nullable: false),
+                    Int_bool = table.Column<bool>(type: "bit", nullable: false),
+                    Cha_bool = table.Column<bool>(type: "bit", nullable: false),
+                    Con_bool = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Characters_Professions_ProfessionId",
+                        column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "ProfessionId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -276,51 +342,39 @@ namespace CharacterBook.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Professions",
+                name: "NarrativeProfession",
                 columns: table => new
                 {
-                    ProfessionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Level = table.Column<int>(type: "int", nullable: false),
-                    Strength_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Agility_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Intelligence_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Charisma_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Constitution_bool = table.Column<bool>(type: "bit", nullable: false),
-                    NarrativId = table.Column<int>(type: "int", nullable: false),
-                    NarrativeId = table.Column<int>(type: "int", nullable: true),
-                    GetHpDiceRoll = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HpAllDiceRolls = table.Column<bool>(type: "bit", nullable: false),
-                    HpPointeded = table.Column<int>(type: "int", nullable: false),
-                    GetProfessionPointedDiceRoll = table.Column<int>(type: "int", nullable: false),
-                    AtributePointed = table.Column<int>(type: "int", nullable: false),
-                    ProfessionPoint = table.Column<int>(type: "int", nullable: false),
-                    ManaWizardBool = table.Column<bool>(type: "bit", nullable: false),
-                    ManaAlchemistBool = table.Column<bool>(type: "bit", nullable: false),
-                    ManaRengerBool = table.Column<bool>(type: "bit", nullable: false)
+                    NarrativesId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionsProfessionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Professions", x => x.ProfessionId);
+                    table.PrimaryKey("PK_NarrativeProfession", x => new { x.NarrativesId, x.ProfessionsProfessionId });
                     table.ForeignKey(
-                        name: "FK_Professions_Naratives_NarrativeId",
-                        column: x => x.NarrativeId,
+                        name: "FK_NarrativeProfession_Naratives_NarrativesId",
+                        column: x => x.NarrativesId,
                         principalTable: "Naratives",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_NarrativeProfession_Professions_ProfessionsProfessionId",
+                        column: x => x.ProfessionsProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "ProfessionId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Professions",
-                columns: new[] { "ProfessionId", "Agility_bool", "AtributePointed", "Charisma_bool", "Constitution_bool", "Description", "GetHpDiceRoll", "GetProfessionPointedDiceRoll", "HpAllDiceRolls", "HpPointeded", "Intelligence_bool", "Level", "ManaAlchemistBool", "ManaRengerBool", "ManaWizardBool", "Name", "NarrativId", "NarrativeId", "ProfessionPoint", "Strength_bool" },
+                columns: new[] { "ProfessionId", "AtributePointed", "Description", "GetHpDiceRoll", "GetProfessionPointedDiceRoll", "HpAllDiceRolls", "HpPointeded", "Level", "ManaAlchemistBool", "ManaRengerBool", "ManaWizardBool", "Name", "ProfessionPoint" },
                 values: new object[,]
                 {
-                    { 1, false, 25, false, true, "Válečník je silný a houževnatý. Vládne mnoha druhy zbraní a umí se v jejich používání zdokonalovat. V boji má větší šanci, že nepřítele zasáhne. A vzhledem k tomu, že bitvy a souboje jsou v Dračím doupěti běžné, je pro každou družinu nezbytné, aby ve svém středu měla jednoho nebo více válečníků. Postavy jiných povolání sice také mohou bojovat, ale mohou být svázány rozličnými omezeními. Válečníci jsou jediní, kteří boj skutečně studují a mají v něm některé výhody, které žádné jiné povolání nemá.", "[10]", 1, true, 4, false, 3, false, false, false, "Válečník", 1, null, 18, true },
-                    { 2, false, 24, false, false, "Hraničář je silný a moudrý. Zná přírodu a tvory, kteří ji obývají, a umí svých znalostí využívat. V boji má určitá omezení, ale stále může být platným bojovníkem po boku válečníka. Kromě toho je vhodný jako silná zadní stráž v družinách, které nemají dost válečníků (a takových družin bude většina).\r\nHraničáři zpravidla žijí v hlubokých hvozdech, kde sami, jen se svými psy, střeží stezky a pomáhají těm, kdo pomoc potřebují. Proto jsou takřka všude vítanými hosty. Dlouholetým stykem s přírodou a přírodní magií se u nich vyvíjejí i jisté nadpřirozené schopnosti, které jim pomáhají při jejich nebezpečném a osamoceném životě alespoň tak se to mezi lidmi povídá.\r\nHraničáři se dají přemluvit, aby se připojili k družině. Jsou vynikajícími lovci a stopaři a proto jsou neocenitelní při dobrodružstvích ve volné přírodě. Ale jejich mimořádné schopnosti jsou užitečné i jinde, například v podzemí. V boji i mimo něj je hraničář hodnotným členem každé družiny.\r\n", "[6]", 4, true, 1, true, 1, false, true, false, "Hraničář", 1, null, 21, true },
-                    { 3, true, 27, false, true, "Alchymista je šikovný a leccos vydrží. Zabývá se výrobou lektvarů a různých kouzelných předmětů. V boji většinou nepomáhá přímo, ale prostřednictvím svého umění. Alchymisté se liší od kouzelníků svým přístupem k magii. Zatímco kouzelníci rozvíjejí svou inteligenci a z ní získávají magenergii, alchymisté ji destilují z různých předmětů a záleží jen na jejich obratnosti, zda a kolik magenergie se jim z nich podaří vytěžit.\r\nDíky tomu jsou alchymisté bližší \"obyčejným\" lidem než kouzelníci a nevzbuzují u nich strach. Přesto mají svým způsobem mnohem důvěrnější vztah k magenergii než jiná povolání nadaná schopností kouzlit.\r\nAlchymistovy kouzelné předměty mohou být užitečné v mnoha různých situacích. Jejich účinky se často liší od účinků kouzelníkových kouzel a žádná družina neprodělá, když bude mít alchymistu ve svém středu.\r\n", "[6]", 6, true, 2, false, 1, true, false, false, "Alchymista", 1, null, 23, false },
-                    { 4, false, 24, true, false, "Kouzelník je chytrý a umí ovlivňovat druhé. Není příliš silný v boji, ale vynahrazuje si to svými zvláštními schopnostmi, zejména studiem kouzel. Kouzelníci byli vždy terčem nejrůznějších dohadů a nikdo vlastně neví, co všechno mohou dokázat. Lidé se k nim chovají uctivě, ale podezřívavě a se strachem. Kouzelníci sami dávají přednost samotě, ve které studují svá kouzla, a stýkají se jenom se svým učitelem.\r\nKouzla jsou přirozenou so částí světa. Jsou předměty, které jsou bezcenné pro někoho, kdo se v kouzlech nevyzná, a které se mohou stát strašnou zbraní v rukou mága.\r\nŘadu situaci je mnohem lehčí vyřešit pomoci kouzla než obvyklým způsobem. Ale pozor! Nejde to vždy a zvláště zpočátku jsou kouzla spíše vzácná.\r\nPro své mimořádné schopnosti je kouzelník vyhledávaným členem každé družiny. Je pravda, že většinu času alespoň zpočátku - zůstávají tyto schopnosti nevyužity, ale okamžik, kdy je použije, může znamenat rozhodující zvrat v celém dobrodružství.\r\n", "[6]", 2, true, 1, true, 1, false, false, true, "Kouzelník", 1, null, 19, false },
-                    { 5, true, 25, true, false, "Zloděj je mrštný a umí se vloudit do přízně jiných lidí. V boji zpravidla nestojí v první řadě a není to ani jeho poslání, ale dokáže i tvrdě zasáhnout.\r\nZloději jsou odborníky na nebezpečné situace, které vyžadují vtip a obratnost místo hrubé síly. Zloději studují své řemeslo v obávaném zlodějském cechu a prostí lidé si vyprávějí bájné zkazky o jejich umění. O zlodějích, kteří sami pronikli do přísně střežených pevností nebo zakletých hrobek a ukradli královské poklady, o zlodějích, kteří unikli z okovů v podzemním žaláři, hlídaném těmi nejlepšími z královské gardy.\r\nZloději z pochopitelných důvodů jen neradi odhalují svou profesi. Dokážou být velice zábavní společníci, snadno si získají přízeň jiných lidí a zjisti tak množství zajímavých informaci. Ty pak využijí ke svému prospěchu, nebo k prospěchu družiny.\r\nDíky svým pozoruhodným schopnostem, které nemá žádné jiné povolání, je zloděj žádaným členem v každé družině. Postavám, se kterými půjde, ušetří mnoho nesnází.\r\n", "[6]", 3, true, 1, false, 1, false, false, false, "Zloděj", 1, null, 20, false }
+                    { 1, 25, "Válečník je silný a houževnatý. Vládne mnoha druhy zbraní a umí se v jejich používání zdokonalovat. V boji má větší šanci, že nepřítele zasáhne. A vzhledem k tomu, že bitvy a souboje jsou v Dračím doupěti běžné, je pro každou družinu nezbytné, aby ve svém středu měla jednoho nebo více válečníků. Postavy jiných povolání sice také mohou bojovat, ale mohou být svázány rozličnými omezeními. Válečníci jsou jediní, kteří boj skutečně studují a mají v něm některé výhody, které žádné jiné povolání nemá.", "[10]", 1, true, 4, 3, false, false, false, "Válečník", 18 },
+                    { 2, 24, "Hraničář je silný a moudrý. Zná přírodu a tvory, kteří ji obývají, a umí svých znalostí využívat. V boji má určitá omezení, ale stále může být platným bojovníkem po boku válečníka. Kromě toho je vhodný jako silná zadní stráž v družinách, které nemají dost válečníků (a takových družin bude většina).\r\nHraničáři zpravidla žijí v hlubokých hvozdech, kde sami, jen se svými psy, střeží stezky a pomáhají těm, kdo pomoc potřebují. Proto jsou takřka všude vítanými hosty. Dlouholetým stykem s přírodou a přírodní magií se u nich vyvíjejí i jisté nadpřirozené schopnosti, které jim pomáhají při jejich nebezpečném a osamoceném životě alespoň tak se to mezi lidmi povídá.\r\nHraničáři se dají přemluvit, aby se připojili k družině. Jsou vynikajícími lovci a stopaři a proto jsou neocenitelní při dobrodružstvích ve volné přírodě. Ale jejich mimořádné schopnosti jsou užitečné i jinde, například v podzemí. V boji i mimo něj je hraničář hodnotným členem každé družiny.\r\n", "[6]", 4, true, 1, 1, false, true, false, "Hraničář", 21 },
+                    { 3, 27, "Alchymista je šikovný a leccos vydrží. Zabývá se výrobou lektvarů a různých kouzelných předmětů. V boji většinou nepomáhá přímo, ale prostřednictvím svého umění. Alchymisté se liší od kouzelníků svým přístupem k magii. Zatímco kouzelníci rozvíjejí svou inteligenci a z ní získávají magenergii, alchymisté ji destilují z různých předmětů a záleží jen na jejich obratnosti, zda a kolik magenergie se jim z nich podaří vytěžit.\r\nDíky tomu jsou alchymisté bližší \"obyčejným\" lidem než kouzelníci a nevzbuzují u nich strach. Přesto mají svým způsobem mnohem důvěrnější vztah k magenergii než jiná povolání nadaná schopností kouzlit.\r\nAlchymistovy kouzelné předměty mohou být užitečné v mnoha různých situacích. Jejich účinky se často liší od účinků kouzelníkových kouzel a žádná družina neprodělá, když bude mít alchymistu ve svém středu.\r\n", "[6]", 6, true, 2, 1, true, false, false, "Alchymista", 23 },
+                    { 4, 24, "Kouzelník je chytrý a umí ovlivňovat druhé. Není příliš silný v boji, ale vynahrazuje si to svými zvláštními schopnostmi, zejména studiem kouzel. Kouzelníci byli vždy terčem nejrůznějších dohadů a nikdo vlastně neví, co všechno mohou dokázat. Lidé se k nim chovají uctivě, ale podezřívavě a se strachem. Kouzelníci sami dávají přednost samotě, ve které studují svá kouzla, a stýkají se jenom se svým učitelem.\r\nKouzla jsou přirozenou so částí světa. Jsou předměty, které jsou bezcenné pro někoho, kdo se v kouzlech nevyzná, a které se mohou stát strašnou zbraní v rukou mága.\r\nŘadu situaci je mnohem lehčí vyřešit pomoci kouzla než obvyklým způsobem. Ale pozor! Nejde to vždy a zvláště zpočátku jsou kouzla spíše vzácná.\r\nPro své mimořádné schopnosti je kouzelník vyhledávaným členem každé družiny. Je pravda, že většinu času alespoň zpočátku - zůstávají tyto schopnosti nevyužity, ale okamžik, kdy je použije, může znamenat rozhodující zvrat v celém dobrodružství.\r\n", "[6]", 2, true, 1, 1, false, false, true, "Kouzelník", 19 },
+                    { 5, 25, "Zloděj je mrštný a umí se vloudit do přízně jiných lidí. V boji zpravidla nestojí v první řadě a není to ani jeho poslání, ale dokáže i tvrdě zasáhnout.\r\nZloději jsou odborníky na nebezpečné situace, které vyžadují vtip a obratnost místo hrubé síly. Zloději studují své řemeslo v obávaném zlodějském cechu a prostí lidé si vyprávějí bájné zkazky o jejich umění. O zlodějích, kteří sami pronikli do přísně střežených pevností nebo zakletých hrobek a ukradli královské poklady, o zlodějích, kteří unikli z okovů v podzemním žaláři, hlídaném těmi nejlepšími z královské gardy.\r\nZloději z pochopitelných důvodů jen neradi odhalují svou profesi. Dokážou být velice zábavní společníci, snadno si získají přízeň jiných lidí a zjisti tak množství zajímavých informaci. Ty pak využijí ke svému prospěchu, nebo k prospěchu družiny.\r\nDíky svým pozoruhodným schopnostem, které nemá žádné jiné povolání, je zloděj žádaným členem v každé družině. Postavám, se kterými půjde, ušetří mnoho nesnází.\r\n", "[6]", 3, true, 1, 1, false, false, false, "Zloděj", 20 }
                 });
 
             migrationBuilder.InsertData(
@@ -346,6 +400,11 @@ namespace CharacterBook.Data.Migrations
                     { 2, "Postapo" },
                     { 3, "Reálný svět" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Characters",
+                columns: new[] { "Id", "Ag_DiceRoll", "Ag_Primar", "Ag_bool", "Agility", "Cha_DiceRoll", "Cha_Primar", "Cha_bool", "Charisma", "Co_DiceRoll", "Co_Primar", "Con_bool", "Constitution", "Description", "In_DiceRoll", "In_Primar", "Int_bool", "Intelligence", "Name", "ProfessionId", "RaceId", "St_DiceRoll", "St_Primar", "St_bool", "Strength" },
+                values: new object[] { 1, 4, 2, true, 0, 4, 0, false, 0, 4, 2, false, 0, "Drobný hobit pocházející z Kraje za Hvozdem.", 4, 2, false, 0, "Bilbo Pytlík", 1, 1, 4, 2, true, 0 });
 
             migrationBuilder.InsertData(
                 table: "Naratives",
@@ -397,14 +456,19 @@ namespace CharacterBook.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characters_ProfessionId",
+                table: "Characters",
+                column: "ProfessionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Naratives_WorldId",
                 table: "Naratives",
                 column: "WorldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Professions_NarrativeId",
-                table: "Professions",
-                column: "NarrativeId");
+                name: "IX_NarrativeProfession_ProfessionsProfessionId",
+                table: "NarrativeProfession",
+                column: "ProfessionsProfessionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RaceWorld_WorldsId",
@@ -434,7 +498,10 @@ namespace CharacterBook.Data.Migrations
                 name: "Fights");
 
             migrationBuilder.DropTable(
-                name: "Professions");
+                name: "Characters");
+
+            migrationBuilder.DropTable(
+                name: "NarrativeProfession");
 
             migrationBuilder.DropTable(
                 name: "RaceWorld");
@@ -447,6 +514,9 @@ namespace CharacterBook.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Naratives");
+
+            migrationBuilder.DropTable(
+                name: "Professions");
 
             migrationBuilder.DropTable(
                 name: "Races");

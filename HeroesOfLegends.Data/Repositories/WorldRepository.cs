@@ -1,5 +1,4 @@
-﻿using CharacterBook.Data;
-using HeroeOfLegends.Data.Interfaces;
+﻿using HeroeOfLegends.Data.Interfaces;
 using HeroeOfLegends.Models;
 
 namespace HeroeOfLegends.Data.Repositories

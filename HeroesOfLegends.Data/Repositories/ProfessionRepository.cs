@@ -3,7 +3,7 @@ using HeroeOfLegends.Data.Repositories;
 using HeroeOfLegends.Models;
 using System.Data;
 
-namespace CharacterBook.Data.Repositories
+namespace HeroeOfLegends.Data.Repositories
 {
     public class ProfessionRepository : GenericCRUD<Profession,HoLDbContext>, IProfessionRepository
     {

@@ -1,5 +1,15 @@
+﻿using HeroeOfLegends.Businsess.Interfaces;
+using HeroeOfLegends.Businsess.Managers;
+using HeroeOfLegends.Businsess.Models;
+using HeroeOfLegends.Data;
+using HeroeOfLegends.Data.Interfaces;
+using HeroeOfLegends.Data.Repositories;
+using HeroeOfLegends.Models;
 using HeroesOfLegends.Client.Pages;
 using HeroesOfLegends.Components;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace HeroesOfLegends
 {
@@ -9,21 +19,56 @@ namespace HeroesOfLegends
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Date Database
+            var connectionString = builder.Configuration.GetConnectionString("CharacterBookContext") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<HoLDbContext>(options =>
+                options.UseSqlServer(connectionString)
+                .UseLazyLoadingProxies()
+                .ConfigureWarnings(x => x.Ignore(CoreEventId.LazyLoadOnDisposedContextWarning)));
+
+            // nastaven� konverze enum hodnoty na string
+            builder.Services.AddControllers().AddJsonOptions(options =>
+                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
             // Add services to the container.
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents()
                 .AddInteractiveWebAssemblyComponents();
 
-            //p�id�n� swaggeru
+            //přidání swaggeru
             builder.Services.AddSwaggerGen();
 
+            // add controller builder
+            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
 
+            // add razer pages
+            builder.Services.AddRazorPages();
 
+            // add antiforgery token support for post requests in razor pages and controllers   
+            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // modely
+            builder.Services.AddScoped<IProfession,Profession>();
 
+            // registrace repositare
+            builder.Services.AddScoped<IRaceRepository,RaceRepository>();
+            builder.Services.AddScoped<INarrativeRepository,NarrativeRepository>();
+            builder.Services.AddScoped<IWorldRepository,WorldRepository>();
+            builder.Services.AddScoped<IProfessionRepository,ProfessionRepository>();
+            builder.Services.AddScoped<ICharacterRepository,CharacterRepository>();
 
+            //manazery
+            builder.Services.AddScoped<INarrativeManager,NarrativeManager>();
+            builder.Services.AddScoped<IRaceManager,RaceManager>();
+            builder.Services.AddScoped<IWorldManager,WorldManager>();
+            builder.Services.AddScoped<IProfessionManager,ProfessionManager>();
+            builder.Services.AddScoped<ICharacterManager,CharacterManager>();
 
-
+            // registrase automapperu
+            builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));
 
 
 
@@ -41,6 +86,10 @@ namespace HeroesOfLegends
             // Configure the HTTP request pipeline.
             if(app.Environment.IsDevelopment())
             {
+                app.UseMigrationsEndPoint();
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>{c.SwaggerEndpoint("/swagger/v1/swagger.json","HeroesOfLegends API V1");});
+
                 app.UseWebAssemblyDebugging();
             }
             else
@@ -59,6 +108,14 @@ namespace HeroesOfLegends
                 .AddInteractiveServerRenderMode()
                 .AddInteractiveWebAssemblyRenderMode()
                 .AddAdditionalAssemblies(typeof(Client._Imports).Assembly);
+
+            // mapování na kontrolery
+            app.MapControllers();
+
+            //app.UseRouting(); // not needed for Razor Components
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.Run();
         }
