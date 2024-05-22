@@ -31,10 +31,11 @@ else
 
 
 
+
 @code
 {
     [Parameter]
-    public IList<WorldDto>? Worlds { get; set; }
+    public IList<WorldDto>? Worlds { get; set; } = new List<WorldDto>();
 
     protected override void OnInitialized()
     {

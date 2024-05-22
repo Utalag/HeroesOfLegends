@@ -10,6 +10,7 @@
     <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroessOfLegends.Businsess.csproj" />
     <ProjectReference Include="..\..\HeroesOfLegends.Data\HeroesOfLegends.Data.csproj" />
     <ProjectReference Include="..\HeroesOfLegends.Client\HeroesOfLegends.Client.csproj" />
+    <PackageReference Include="Bit.BlazorUI" Version="8.8.1" />
 	  
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.4" />
