@@ -1,29 +1,88 @@
 ﻿@page "/"
-@inject IWorldManager WorldManager;
 
-
-<PageTitle>Server Side Page</PageTitle>
-
-
-<WorldCard></WorldCard>
+<PageTitle>Game Worlds</PageTitle>
 
 
 
-@code
-{
-    // protected override void OnInitialized()
-    // {
-    //     var world = WorldManager.GetAllWorld();
+<section>
 
-    //    worldName = world.FirstOrDefault().WorldName;
-    //    worldId = world.FirstOrDefault().Id;
-    // }
-    // string worldName = "dddd";
-    // int worldId = 0;
+    <article class="world-Img">
+        <h6>Carousell</h6>
+    </article>
+    
+    <article>
+        <h6>Rasy</h6>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt cum cumque culpa tempore necessitatibus perferendis fugiat voluptatum ipsam atque vero modi ab ullam, deserunt quasi perspiciatis a dignissimos quos ea.</p>
+
+    </article>
+
+    <article>
+        <h6>Příběhy</h6>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt cum cumque culpa tempore necessitatibus perferendis fugiat voluptatum ipsam atque vero modi ab ullam, deserunt quasi perspiciatis a dignissimos quos ea.</p>
+
+    </article>
+
+    <article>
+        <h6>Hráči/Hrdinové</h6>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt cum cumque culpa tempore necessitatibus perferendis fugiat voluptatum ipsam atque vero modi ab ullam, deserunt quasi perspiciatis a dignissimos quos ea.</p>
+
+    </article>
+
+</section>
 
 
 
-}
+
+
+
+<style>
+    section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 0 auto;
+        max-width: 1200px;
+       
+    }
+
+    article {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 5px 0 rgba(16, 75, 212, 0.1);
+        margin: 10px;
+        padding: 20px;
+     
+        
+    }
+
+    h6 {
+        color: deeppink;
+        font-size: 1em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    article:hover {
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    article h6 {
+        color: #7B3EB9;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .world-Img {
+        width: 100%;
+        text-align: center;
+    }
+
+</style>
+
+
 
 
 
