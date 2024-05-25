@@ -1,7 +1,43 @@
 ﻿@page "/world"
+@inject IWorldManager WorldManager
+
 
 <h3>World</h3>
 
+@if (Worlds != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var world in Worlds)
+            {
+                <tr>
+                    <td>@world.Id</td>
+                    <td>@world.WorldName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
 @code {
+    private ICollection<WorldDto>? Worlds { get; set; }
+
+    private int pageNumber = 0;
+    private int pageSize = 2;
+
+    protected override void OnInitialized()
+    {
+        Worlds = WorldManager.GetSelectedWorld(pageNumber,pageSize);
+    }
 
 }

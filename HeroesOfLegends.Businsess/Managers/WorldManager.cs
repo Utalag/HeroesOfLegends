@@ -25,6 +25,15 @@ namespace HeroesOfLegends.Businsess.Managers
         }
 
 
+        public IList<WorldDto> GetSelectedWorld(int page = 0,int pageSize = int.MaxValue)
+        {
+            //List monster napním všemi monstry
+            IList<World> world = worldRepository.Page(page,pageSize);
+
+            // vrátí list přemapovaný na MonsterDro
+            return mapper.Map<IList<WorldDto>>(world);
+        }
+
 
         public IList<WorldDto> GetAllWorld()
         {
