@@ -1,32 +1,13 @@
-﻿@page "/worldCard"
-@inject IWorldManager WorldManager;
-
-<PageTitle>Server Side Page</PageTitle>
+﻿
 
 
-@if(!Worlds.Any())
+    <div class="card-body">
+        <img src="@BaseImage" alt="World" width="@WidthImage" height="@HeightImage" />
+        <h5 class="card-title">@Id</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Name</h6>
+        <p class="card-text">@Description</p>
 
-{
-    <p>Vesmír je prázdný!</p>
-}
-else
-{
-
-    foreach(var item in Worlds)
-    {
-        <div class="col-4">
-            <div class="card">
-                <img src="@BaseImage" width="@WidthImage" height="@HeightImage" alt="Obrázek světa" class="img-thumbnail ">
-                <div class="card-body">
-                    <h3 class="card-title">Name: @item.WorldName </h3>
-                    <p class="card-text">Id:@item.Id  </p>
-
-                </div>
-            </div>
-        </div>
-
-    }
-}
+    </div>
 
 
 
@@ -35,15 +16,11 @@ else
 @code
 {
     [Parameter]
-    public IList<WorldDto>? Worlds { get; set; } = new List<WorldDto>();
-
-    protected override void OnInitialized()
-    {
-       var world = WorldManager.GetAllWorld();
-        Worlds = world;
-    }
-
-    
+    public string Name { get; set; } = "Nový svět";
+    [Parameter]
+    public string Description { get; set; } = "Popis světa";
+    [Parameter]
+    public int Id { get; set; } = 1;
 
 
 
@@ -55,3 +32,16 @@ else
     public string BaseImage { get; set; } = "Images/PlaceholderImg.png";
 
 }
+
+
+<style>
+    .card-body img{
+        border-radius: 50%;
+    }
+
+    img:hover{
+        transform: scale(1.1);
+        box-shadow: 0 0 20px black;
+    }
+
+</style>

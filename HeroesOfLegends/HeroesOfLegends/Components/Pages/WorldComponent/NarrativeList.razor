@@ -1,0 +1,53 @@
+﻿@* @page "/narrativeList" *@
+@rendermode InteractiveAuto
+@using HeroesOfLegends.Businsess.Models
+@inject INarrativeManager NarrativeManager
+
+
+<h3 class="text-center">Příběhy</h3>
+
+<div class="card" style="width: 18rem;">
+   
+
+    @if(Narratives != null)
+    {
+        <ul class="list-group list-group-flush text-center">
+            @foreach(var item in Narratives)
+            {
+                <li class="list-group-item">@item</li>
+            }
+            <li class="list-group-item newNarrative">
+                <label>Nový příběh</label>
+            </li>
+        </ul>
+    }
+    else
+    {
+
+        <label class="list-group-item text-center">
+            <label><em>Označ svět...</em></label>
+        </label>
+    }
+
+
+
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<int>? Narratives { get; set; }
+    //public IEnumerable<string>? Narratives { get; set; }
+    }
+
+<style>
+    .newNarrative {
+        background-color: #f8f9fa;
+        cursor: pointer;
+    }
+    .newNarrative:hover {
+        background-color: #e9ecef;
+    }
+    .newNarrative:active {
+        background-color: #dee2e6;
+    }
+</style>

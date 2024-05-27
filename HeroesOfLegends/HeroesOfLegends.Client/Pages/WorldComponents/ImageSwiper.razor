@@ -1,24 +1,24 @@
 ﻿@page "/imageswapper"
 @rendermode InteractiveAuto
-@* @using HeroesOfLegends.Businsess.Models
 
 
 
-<BitSwiper ScrollItemsCount="1">
+
+
+@* 
     @foreach (var world in WorldDataCollection)
     {
-        <BitSwiperItem>
+        
             <div class="item">
                 <h3>@world.Id</h3>
-                <div class="number">@world.WorldName</div>
-                
+                <div class="number">@world.WorldName</div>  
             </div>
-        </BitSwiperItem>
+       
     }
-    
-
-</BitSwiper>
  *@
+
+
+
 
 @* <BitSwiper ScrollItemsCount="1">
 
@@ -44,9 +44,11 @@
 
 </BitSwiper> *@
 
+
+
 @code {
     // [Parameter]
-    // public ICollection<WorldDto> WorldDataCollection { get; set; } = new List<WorldDto>();
+    // public ICollection<WorldDto> Worlds { get; set; }
 
     string img1 = "Images/world1.jpeg";
     string img2 = "Images/world2.jpeg";

@@ -1,45 +1,190 @@
 ﻿@page "/world"
+@rendermode InteractiveServer
 @inject IWorldManager WorldManager
 
 
-<h3>World</h3>
+<section>
 
-@if (Worlds != null)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var world in Worlds)
+    <!--Světy-->
+    <article class="articleWorld">
+        <!--Zobrazení světů-->
+        <div>
+            @if(Worlds != null)
             {
-                <tr>
-                    <td>@world.Id</td>
-                    <td>@world.WorldName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
-    <ImageSwiper></ImageSwiper>
-}
-else
-{
-    <p><em>Loading...</em></p>
-}
+                @foreach(var world in Worlds)
+                {
+                    string src = $"Images/world{world.Id}.jpeg";
+                    <button @onclick="e => ChangeSubData(e,world.Id)">
+                        <WorldCard Name="@world.WorldName" Id="@world.Id" BaseImage="@src" />
+                    </button>
+                }
+            }
+            else
+            {
+                <p><em>Loading...</em></p>
+            }
+        </div>
+    </article>
+
+    <!--Talčítka k editaci světů-->
+    <article class=articleButtons>
+        <BitButton ButtonStyle="BitButtonStyle.Standard">
+            Uprav svět
+        </BitButton>
+        <BitButton ButtonStyle="BitButtonStyle.Standard">
+            Podrobnosti
+        </BitButton>
+
+        <BitButton OnClick="@(() => IsOpen = true)">Odstranit Svět</BitButton>
+        <BitDialog @bind-IsOpen="IsOpen"
+                   Title="Destrukce světa"
+                   Message="Přeješ si odstranit tento svět ? (zatím bez implementace)" />
+    </article>
+
+    <!--Seznam příběhů-->
+    <article>
+        <NarrativeList Narratives="@NarrativeIds"></NarrativeList>
+    </article>
+
+    <!--Popis světa-->
+    <article>
+        <h3 class="text-center">Popis světa</h3>
+        <BitScrollablePane Width="18rem" Height="15rem" Class="pane" >
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem nulla, malesuada ut sagittis sit
+            amet, vulputate in leo. Maecenas vulputate congue sapien eu tincidunt. Etiam eu sem turpis. Fusce tempor
+            sagittis nunc, ut interdum ipsum vestibulum non. Proin dolor elit, aliquam eget tincidunt non, vestibulum ut
+            turpis. In hac habitasse platea dictumst.
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem nulla, malesuada ut sagittis sit
+            amet, vulputate in leo. Maecenas vulputate congue sapien eu tincidunt. Etiam eu sem turpis. Fusce tempor
+            sagittis nunc, ut interdum ipsum vestibulum non. Proin dolor elit, aliquam eget tincidunt non, vestibulum ut
+            turpis. In hac habitasse platea dictumst.
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem nulla, malesuada ut sagittis sit
+            amet, vulputate in leo. Maecenas vulputate congue sapien eu tincidunt. Etiam eu sem turpis. Fusce tempor
+            sagittis nunc, ut interdum ipsum vestibulum non. Proin dolor elit, aliquam eget tincidunt non, vestibulum ut
+            turpis. In hac habitasse platea dictumst.
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem nulla, malesuada ut sagittis sit
+            amet, vulputate in leo. Maecenas vulputate congue sapien eu tincidunt. Etiam eu sem turpis. Fusce tempor
+            sagittis nunc, ut interdum ipsum vestibulum non. Proin dolor elit, aliquam eget tincidunt non, vestibulum ut
+            turpis. In hac habitasse platea dictumst.
+            <br />
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas lorem nulla, malesuada ut sagittis sit
+            amet, vulputate in leo. Maecenas vulputate congue sapien eu tincidunt. Etiam eu sem turpis. Fusce tempor
+            sagittis nunc, ut interdum ipsum vestibulum non. Proin dolor elit, aliquam eget tincidunt non, vestibulum ut
+            turpis. In hac habitasse platea dictumst.
+        </BitScrollablePane>
+    </article>
+
+    <!--Dostupné rasy-->
+    <article>
+        <RaceList Races="@RaceIds"></RaceList>
+    </article>
+
+</section>
+
+
 
 @code {
-    private ICollection<WorldDto>? Worlds { get; set; }
+    // Dialog pro odstranění světa
+    private bool IsOpen = false;
 
-    private int pageNumber = 0;
-    private int pageSize = 2;
+    // Světy
+    private ICollection<WorldDto>? Worlds { get; set; } = new List<WorldDto>();
+
+
+    private IEnumerable<int>? NarrativeIds { get; set; }
+    private IEnumerable<int>? RaceIds { get; set; }
+
+    // Příběhy jen názvy
+    private IEnumerable<string>? NarrativesModelNames { get; set; }
+
+    /// <summary>
+    /// Zmena příběhů podle id světa
+    /// </summary>
+    /// <param name="e">klik</param>
+    /// <param name="id"> Id světa</param>
+    void ChangeSubData(MouseEventArgs e,int id)
+    {
+        if (Worlds != null)
+        {
+            //NarrativesModelNames = Worlds.Where(x => x.Id == id).SelectMany(x => x.NarrativesNames);
+            NarrativeIds = Worlds.Where(x => x.Id == id).SelectMany(x => x.NarrativeIds);
+            RaceIds = Worlds.Where(x => x.Id == id).SelectMany(x => x.RaceIds);
+        } 
+    }
 
     protected override void OnInitialized()
     {
-        Worlds = WorldManager.GetSelectedWorld(pageNumber,pageSize);
+       Worlds = WorldManager.GetSelectedWorld(pageNumber, pageSize);
+    }
+    private int pageNumber = 0;
+    private int pageSize = 3;
+}
+
+
+
+<style>
+
+    .pane {
+        padding: 0 0.5rem;
     }
 
-}
+    .articleButtons{
+        width: 95%;
+        display: flex;
+        justify-content:space-evenly;
+
+    }
+
+    .articleWorld{
+        width: 95%;
+        display: flex;
+        justify-content: center;
+    }
+
+    section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 0 auto;
+        max-width: 1200px;
+    }
+
+    article {
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 5px 0 rgba(16, 75, 212, 0.1);
+        margin: 10px;
+        padding: 20px;
+    }
+
+    h6 {
+        color: deeppink;
+        font-size: 1em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+
+
+    article:hover {
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    article h6 {
+        color: #7B3EB9;
+        text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    }
+
+    .world-Img {
+        width: 100%;
+        text-align: center;
+    }
+
+    
+</style>
