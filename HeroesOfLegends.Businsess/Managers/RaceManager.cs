@@ -11,6 +11,7 @@ namespace HeroesOfLegends.Businsess.Managers
         private readonly IRaceRepository raceRepository;
         private readonly IMapper mapper;
 
+        //-----CUSTOM METHOD-----//
         public RaceManager(IRaceRepository raceRepository,IMapper mapper)
         {
             this.raceRepository = raceRepository;
@@ -30,7 +31,6 @@ namespace HeroesOfLegends.Businsess.Managers
             return mapper.Map<IList<RaceDto>>(race);
         }
 
-
         /// <summary>
         /// našte x entit na n-té stránce
         /// </summary>
@@ -49,10 +49,10 @@ namespace HeroesOfLegends.Businsess.Managers
         //----- CRUD-----//
 
         /// <summary>
-        /// Vyhledá entitu podle Id
+        /// Find all entities with ID
         /// </summary>
-        /// <param name="id">id rasy</param>
-        /// <returns>RaceDto entita</returns>
+        /// <param name="id">id racey</param>
+        /// <returns>RaceDto entity</returns>
         public RaceDto? GetRace(int id)
         {
             Race? race = raceRepository.FindById(id);
@@ -62,16 +62,16 @@ namespace HeroesOfLegends.Businsess.Managers
         }
 
         /// <summary>
-        /// Vložení entity do databáze
+        /// Async - Insert new Race entity
         /// </summary>
-        /// <param name="raceDto">vsupní entita jako RaceDto</param>
-        /// <returns>RaceDto entita</returns>
+        /// <param name="raceDto">RaceDto</param>
+        /// <returns>RaceDto</returns>
         public RaceDto AddRace(RaceDto raceDto)
         {
-            Race race = mapper.Map<Race>(raceDto); // raceDto namapuju na rasu
-            race.RaceId = default; // id nasteveno na defaultní uint
-            Race addRace = raceRepository.Insert(race); // vložím monstrum do databze
-            return mapper.Map<RaceDto>(addRace); // mapperem vrátím vkládanou entitu jako RaceDto
+            Race race = mapper.Map<Race>(raceDto); // raceDto map to race
+            race.RaceId = default; // id set to default int
+            Race addRace = raceRepository.Insert(race); // insert new Race
+            return mapper.Map<RaceDto>(addRace); // raturn RaceDto by Mapper
         }
 
         /// <summary>
@@ -105,14 +105,79 @@ namespace HeroesOfLegends.Businsess.Managers
             return raceDto;
         }
 
+        //----- Async CRUD-----//
 
+        public async Task<IList<RaceDto>> GetAllRaceAsync()
+        {
+            IList<Race> race = await raceRepository.AllAsync();
+            return await Task.Run(() => mapper.Map<IList<RaceDto>>(race));
+        }
+
+        public async Task<IList<RaceDto>> GetAllRaceAsync(int page = 0,int pageSize = int.MaxValue)
+        {
+            IList<Race> race = await raceRepository.PageAsync(page,pageSize);
+            return await Task.Run(() => mapper.Map<IList<RaceDto>>(race));
+        }
+
+        /// <summary>
+        /// Asnyc - Find all entities with ID
+        /// </summary>
+        /// <param name="id">id racey</param>
+        /// <returns>RaceDto entity</returns>
+        public async Task<RaceDto?> GetRaceAsync(int id)
+        {
+            Race? race = await raceRepository.FindByIdAsync(id);
+            if(race is null)
+                return null;
+            return await Task.Run(()=>mapper.Map<RaceDto>(race));
+        }
+
+        /// <summary>
+        /// Async - Insert new Race entity
+        /// </summary>
+        /// <param name="raceDto">RaceDto</param>
+        /// <returns>RaceDto</returns>
+        public async Task<RaceDto> AddRaceAsync(RaceDto raceDto)
+        {
+            Race race = await Task.Run(()=>mapper.Map<Race>(raceDto)); // raceDto map to race
+            race.RaceId = default; // id set to default int
+            Race addRace = await raceRepository.InsertAsync(race); // insert new Race
+            return await Task.Run(()=>mapper.Map<RaceDto>(addRace)); // raturn RaceDto by Mapper
+        }
+
+        /// <summary>
+        /// Async - Edit entity
+        /// </summary>
+        /// <param name="raceDto"></param>
+        /// <param name="raceId">id</param>
+        /// <returns>DtoModel</returns>
+        public async Task<RaceDto?> UpdateRaceAsync(RaceDto raceDto,int raceId)
+        {
+            if(!raceRepository.ExistsWithId(raceId))
+            { return null; }
+            Race race = await Task.Run(() => mapper.Map<Race>(raceDto)); // raceDto map to race
+            race.RaceId = default; // id set to default int
+            Race updateRace = await raceRepository.UpdateAsync(race);
+            return await Task.Run(()=>mapper.Map<RaceDto>(updateRace));
+        }
+
+        /// <summary>
+        /// Async - delete entity by id
+        /// </summary>
+        /// <param name="raceId">id entity</param>
+        /// <returns>DtoModel</returns>
+        public async Task<RaceDto?> DeleteRaceAsync(int raceId)
+        {
+            if(!raceRepository.ExistsWithId(raceId))
+            { return null; }
+            Race? race = await raceRepository.FindByIdAsync(raceId);
+
+            if(race == null)
+            { return null; }
+
+            RaceDto raceDto = await Task.Run(()=> mapper.Map<RaceDto>(race));
+            await raceRepository.DeleteAsync(raceId);
+            return raceDto;
+        }
     };
 }
-
-
-//V metodě si nejprve z repositáře získáváme seznam všech monster.
-//Protože tento seznam obsahuje objekty typu Monster a my chceme, aby
-//metoda vracela seznam objektů typu MonsterDto, tak jej musíme
-//přemapovat pomocí mapperu. Učinili jsme tak pomocí metody
-//Map(), které v generickém parametru předáváme typ výsledného
-//objektu.

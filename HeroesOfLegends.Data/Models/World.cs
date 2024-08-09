@@ -21,7 +21,7 @@ namespace HeroesOfLegends.Models
 		/// Seznam ras
 		/// </summary>
 		public virtual List<Race>? Races { get; set; } = new List<Race>();
-		public virtual List<Narrative>? Narratives { get; set; } = new List<Narrative>();
+		public virtual List<Narrative>? Narratives { get; set; } = new();
 
 		//-------------
 

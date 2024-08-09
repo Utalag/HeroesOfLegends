@@ -1,0 +1,97 @@
+﻿
+<div class="border ">
+    
+
+    <div class="d-flex flex-column  ">
+        <div>
+            <label for="name"><strong>@AtributName</strong></label>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">@RangeMin</span>
+            <span class="input-group-text"><input class="slider-button" type="button" value="<" @onclick="Decrease" /></span>
+            <div class="form-control">
+                <BitSlider IsRanged="true"
+                           Min="1"
+                           Max="21"
+                           LowerValue="@RangeMin"
+                           UpperValue="@RangeMax"
+                           ShowValue="false"
+                           IsEnabled="true"
+                           Classes="@(new() {
+                              LowerValueInput = "custom-input",
+                              UpperValueInput = "custom-input",
+                              SliderBox = "custom-slider-box",
+                              Container = "custom-container" } )">
+                </BitSlider>
+            </div>
+            <span class="input-group-text"><input type="button" value=">" @onclick="Increment" /></span>
+            <span class="input-group-text">@RangeMax</span>
+        </div>
+
+
+        <div class="d-flex justify-content-around">
+            <label>Počet hodů: </label>
+            <div><input type="radio" name="name" value="1" @onchange="ChangeRange" /><span>1k6</span></div>
+            <div><input type="radio" name="name" value="2" @onchange="ChangeRange" /><span>2k6</span></div>
+            <div><input type="radio" name="name" value="3" @onchange="ChangeRange" /><span>3k6</span></div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+
+
+
+    [Parameter] public int RangeMin { get; set; } = 10;
+    [Parameter] public int RangeMax { get; set; } = 15;
+    [Parameter] public string AtributName { get; set; } = "Vlastnost";
+    [Parameter] public int NumberOfDiceRolls { get; set; } = 1;
+
+
+    void ChangeRange(ChangeEventArgs e)
+    {
+        int number = Convert.ToInt32(e.Value);
+        int subtotal = RangeMin + (number * 5);
+        //RangeMax = RangeMin + (number*5);
+        if (subtotal > 21)
+        {
+            RangeMax = 21;
+            RangeMin = 21 - (number * 5);
+        }
+        else
+        {
+            RangeMax = subtotal;
+        }
+        
+    }
+
+
+    private void Decrease(MouseEventArgs e)
+    {   
+        if(RangeMin > 1)
+        {
+            RangeMin--;
+            RangeMax--;
+        }
+    }
+
+
+    private void Increment(MouseEventArgs e)
+    {
+        if (RangeMax < 21)
+        {
+            RangeMin++;
+            RangeMax++;
+        }
+    }
+}
+
+
+<style>
+    .border{
+        margin: 10px 0;
+    }
+</style>

@@ -9,12 +9,12 @@
 <div class="card" style="width: 18rem;">
    
 
-    @if(Narratives != null)
+    @if(NarrativeData != null)
     {
         <ul class="list-group list-group-flush text-center">
-            @foreach(var item in Narratives)
+            @foreach(var item in NarrativeData)
             {
-                <li class="list-group-item">@item</li>
+                <li class="list-group-item">@SelectNarrative(item)</li>
             }
             <li class="list-group-item newNarrative">
                 <label>Nový příběh</label>
@@ -34,10 +34,18 @@
 </div>
 
 @code {
+
     [Parameter]
-    public IEnumerable<int>? Narratives { get; set; }
-    //public IEnumerable<string>? Narratives { get; set; }
+    public IEnumerable<int>? NarrativeData { get; set; }
+
+
+    string SelectNarrative(int id)
+    {
+        var narrative = NarrativeManager.GetAll().Where(x => x.Id == id).Select(x => x.NarrativeName).FirstOrDefault();
+        return narrative;
+
     }
+}
 
 <style>
     .newNarrative {

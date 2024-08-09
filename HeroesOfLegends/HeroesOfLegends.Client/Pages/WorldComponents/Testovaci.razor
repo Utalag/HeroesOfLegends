@@ -1,0 +1,93 @@
+﻿@page "/slider"
+@rendermode InteractiveAuto
+
+
+<div class="sliderBox">
+    <div class="slider">
+        <BitSlider Label="@AtributName"
+                   IsRanged="true"
+                   Min="1"
+                   Max="21"
+                   LowerValue="@ConverterToDoubleLower(onChangeValue)"
+                   UpperValue="@ConverterToDoubleUpper(onChangeValue)"
+                   ShowValue="true"
+                   IsEnabled="false">
+        </BitSlider>
+    </div>
+    <div class="setSlider">
+        <BitSlider Min="1"
+                   Max="@MaxSetSlider()"
+                   DefaultValue="1"
+                   OnChange="v => onChangeValue = v.Value"
+                   ShowValue="false">
+        </BitSlider>
+    </div>
+    <div>
+        <label>k6</label>
+        <input type="number" @bind-value="numberOfDice" min="1" max="3" />
+    </div>
+</div>
+
+
+
+
+@code {
+    [Parameter]
+    public string AtributName { get; set; } = "Vlastnost";
+
+    private object? onChangeValue;
+
+
+    private double upperValue;
+    private int numberOfDice = 1;
+
+    /// <summary>
+    /// maximum range of slider
+    /// </summary>
+    /// <returns></returns>
+    double MaxSetSlider()
+    {
+        return 21 - numberOfDice * 5;
+    }
+
+    /// <summary>
+    /// Lower range of slider
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    double ConverterToDoubleLower(object? value)
+    {
+        var number = Convert.ToDouble(value);
+        return number;
+    }
+
+
+
+    /// <summary>
+    /// Upper range of slider
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    double ConverterToDoubleUpper(object? value)
+    {
+        var number = Convert.ToDouble(value);
+        return number + numberOfDice * 5;
+    }
+}
+
+
+
+<style>
+    .sliderBox {
+        width: 30vw;
+        background-color: rgba(200,200,200,1);
+        width: 30vw;
+        border: 1px solid black;
+    }
+
+    .slider {
+    }
+
+    .setSlider {
+    }
+</style>

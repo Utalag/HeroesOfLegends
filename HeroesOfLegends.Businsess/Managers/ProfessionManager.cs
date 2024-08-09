@@ -16,11 +16,6 @@ namespace HeroesOfLegends.Businsess.Managers
 			this.repository = repository;
 			this.mapper = mapper;
 		}
-
-		public IList<ProfessionDto> GetAllData()
-		{
-			IList<Profession> data = repository.All();
-			return mapper.Map<IList<ProfessionDto>>(data);
-		}
-	}
+ 
+    }
 }

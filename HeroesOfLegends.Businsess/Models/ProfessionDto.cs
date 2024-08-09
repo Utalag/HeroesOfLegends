@@ -22,7 +22,7 @@
         public int HpPointeded { get; set; }
         public List<int> GetHpDiceRoll { get; set; }
         /// <summary>
-        /// Počet profibodl pro výběrprofesních dovedností
+        /// Počet profibodl pro výběr profesních dovedností
         /// </summary>
         /// /// <summary>
         /// rozdah profibodů (1k6), výchozí hodnota 4

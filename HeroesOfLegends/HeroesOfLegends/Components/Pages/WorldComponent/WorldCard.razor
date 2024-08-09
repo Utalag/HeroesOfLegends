@@ -5,7 +5,7 @@
         <img src="@BaseImage" alt="World" width="@WidthImage" height="@HeightImage" />
         <h5 class="card-title">@Id</h5>
         <h6 class="card-subtitle mb-2 text-muted">@Name</h6>
-        <p class="card-text">@Description</p>
+
 
     </div>
 
@@ -17,8 +17,6 @@
 {
     [Parameter]
     public string Name { get; set; } = "Nový svět";
-    [Parameter]
-    public string Description { get; set; } = "Popis světa";
     [Parameter]
     public int Id { get; set; } = 1;
 

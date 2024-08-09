@@ -12,14 +12,21 @@ namespace HeroesOfLegends.Data.Repositories
 
         }
 
+        //------ Synchronous methods --------
         public IList<Profession> FindAllByIds(IEnumerable<int> ids)
         {
             return dbSet.Where(x => ids.Contains(x.ProfessionId)).ToList();
         }
 
-        public Profession FindIds(int ids)
+    
+        //------ Asynchronous methods --------
+
+        public async Task<IList<Profession>> FindAllByIdsAsync(IEnumerable<int> ids)
         {
-            return dbSet.Where(x => x.ProfessionId == ids).First();
+            return await Task.Run(()=> dbSet.Where(x => ids.Contains(x.ProfessionId)).ToList());
         }
+
     }
+
+
 }

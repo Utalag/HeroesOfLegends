@@ -4,7 +4,7 @@
 @inject IRaceManager RaceManager
 
 
-<h3 class="text-center">Příběhy</h3>
+<h3 class="text-center">Dostupné rasy</h3>
 
 <div class="card" style="width: 20rem;">
    
@@ -14,7 +14,10 @@
         <ul class="list-group list-group-flush text-center">
             @foreach(var item in Races)
             {
-                <li class="list-group-item">@item</li>
+                <a href="/showRaceData/@item">
+                    <li class="list-group-item btn btn-outline-secondary" >@SelectRace(item) </li>
+                </a>
+               
             }
         </ul>
     }
@@ -27,14 +30,20 @@
     }
 
 
-
 </div>
 
 @code {
     [Parameter]
     public IEnumerable<int>? Races { get; set; }
     //public IEnumerable<string>? Narratives { get; set; }
+
+    string SelectRace(int id)
+    {
+        var race = RaceManager.GetAllRace().Where(x => x.RaceId == id).Select(x => x.RaceName).FirstOrDefault();
+         return race;
+
     }
+}
 
 <style>
     .newNarrative {

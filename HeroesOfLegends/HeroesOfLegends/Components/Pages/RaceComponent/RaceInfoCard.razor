@@ -1,0 +1,91 @@
+﻿
+
+
+        <Card>
+            <img class="rounded-top" src="/images/PlaceholderImg.png" alt="placeholder" />
+
+            <CardBody>
+                <CardTitle Class="text-center">@RaceData.RaceName (@RaceData.RaceId)</CardTitle>
+
+                <CardSubTitle Class="mb-2 text-muted"></CardSubTitle>
+
+                <CardText>
+                    <table class="table-responsive w-100 text-center">
+                        <thead >
+                            <tr>
+                                <th class="text-start">Atributy</th>
+                                <th><Tooltip Title="Minimální hodnota v základním rozsahu" Placement="TooltipPlacement.Top">Min</Tooltip></th>
+                                <th></th>
+                                <th><Tooltip Title="Maximální hodnota v základním rozsahu" Placement="TooltipPlacement.Top">Max</Tooltip></th>
+                                <th><Tooltip Title="Oprava hodnoty pro rozšířený rozsah" Placement="TooltipPlacement.Top">oprava</Tooltip></th>
+                                <th><Tooltip Title="Počet hodů kostkou" Placement="TooltipPlacement.Top">n-k6</Tooltip></th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td class="text-start">Sila:</td>
+                            <td>@RaceData.Strength</td>
+                            <td>-</td>
+                            <td>@RaceData.Strength_Max</td>
+                            <td>@RaceData.Strength_Corection</td>
+                            <td>@RaceData.Strength_DiceRoll</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Obratnost:</td>
+                            <td>@RaceData.Agility</td>
+                            <td>-</td>
+                            <td>@RaceData.Agility_Max</td>
+                            <td>@RaceData.Agility_Corection</td>
+                            <td>@RaceData.Dexterity_DiceRoll</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Odolnost:</td>
+                            <td>@RaceData.Constitution</td>
+                            <td>-</td>
+                            <td>@RaceData.Constitution_Max</td>
+                            <td>@RaceData.Constitution_Corection</td>
+                            <td>@RaceData.Constitution_DiceRoll</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Inteligence:</td>
+                            <td>@RaceData.Intelligence</td>
+                            <td>-</td>
+                            <td>@RaceData.Intelligence_Max</td>
+                            <td>@RaceData.Intelligence_Correction</td>
+                            <td>@RaceData.Intelligence_DiceRoll</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Charisma:</td>
+                            <td>@RaceData.Charisma</td>
+                            <td>-</td>
+                            <td>@RaceData.Charisma_Max</td>
+                            <td>@RaceData.Charisma_Correction</td>
+                            <td>@RaceData.Charisma_DiceRoll</td>
+                        </tr>
+                    </table>
+
+                        <hr/>
+
+                    <table class="table-responsive w-100 text-center">
+                        <thead >
+                            <tr>
+                                <th >Pohyblivost</th>
+                                <th>Velikost</th>
+                                <th>Zvláštnost</th>
+                            </tr>
+                        </thead>
+                        <tr>
+                            <td>@RaceData.Mobility</td>
+                            <td>@RaceData.RaceSize</td>
+                            <td>@RaceData.SpecialAbilities</td> 
+                        </tr>
+                    </table>
+                </CardText>
+                <Button Color="ButtonColor.Primary" To="#" Type="ButtonType.Link">Go somewhere</Button>
+            </CardBody>
+        </Card>
+
+@code {
+
+    [Parameter] public RaceDto? RaceData { get; set; }
+
+}

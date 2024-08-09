@@ -75,7 +75,7 @@ namespace HeroesOfLegends
             // registrase automapperu
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));
 
-
+            builder.Services.AddBlazorBootstrap();
 
 
 

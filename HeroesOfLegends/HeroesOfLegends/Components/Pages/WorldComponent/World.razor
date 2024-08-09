@@ -44,7 +44,7 @@
 
     <!--Seznam příběhů-->
     <article>
-        <NarrativeList Narratives="@NarrativeIds"></NarrativeList>
+        <NarrativeList NarrativeData="@NarrativeIds"></NarrativeList>
     </article>
 
     <!--Popis světa-->
@@ -88,6 +88,16 @@
 
 
 @code {
+    /// <summary>
+    /// Inicializace
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        Worlds = WorldManager.GetSelectedWorld(pageNumber,pageSize);
+    }
+    private int pageNumber = 0;
+    private int pageSize = 4;
+
     // Dialog pro odstranění světa
     private bool IsOpen = false;
 
@@ -110,18 +120,10 @@
     {
         if (Worlds != null)
         {
-            //NarrativesModelNames = Worlds.Where(x => x.Id == id).SelectMany(x => x.NarrativesNames);
             NarrativeIds = Worlds.Where(x => x.Id == id).SelectMany(x => x.NarrativeIds);
             RaceIds = Worlds.Where(x => x.Id == id).SelectMany(x => x.RaceIds);
         } 
     }
-
-    protected override void OnInitialized()
-    {
-       Worlds = WorldManager.GetSelectedWorld(pageNumber, pageSize);
-    }
-    private int pageNumber = 0;
-    private int pageSize = 3;
 }
 
 

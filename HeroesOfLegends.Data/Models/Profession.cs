@@ -18,7 +18,7 @@ namespace HeroesOfLegends.Models
 
 
 
-        //-----------------------------------------------------------  VAZBY  ---------------
+        //-----------------------------------------------------------  BINDING  ---------------
         public virtual IList<Narrative> Narratives { get; set; } = new List<Narrative>();
 
 
@@ -250,6 +250,8 @@ namespace HeroesOfLegends.Models
             else
                 HpAllDiceRolls = false; // na 1-9 levlu se aktivuje tlačítko po zvýšení levlu
         }
+
+
         public void LevelDown()
         {
             --Level;
@@ -269,7 +271,7 @@ namespace HeroesOfLegends.Models
 
 
         /// <summary>
-        /// Inicializace testovacích dat
+        /// Initial data
         /// </summary>
         /// <returns></returns>
         public Profession[] Initial()

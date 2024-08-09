@@ -1,0 +1,149 @@
+﻿@page "/showRaceData"
+@page "/showRaceData/{Id}"
+@rendermode InteractiveServer
+
+
+<PageTitle>Detail rasy</PageTitle>
+
+
+
+<!-- vytvořit kontajnery pro různou šířku-->
+<!-- nebo použít grid system-->
+<section>
+    <article class="text-center">
+        <h1>Nadpis</h1>
+        <h3>Podnadpis</h3>
+    </article>
+
+
+    <div class=" container-sm d-flex justify-content-around">
+        <article>
+            <h2>Nastavení atributů</h2>
+            <h5>Síla</h5>
+            <h5>Obratnost</h5>
+            <h5>Odolnost</h5>
+            <h5>Inteligence</h5>
+            <h5>Charisma</h5>
+            <h5>Pohyblivost</h5>
+        </article>
+
+        <article>
+            <h2>Opravy</h2>
+            <h5>Síla</h5>
+            <h5>Obratnost</h5>
+            <h5>Odolnost</h5>
+            <h5>Inteligence</h5>
+            <h5>Charisma</h5>
+            <h5>Pohyblivost</h5>
+        </article>
+    </div>
+   
+
+    <article>
+        <h2>Popis rasy</h2>
+        <p>Lorem</p>
+    </article>
+    <article>
+        <h2>Obrázek</h2>
+        <img />
+    </article>
+
+    <article>
+        <h2>Rekapitulace</h2>
+        <p>xxxx</p>
+        <p>xxxx</p>
+        <p>xxxx</p>
+        <p>xxxx</p>
+        <p>xxxx</p>
+        <p>xxxx</p>
+
+    </article>
+
+    <article>
+        <h2>Talčítka</h2>
+       <button>Ulož</button>
+        <button>Vyber</button>
+        <button>Smaž</button>
+
+    </article>
+</section>
+
+
+
+
+@* <div class="w-25">
+    <NewAtributeSlider AtributName="Síla"/>
+    <NewAtributeSlider AtributName="Obratnost" />
+    <NewAtributeSlider AtributName="Odolnost" />
+</div> *@
+
+
+
+@code {
+    [Parameter] public string Id { get; set; } = string.Empty;
+
+}
+
+<style>
+    section{
+        background-color: white;
+
+    }
+    article{
+        background-color: lightgray;
+
+    }
+</style>
+
+
+
+
+  @*   <AuthorizeView>
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako user</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako user</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako user</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako user</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>Pro zobrazení detailu rasy se musíte přihlásit jako admin</p>
+    </NotAuthorized>
+</AuthorizeView>
+<AuthorizeView Roles="Admin"> *@
