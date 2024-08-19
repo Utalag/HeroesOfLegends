@@ -1,0 +1,162 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+
+
+   
+
+<EditForm Model="CharacterModel" FormName="NewCharacterForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label for="name">Jméno</label>
+    <InputText id="name" class="form-control" @bind-Value="CharacterModel.Name" />
+    <ValidationMessage For="@(() => CharacterModel.Name)" />
+
+
+    <label for="name">Síla</label>
+    <InputNumber id="name" class="form-control" @bind-Value="CharacterModel.Strength" />
+
+    
+
+   
+
+</EditForm>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p>Součet hodů kostkami: <span>@sumDiceRolls</span></p>
+
+<button class="btn btn-primary" @onclick="RollDice">Hodit kostkami</button>
+<button class="btn btn-primary" @onclick="AverageDiceRolls">Nastavit průměrné hody</button>
+
+ 
+
+<p>
+    Hody kostkou:
+    @foreach(var item in listDiceRolls)
+    {
+        <span>@item ,</span>
+    }
+</p>
+<p>
+    Vlastní hody kostkou:
+    @foreach(var item in listDiceRolls)
+    {
+        <span> <input type="number" value="" class="" /></span>
+    }
+</p>
+
+
+
+<VyberAtributy AtributeCallBack="SelectAtributs"/>
+<p>kontrolní hodnota 1: @values1</p>
+<p>kontrolní hodnota 2: @values2</p>
+
+
+
+
+@code {
+    private string values1;
+    private string values2;
+
+    private void SelectAtributs(string[] value)
+    {
+        values1 = value[0];
+        values2 = value[1];
+    }
+
+
+
+
+    [Parameter] public IEnumerable<ProfessionDto?> ProfessionData { get; set; }
+    [Parameter] public RaceDto? RaceData { get; set; }
+
+    // model postavy
+    [SupplyParameterFromForm]
+    private CharacterDto CharacterModel { get; set; } = new CharacterDto();
+    // model rasy
+    private RaceDto RaceModel { get; set; } = new RaceDto();
+
+
+
+    private string name = "";
+    private int level = 1;
+
+    private string description = "";
+    private int strength = 0;
+    private int agility = 0;
+    private int constitution = 0;
+    private int intelligence = 0;
+    private int charisma = 0;
+   
+
+
+
+
+
+
+
+
+    private int profi=3;
+    private int sumDiceRolls;
+    private List<int> listDiceRolls = new List<int>();
+
+
+    private void RollDice()
+    {
+        Random rnd = new Random();
+        sumDiceRolls = 0;
+        listDiceRolls.Clear();
+        for (int i = 0; i < NumberOfDice(); i++)
+        {
+            int nuber = rnd.Next(0,6) + 1;
+            sumDiceRolls += nuber;
+            listDiceRolls.Add(nuber);
+        }
+    }
+    //The number of dice according to the range of attributes of the given race and profession
+    private int NumberOfDice()
+    {
+        int sum = RaceData.Strength_DiceRoll +
+        RaceData.Dexterity_DiceRoll +
+        RaceData.Constitution_DiceRoll +
+        RaceData.Intelligence_DiceRoll +
+        RaceData.Charisma_DiceRoll +
+        1;//profibod;
+
+        return sum;
+    }
+
+    // průměrné hody kostkou
+    private void AverageDiceRolls()
+    {
+        sumDiceRolls = 0;
+        listDiceRolls.Clear();
+        for(int i = 0;i < NumberOfDice();i++)
+        {
+            sumDiceRolls += 4;
+            listDiceRolls.Add(4);
+        }
+    }
+
+    private string GetEnumDescription(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field,typeof(DescriptionAttribute));
+        return attribute == null ? value.ToString() : attribute.Description;
+    }
+
+
+    
+}

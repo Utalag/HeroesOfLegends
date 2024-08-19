@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HeroessOfLegends.Businsess.Intefaces
+﻿namespace HeroessOfLegends.Businsess.Intefaces
 {
     public interface IGenericManager<TDto>
         where TDto : class
@@ -16,6 +10,14 @@ namespace HeroessOfLegends.Businsess.Intefaces
         IList<TDto> GetPage(int page = 0,int pageSize = int.MaxValue);
         TDto? UpdateData(TDto dto,int id);
 
+        //-----Async-----//
+
+        Task<TDto> AddDataAsync(TDto dto);
+        Task<TDto?> DeleteDateAsync(int id);
+        Task<IList<TDto>> GetAllDataAsync();
+        Task<TDto?> GetDateByIdAsync(int id);
+        Task<IList<TDto>> GetPageAsyc(int page = 0,int pageSize = int.MaxValue);
+        Task<TDto?> UpdateDataAsync(TDto dto,int id);
 
     }
 }

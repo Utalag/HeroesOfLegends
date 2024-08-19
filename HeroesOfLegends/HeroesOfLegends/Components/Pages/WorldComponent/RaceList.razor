@@ -39,7 +39,7 @@
 
     string SelectRace(int id)
     {
-        var race = RaceManager.GetAllRace().Where(x => x.RaceId == id).Select(x => x.RaceName).FirstOrDefault();
+        var race = RaceManager.GetAllData().Where(x => x.RaceId == id).Select(x => x.RaceName).FirstOrDefault();
          return race;
 
     }

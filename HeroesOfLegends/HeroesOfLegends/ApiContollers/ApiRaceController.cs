@@ -27,7 +27,7 @@ namespace CharacterBook.Controllers.Api
         [HttpGet("races")]
         public IEnumerable<RaceDto> GetRaces()
         {
-            return raceManagger.GetAllRace();
+            return raceManagger.GetAllData();
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace CharacterBook.Controllers.Api
         [HttpGet("racesPage")]
         public IEnumerable<RaceDto> GetRace(int page = 0, int pageSize = int.MaxValue)
         {
-            return raceManagger.GetAllRace(page, pageSize);
+            return raceManagger.GetPage(page, pageSize);
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace CharacterBook.Controllers.Api
         [HttpGet("race/{raceId}")]
         public IActionResult GetRace(int raceId)
         {
-            RaceDto? raceDto = raceManagger.GetRace(raceId);
+            RaceDto? raceDto = raceManagger.GetDateById(raceId);
             if (raceDto is null)
                 return NotFound();
 
@@ -65,7 +65,7 @@ namespace CharacterBook.Controllers.Api
         [HttpPost("race")]
         public IActionResult AddRace([FromBody] RaceDto raceDto)  // [FromBody] =Mapování jsme umožnili použitím atributu [FromBody]
         {
-            RaceDto? createdRace = raceManagger.AddRace(raceDto);
+            RaceDto? createdRace = raceManagger.AddData(raceDto);
             return CreatedAtAction(nameof(GetRace), new { raceId = createdRace.RaceId }, createdRace);
             //return Ok(createdRace); // taky funkční
 
@@ -89,7 +89,7 @@ namespace CharacterBook.Controllers.Api
         [HttpPut("race/{raceId}")]
         public IActionResult EditMonster([FromBody] RaceDto raceDto, int raceId)
         {
-            RaceDto? editRace = raceManagger.UpdateRace(raceDto, raceId);
+            RaceDto? editRace = raceManagger.UpdateData(raceDto, raceId);
             if (editRace is null)
                 return NotFound();
             return Ok(editRace);
@@ -104,7 +104,7 @@ namespace CharacterBook.Controllers.Api
         [HttpDelete("race/{raceId}")]
         public IActionResult DeleteRace(int raceId)
         {
-            RaceDto? deleteRace = raceManagger.DeleteRace(raceId);
+            RaceDto? deleteRace = raceManagger.DeleteDate(raceId);
             if (deleteRace is null)
                 return NotFound();
             return Ok(deleteRace);

@@ -1,8 +1,8 @@
 ﻿@page "/raceHome"
 @using BlazorBootstrap
 @rendermode InteractiveServer
-
 @inject IRaceManager RaceManager
+@inject IProfessionManager ProfessionManager
 
 <h3>Rasy</h3>
 
@@ -10,20 +10,22 @@
 <Tabs EnableFadeEffect="false">
 
     
-    @foreach(var item in RaceManager.GetAllRace())
+    @foreach(var race in RaceManager.GetAllData())
     {
         <Tab >
             <TitleTemplate>
-                <Icon Name="IconName.PersonFill" /> @item.RaceName
+                <Icon Name="IconName.PersonFill" /> @race.RaceName
             </TitleTemplate>
 
             <Content>
                 <div class="row">
                     <div class="col-6">
-                        <RaceInfoCard RaceData="item" />
+                        <RaceInfoCard RaceData="race" />
                     </div>
                     <div class="col-6">
-                        <ProffesionInfoCard RaceData="new RaceDto()"/>
+                        <NewCharacter 
+                                ProfessionData="ProfessionManager.GetAllData()"
+                                RaceData="race" />
                     </div>
                 </div> 
             </Content>

@@ -1,0 +1,87 @@
+@page "/checkboxform"
+@rendermode InteractiveServer
+
+
+<select @onchange=Selector1 name="PrimarAtribut1">
+    @foreach(var atribut in selectedAtributes1)
+    {
+        <option value="@atribut" >@atribut</option>
+    }
+
+</select>
+
+<select @onchange=Selector2 name="PrimarAtribut1">
+    @foreach(var atribut in selectedAtributes2)
+    {
+        <option value="@atribut" >@atribut</option>
+    }
+</select>
+
+
+@code {
+    private string strength = "Síla";       // attribute names for easy editing  (CZ: názvy atributù pro snadnou editaci)
+    private string agility = "Obratnost";
+    private string constitution = "Odolnost";
+    private string intelligence = "Inteligence";
+    private string charisma = "Charisma";
+
+    //strength(0)|agility(1)|constitution(2)|intelligence(3)|charisma(4)
+    private Dictionary<string,int> atributesDictionary = new Dictionary<string,int>(); //atributes and their values (CZ: atributy a jejich hodnoty)
+
+    protected override void OnInitialized()
+    {
+        atributesDictionary.Add(strength,0); // add atributes to the dictionary (CZ: pøidání atributù do slovníku)
+        atributesDictionary.Add(agility,1);
+        atributesDictionary.Add(constitution,2);
+        atributesDictionary.Add(intelligence,3);
+        atributesDictionary.Add(charisma,4);
+
+        atribut1 = baseAtributes[0]; //initialize value for selector1 (CZ: nastavení hodnot pro selektor1)
+        atribut2 = baseAtributes[1]; //initialize value for selector2 (CZ: nastavení hodnot pro selektor1)
+        AtributeCallBack.InvokeAsync(new string[] { atribut1,atribut2 }); //send inittialize the values to the parent component (CZ: odeslání inicializaèních hodnot rodièovské komponentì)
+        foreach(var item in baseAtributes)
+        {
+            selectedAtributes1.Add(item); // filling the selector1 with values (CZ: naplnìní selektoru1 hodnotami)
+            if(item != baseAtributes[0]) //when the value is not the same as the first value (CZ: pokud hodnota není stejná jako první hodnota)
+                selectedAtributes2.Add(item); // filling the selector2 with values (CZ: naplnìní selektoru2 hodnotami)
+        }
+    }
+
+    // all atributes
+    private List<string> baseAtributes = new List<string> { "Síla","Obratnost","Odolnost","Inteligence","Charisma" };
+
+    
+
+
+    private string atribut1 =string.Empty;
+    private string atribut2 =string.Empty;
+
+    private List<string> selectedAtributes1 = new();
+    private List<string> selectedAtributes2 = new();
+
+    private void Selector1(ChangeEventArgs e)
+    {
+        atribut1 = e.Value.ToString(); 
+        selectedAtributes2 = new();
+        foreach(var item in baseAtributes)
+        {
+            if(item != atribut1)
+                selectedAtributes2.Add(item);
+        }
+        atribut2 = selectedAtributes2[selectButtonIndex2];
+        AtributeCallBack.InvokeAsync(new string[] { atribut1,atribut2 });
+    }
+
+    private int selectButtonIndex2;
+
+    private void Selector2(ChangeEventArgs e)
+    {
+        atribut2 = e.Value.ToString();
+        selectButtonIndex2 = selectedAtributes2.IndexOf(atribut2);
+        AtributeCallBack.InvokeAsync(new string[] { atribut1,atribut2 });
+    }
+  
+    // vytvoøit metodu pro odeslání dat
+    [Parameter]
+    public EventCallback<string[]> AtributeCallBack { get; set; } 
+}
