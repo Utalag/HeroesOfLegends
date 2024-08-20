@@ -59,7 +59,7 @@
 
 
 
-<VyberAtributy AtributeCallBack="SelectAtributs"/>
+<SelectTwoAtributes AtributeSendParent="SelectAtributsFromChild" SetAtribute="(null)"/>
 <p>kontrolní hodnota 1: @values1</p>
 <p>kontrolní hodnota 2: @values2</p>
 
@@ -67,13 +67,24 @@
 
 
 @code {
-    private string values1;
-    private string values2;
+    private string name = "";
+    private int level = 1;
 
-    private void SelectAtributs(string[] value)
+    private string description = "";
+    private int strength = 0;
+    private int agility = 0;
+    private int constitution = 0;
+    private int intelligence = 0;
+    private int charisma = 0;
+
+    private int values1;
+    private int values2;
+
+    // callback to get data from the child component (CZ: callback pro získání dat z podřízené komponenty)
+    private void SelectAtributsFromChild(ValueTuple<int,int> atribut)
     {
-        values1 = value[0];
-        values2 = value[1];
+        values1 = atribut.Item1;
+        values2 = atribut.Item2;
     }
 
 
@@ -90,15 +101,7 @@
 
 
 
-    private string name = "";
-    private int level = 1;
-
-    private string description = "";
-    private int strength = 0;
-    private int agility = 0;
-    private int constitution = 0;
-    private int intelligence = 0;
-    private int charisma = 0;
+   
    
 
 

@@ -1,0 +1,158 @@
+﻿@page "/checkboxform"
+@rendermode InteractiveServer
+
+<select @bind="Selector1Value" name="PrimarAtribut1">
+    @foreach(var atribut in selector1Dictionary)
+    {
+        <option value="@atribut.Value" >@atribut.Key</option>
+    }
+</select>
+
+<select @bind="Selector2Value" name="PrimarAtribut1">
+    @foreach(var atribut in selector2Dictionary)
+    {
+        <option value="@atribut.Value">@atribut.Key</option>
+    }
+</select>
+
+
+
+@code {
+    //----------public ----------
+
+    /// <summary>
+    /// Returns the value of the selected attributes.  (CZ: Vrací hodnotu vybraných atributů))
+    /// <br>
+    /// strength (0)
+    /// </br>
+    /// <br>
+    /// agility (1)
+    /// </br>
+    ///  <br>
+    /// constitution (2)
+    /// </br>
+    /// <br>
+    /// intelligence (3)
+    /// </br>
+    /// <br>
+    /// charisma (4)
+    /// </br>
+    /// </summary>
+    [Parameter]
+    public EventCallback<ValueTuple<int,int>> AtributeSendParent { get; set; } // callback for sending data to the parent component (CZ: callback pro odeslání dat rodičovské komponentě)
+
+    /// <summary>
+    /// Not mandatory! (CZ: není povinné!)
+    /// <br>
+    /// strength (0)
+    /// </br>
+    /// <br>
+    /// agility (1)
+    /// </br>
+    ///  <br>
+    /// constitution (2)
+    /// </br>
+    /// <br>
+    /// intelligence (3)
+    /// </br>
+    /// <br>
+    /// charisma (4)
+    /// </br>
+    /// </summary>
+    [Parameter]
+    public ValueTuple<int,int>? SetAtribute { get; set; } = default;    // set the values ​​from the parent component (CZ: nastavení hodnot z rodičovské komponenty)
+                                                                        // default = null
+
+    //----------private ----------
+
+    private string strength = "Síla";       // attribute names for easy editing  (CZ: názvy atributů pro snadnou editaci)
+    private string agility = "Obratnost";
+    private string constitution = "Odolnost";
+    private string intelligence = "Inteligence";
+    private string charisma = "Charisma";
+
+    private int index1; // index for selector1 (CZ: index pro selektor1)
+    private int index2; // index for selector2 (CZ: index pro selektor2)
+
+    private int Selector1Value 
+    { 
+        get => selectedAtributesForSendParent.Item1;
+        set
+        {
+            
+            Selector1(value);
+        } 
+    } // get and set the value of selector1 (CZ: získání a nastavení hodnoty selektoru1)
+    private int Selector2Value
+    {
+        get => selectedAtributesForSendParent.Item2;
+        set
+        {
+           
+            Selector2(value);
+        }
+    } // get and set the value of selector2 (CZ: získání a nastavení hodnoty selektoru2)
+
+    private ValueTuple<int,int> selectedAtributesForSendParent = new ValueTuple<int,int>(); // selected atributes for sending to the parent component (CZ: vybrané atributy pro odeslání rodičovské komponentě)
+
+    /// <summary>
+    /// strength(0), agility(1), constitution(2), intelligence(3), charisma(4),
+    /// </summary>
+    private Dictionary<string,int> baseAtributesDictionary = new Dictionary<string,int>(); //base dictionary and their values (CZ: základní slovník a jeho hodnoty))
+    private Dictionary<string,int> selector1Dictionary = new Dictionary<string,int>(); // selector1 and their values (CZ: selektor1 a jejich hodnoty)
+    private Dictionary<string,int> selector2Dictionary = new Dictionary<string,int>(); // selector2 and their values (CZ: selektor2 a jejich hodnoty)
+
+    protected override void OnInitialized()
+    {
+        baseAtributesDictionary.Add(strength,0); // add atributes to the dictionary (CZ: přidání atributů do slovníku)
+        baseAtributesDictionary.Add(agility,1);
+        baseAtributesDictionary.Add(constitution,2);
+        baseAtributesDictionary.Add(intelligence,3);
+        baseAtributesDictionary.Add(charisma,4);
+
+        if(SetAtribute != null) // if the parent component has set values (CZ: pokud rodičovská komponenta nastavila hodnoty)
+        {
+            selectedAtributesForSendParent = SetAtribute.Value; // set the values ​​from the parent component (CZ: nastavení hodnot z rodičovské komponenty)
+        }
+        else
+        {
+            selectedAtributesForSendParent = (0,1); //initialize value for selector1 and selector2 (CZ: inicializuje hodnoty pro selektor1 a selector2)
+        }
+
+        AtributeSendParent.InvokeAsync(selectedAtributesForSendParent); //send inittialize the values to the parent component (CZ: odeslání inicializačních hodnot rodičovské komponentě)
+
+        foreach(var item in baseAtributesDictionary)
+        {
+
+            selector1Dictionary.Add(item.Key, item.Value); // filling the selector1 with values (CZ: naplnění selektoru1 hodnotami)
+            if (item.Value != selectedAtributesForSendParent.Item1 ) //when the value is not the same as the first value (CZ: pokud hodnota není stejná jako první hodnota)
+            { 
+                selector2Dictionary.Add(item.Key,item.Value); // filling the selector2 with values (CZ: naplnění selektoru2 hodnotami)
+            } 
+        }
+    }
+
+    private void Selector1(int input)
+    {
+        selector2Dictionary.Clear(); // clear the selector2 (CZ: vyčištění selektoru2)
+        selectedAtributesForSendParent.Item1 = input; // set the value from selector1 (CZ: nastavení hodnoty ze selektor1)
+        index1 = selector1Dictionary.ToList().FindIndex(x => x.Value == input); // get the index of the selected value (CZ: získání indexu vybrané hodnoty)
+        foreach(var item in baseAtributesDictionary)
+        { 
+            if(item.Value != selectedAtributesForSendParent.Item1) 
+            { selector2Dictionary.Add(item.Key,item.Value); } // fills selector2 with values ​​without the selected value from selector1 (CZ: naplní selektor2 hodnotami bez vybrané hodnoty ze selektor1)
+        };
+
+        selectedAtributesForSendParent.Item2 = selector2Dictionary.ElementAt(index2).Value; //selects the value according to the original index from selector2 (CZ: vybere hodnotu podle původního indexu ze selektor2)
+
+        AtributeSendParent.InvokeAsync(selectedAtributesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě)
+    }
+
+    private void Selector2(int input)
+    {
+        index2 = selector2Dictionary.ToList().FindIndex(x => x.Value == input); // get the index of the selected value (CZ: získání indexu vybrané hodnoty)
+
+        selectedAtributesForSendParent.Item2 = input; // set the value from selector1 (CZ: nastavení hodnoty ze selektor2)
+        AtributeSendParent.InvokeAsync(selectedAtributesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě) 
+    }   
+}
