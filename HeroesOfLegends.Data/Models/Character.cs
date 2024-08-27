@@ -3,26 +3,26 @@
     public class Character
     {
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty; // Character name (Cz: Jméno postavy)
+        public string Description { get; set; } = string.Empty; // Character description (Cz: Popis postavy)
         public int RaceId { get; set; }
-        public int ProfessionId { get; set; }  //??
-        public virtual Profession Professions { get; set; }
+        public int ProfessionId { get; set; }               //??
+        public virtual Profession Professions { get; set; } //??
 
-
-        public int Strength { get; set; }
+        // Character attributes (Cz: Atributy postavy)
+        public int Strength { get; set; }   
         public int Agility { get; set; }
         public int Constitution { get; set; }
         public int Intelligence { get; set; }
         public int Charisma { get; set; }
-        //public int Mobility { get; } // implementovat vypočet
+        public int Mobility { get; } 
 
-
-        public int St_DiceRoll { get; set; } = 4;
-        public int Ag_DiceRoll { get; set; } = 4;
-        public int Co_DiceRoll { get; set; } = 4;
-        public int In_DiceRoll { get; set; } = 4;
-        public int Cha_DiceRoll { get; set; } = 4;
+        // Atributes dice roll (Cz: Hod kostkou na atributy)
+        public int St_DiceRoll { get; set; }
+        public int Ag_DiceRoll { get; set; } 
+        public int Co_DiceRoll { get; set; } 
+        public int In_DiceRoll { get; set; } 
+        public int Cha_DiceRoll{ get; set; }
 
 
         // 4-7 bodů

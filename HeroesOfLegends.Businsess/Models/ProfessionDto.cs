@@ -22,7 +22,7 @@
         public int HpPointeded { get; set; }
         public List<int> GetHpDiceRoll { get; set; }
         /// <summary>
-        /// Počet profibodl pro výběrprofesních dovedností
+        /// Počet profibodl pro výběr profesních dovedností
         /// </summary>
         /// /// <summary>
         /// rozdah profibodů (1k6), výchozí hodnota 4
@@ -58,7 +58,11 @@
         public bool ManaRengerBool { get; set; } = false;
 
 
-
+        public int[] PrimaryStrength { get; set; } = new[] { 11,12,13 };
+        public int[] PrimaryAgility { get; set; } = new[] { 12,13,14 };
+        public int[] PrimaryConstitution { get; set; } = new[] { 12,13 };
+        public int[] PrimaryIntelligence { get; set; } = new[] { 12,13,14 };
+        public int[] PrimaryCharisma { get; set; } = new[] { 12,13 };
 
 
 

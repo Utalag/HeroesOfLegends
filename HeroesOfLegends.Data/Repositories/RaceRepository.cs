@@ -14,7 +14,10 @@ namespace HeroesOfLegends.Data.Repositories
             return dbSet.Where(x => ids.Contains(x.RaceId)).ToList();
         }
 
-
+        public async Task<IList<Race>> FindAllByIdsAsnyc(IEnumerable<int> ids)
+        {
+            return await Task.Run(()=>dbSet.Where(x => ids.Contains(x.RaceId)).ToList());
+        }
 
 
 

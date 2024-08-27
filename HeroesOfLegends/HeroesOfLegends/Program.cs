@@ -31,8 +31,8 @@ namespace HeroesOfLegends
                 .ConfigureWarnings(x => x.Ignore(CoreEventId.LazyLoadOnDisposedContextWarning)));
 
             // nastaven� konverze enum hodnoty na string
-            builder.Services.AddControllers().AddJsonOptions(options =>
-                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+            //builder.Services.AddControllers().AddJsonOptions(options =>
+            //     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -75,7 +75,7 @@ namespace HeroesOfLegends
             // registrase automapperu
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));
 
-
+            builder.Services.AddBlazorBootstrap();
 
 
 

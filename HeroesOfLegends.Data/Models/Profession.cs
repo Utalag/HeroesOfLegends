@@ -18,7 +18,7 @@ namespace HeroesOfLegends.Models
 
 
 
-        //-----------------------------------------------------------  VAZBY  ---------------
+        //-----------------------------------------------------------  BINDING  ---------------
         public virtual IList<Narrative> Narratives { get; set; } = new List<Narrative>();
 
 
@@ -122,6 +122,18 @@ namespace HeroesOfLegends.Models
 
 
         //---------------------------------------------------------  PROFIBODY  --------------
+
+        public int[] PrimaryStrength { get => new[] { 11,12,13 }; }
+        public int[] PrimaryAgility { get => new[] { 12,13,14 }; }
+        public int[] PrimaryConstitution { get => new[] { 12,13 }; }
+        public int[] PrimaryIntelligence { get => new[] { 12,13,14 }; }
+        public int[] PrimaryCharisma { get => new[] { 12,13 }; }
+
+
+
+
+
+
         private int atributePointed;
         private int professionPoint;
         public int GetProfessionPointedDiceRoll { get; set; }
@@ -250,6 +262,8 @@ namespace HeroesOfLegends.Models
             else
                 HpAllDiceRolls = false; // na 1-9 levlu se aktivuje tlačítko po zvýšení levlu
         }
+
+
         public void LevelDown()
         {
             --Level;
@@ -269,7 +283,7 @@ namespace HeroesOfLegends.Models
 
 
         /// <summary>
-        /// Inicializace testovacích dat
+        /// Initial data
         /// </summary>
         /// <returns></returns>
         public Profession[] Initial()

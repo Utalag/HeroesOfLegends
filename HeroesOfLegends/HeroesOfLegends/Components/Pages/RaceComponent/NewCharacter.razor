@@ -1,0 +1,304 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+<hr />
+<h5>Jmeno</h5>
+<hr />
+<h5>Příběh</h5>
+<hr />
+<h5>Zvolená rasa</h5>
+<hr />
+<h5>1. Přednastavené povolání</h5>
+<hr />
+<h5>2. Primární dovednosti</h5>
+<div> <!--PRIMÁRNÍ DOVEDNOSTI-->
+    <SelectTwoAtributes 
+        GetAtributeSendParent="SelectAtributsFromChild"
+        GetAtributeValueSendParent="SelectAtributValuesFromChild"
+        SetAtribute="(null)" 
+        SetAtributValues="(13,13)" />
+
+    <p>@atributValue1</p>
+    <p>@atributValue2</p>
+    
+</div>
+<hr />
+<h5>3. Základní rozsahy</h5>
+<div>
+    <p>@(atributeProfipointsSum - 23)</p>
+
+    <p>Síla:  @strengthFinalRange.Item1 - @strengthFinalRange.Item2</p>
+    <p>Obratnost: @agilityFinalRange.Item1 - @agilityFinalRange.Item2</p>
+    <p>Odolnost: @constitutionFinalRange.Item1 - @constitutionFinalRange.Item2</p>
+    <p>Inteligence: @intelligenceFinalRange.Item1 - @intelligenceFinalRange.Item2</p>
+    <p>Charisma: @charismaFinalRange.Item1 - @charismaFinalRange.Item2</p>
+</div>
+<hr />
+<h5>4. Hody kostkami</h5>
+<div> <!--HODY KOSTKAMI-->
+    <p>Součet hodů kostkami: <span>@sumDiceRolls</span></p>
+
+    <button class="btn btn-primary" @onclick="RollDice">Hodit kostkami</button>
+    <button class="btn btn-primary" @onclick="AverageDiceRolls">Nastavit průměrné hody</button>
+
+
+
+    <p>
+        Hody kostkou:
+        @foreach(var item in listDiceRolls)
+        {
+            <span>@item ,</span>
+        }
+    </p>
+    <p>
+        Vlastní hody kostkou:
+        @foreach(var item in listDiceRolls)
+        {
+            <span> <input type="number" value="" class="" /></span>
+        }
+    </p>
+</div>
+<hr />
+<h5>5. Přiřazení hodů</h5>
+
+
+@code {
+    // ----------ROZSAHY DOVEDNOSTÍ----------
+
+    private int RangeAtribute(int raceAtributMin,int raceAtributMax,int raceCorection,int rangeMin)
+    {
+        int min;
+        if (rangeMin == 0)
+        {
+            min = raceAtributMin;
+        }
+        else
+        {
+            min = rangeMin + raceCorection;
+        }
+        return min; 
+    }
+
+    private int atributeProfipoints1;
+    private int AtributeProfipoints1
+    {
+        get => atributeProfipoints1;
+        set
+        {
+            atributeProfipoints1 = value;
+            atributeProfipointsSum = atributeProfipoints1 + atributeProfipoints2;
+        }
+    }
+    private int atributeProfipoints2;
+    private int AtributeProfipoints2
+    {
+        get => atributeProfipoints2;
+        set
+        {
+            atributeProfipoints2 = value;
+            atributeProfipointsSum = atributeProfipoints2 + atributeProfipoints2;
+        }
+    }
+    private int atributeProfipointsSum;
+
+
+
+
+
+
+    // ----------PRIVATE----------
+
+    // race range atributes (CZ: rozsah atributů rasy)
+    private ValueTuple<int,int> strengthRangeRace;
+    private ValueTuple<int,int> agilityRangeRace;
+    private ValueTuple<int,int> constitutionRangeRace;
+    private ValueTuple<int,int> intelligenceRangeRace;
+    private ValueTuple<int,int> charismaRangeRace;
+
+    // primary atributes range (CZ: rozsah primárních atributů)
+    private ValueTuple<int,int> strengthRangePrimary;
+    private ValueTuple<int,int> agilityRangePrimary;
+    private ValueTuple<int,int> constitutionRangePrimary;
+    private ValueTuple<int,int> intelligenceRangePrimary;
+    private ValueTuple<int,int> charismaRangePrimary;
+
+    // final range atributes (CZ: finální rozsah atributů)
+    private ValueTuple<int,int> strengthFinalRange;
+    private ValueTuple<int,int> agilityFinalRange;
+    private ValueTuple<int,int> constitutionFinalRange;
+    private ValueTuple<int,int> intelligenceFinalRange;
+    private ValueTuple<int,int> charismaFinalRange;
+
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Strengt { get; set; }        //15+2   // (Cz: Síla)
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Agility { get; set; }        //10+0   // (Cz: Obratnost)
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Constitution { get; set; }   //9-1    // (Cz: Odolnost)
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Intelligence { get; set; }   //17+3   // (Cz: Inteligence)
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Charisma { get; set; }       //19+4   // (Cz: Charisma)
+    // /// <summary>
+    // /// <int> Atribut </int>
+    // /// |
+    // /// <int> Bonus </int>
+    // /// </summary>
+    // public ValueTuple<int,int> Mobility { get; set; }       //7-2    // (Cz: Pohyblivost)
+
+    // public AtributEnum PrimaryAtribut_1 { get; set; }   // primary atribute 1 (CZ: primární atribut 1)
+    // public AtributEnum PrimaryAtribut_2 { get; set; }   // primary atribute 2 (CZ: primární atribut 2)
+
+
+    protected override void OnInitialized()
+    {
+        // inicial race range atribute (CZ: inicializace rozsahu atributů z ras)
+        strengthRangeRace = (RaceData.Strength,RaceData.Strength_Max);
+        agilityRangeRace = (RaceData.Agility,RaceData.Agility_Max);
+        constitutionRangeRace = (RaceData.Constitution,RaceData.Constitution_Max);
+        intelligenceRangeRace = (RaceData.Intelligence,RaceData.Intelligence_Max);
+        charismaRangeRace = (RaceData.Charisma,RaceData.Charisma_Max);
+
+
+    }
+
+    AtributEnum primaryAtribut1;
+    AtributEnum primaryAtribut2;
+
+
+    private int atributValue1;
+    private int atributValue2;
+
+    private void SelectAtributValuesFromChild(ValueTuple<int,int> value)
+    {
+        atributValue1 = value.Item1;
+        atributValue2 = value.Item2;
+    }
+
+    // callback to get data from the child component (CZ: callback pro získání dat z podřízené komponenty)
+    private void SelectAtributsFromChild(ValueTuple<AtributEnum, AtributEnum> atribut)
+    {
+        primaryAtribut1 = atribut.Item1;
+        primaryAtribut2 = atribut.Item2;
+        // set race atributes as default (CZ: nastavení atributů rasy jako výchozí)
+        strengthFinalRange = strengthRangeRace;
+        agilityFinalRange = agilityRangeRace;
+        constitutionFinalRange = constitutionRangeRace;
+        intelligenceFinalRange = intelligenceRangeRace;
+        charismaFinalRange = charismaRangeRace;
+
+        SwitchAtributes(atribut.Item1,AtributeProfipoints1);
+        SwitchAtributes(atribut.Item2,AtributeProfipoints2);
+
+        // intern switch for atributes (CZ: interní switch pro atributy)
+        void SwitchAtributes(AtributEnum atribute,int valueSelector)
+        {
+            switch (atribute)
+            {
+                case AtributEnum.strength: strengthRangePrimary = (valueSelector + RaceData.Strength_Corection, valueSelector + RaceData.Strength_Corection + 5);strengthFinalRange = strengthRangePrimary; break;
+                case AtributEnum.agility: agilityRangePrimary = (valueSelector + RaceData.Agility_Corection, valueSelector + RaceData.Agility_Corection + 5); agilityFinalRange = agilityRangePrimary;  break;
+                case AtributEnum.constitution: constitutionRangePrimary = (valueSelector + RaceData.Constitution_Corection, valueSelector + RaceData.Constitution_Corection + 5); constitutionFinalRange = constitutionRangePrimary; break;
+                case AtributEnum.intelligence: intelligenceRangePrimary = (valueSelector + RaceData.Intelligence_Correction, valueSelector + RaceData.Intelligence_Correction + 5); intelligenceFinalRange = intelligenceRangePrimary; break;
+                case AtributEnum.charisma: charismaRangePrimary = (valueSelector + RaceData.Charisma_Correction, valueSelector + RaceData.Charisma_Correction + 5);charismaFinalRange = charismaRangePrimary; break;
+            }
+        }
+    }
+
+
+    // ----------PUBLIC----------
+
+    [Parameter] public IEnumerable<ProfessionDto?> ProfessionData { get; set; }
+    [Parameter] public RaceDto? RaceData { get; set; }
+
+    // model postavy
+    [SupplyParameterFromForm]
+    private CharacterDto CharacterModel { get; set; } = new CharacterDto();
+    // model rasy
+    private RaceDto RaceModel { get; set; } = new RaceDto();
+    // model povolání
+    private ProfessionDto ProfessionModel { get; set; } = new ProfessionDto();
+
+
+
+   // ----------NEZAŘAZENO----------
+   
+
+
+
+
+
+
+
+
+    private int profi=3;
+    private int sumDiceRolls;
+    private List<int> listDiceRolls = new List<int>();
+
+
+    private void RollDice()
+    {
+        Random rnd = new Random();
+        sumDiceRolls = 0;
+        listDiceRolls.Clear();
+        for (int i = 0; i < NumberOfDice(); i++)
+        {
+            int nuber = rnd.Next(0,6) + 1;
+            sumDiceRolls += nuber;
+            listDiceRolls.Add(nuber);
+        }
+    }
+    //The number of dice according to the range of attributes of the given race and profession
+    private int NumberOfDice()
+    {
+        int sum = RaceData.Strength_DiceRoll +
+        RaceData.Dexterity_DiceRoll +
+        RaceData.Constitution_DiceRoll +
+        RaceData.Intelligence_DiceRoll +
+        RaceData.Charisma_DiceRoll +
+        1;//profibod;
+
+        return sum;
+    }
+
+    // průměrné hody kostkou
+    private void AverageDiceRolls()
+    {
+        sumDiceRolls = 0;
+        listDiceRolls.Clear();
+        for(int i = 0;i < NumberOfDice();i++)
+        {
+            sumDiceRolls += 4;
+            listDiceRolls.Add(4);
+        }
+    }
+
+    private string GetEnumDescription(Enum value)
+    {
+        var field = value.GetType().GetField(value.ToString());
+        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field,typeof(DescriptionAttribute));
+        return attribute == null ? value.ToString() : attribute.Description;
+    }
+
+
+    
+}

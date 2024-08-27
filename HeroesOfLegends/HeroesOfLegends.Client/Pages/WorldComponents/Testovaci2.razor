@@ -1,0 +1,79 @@
+﻿@rendermode InteractiveAuto
+
+
+
+<div class="border">
+    <div class="slider">
+        <BitSlider Label="@AtributName"
+                   IsRanged="true"
+                   Min="1"
+                   Max="21"
+                   LowerValue="@RangeMin"
+                   UpperValue="@RangeMax"
+                   ShowValue="true"
+                   IsEnabled="false">
+        </BitSlider>
+    </div>
+
+    
+    <input type="button" value="<" @onclick="Decrease" />
+    <label>@AtributName</label>
+    <input type="button" value=">" @onclick="Increment" />
+
+    <div class="">
+        <input type="radio" name="name" value="1" @onchange="ChangeRange" /><span>1</span>
+        <input type="radio" name="name" value="2" @onchange="ChangeRange" /><span>2</span>
+        <input type="radio" name="name" value="3" @onchange="ChangeRange" /><span>3</span>
+    </div>
+
+</div>
+
+ 
+
+@code {
+    
+
+
+    [Parameter] public int RangeMin { get; set; } = 10;
+    [Parameter] public int RangeMax { get; set; } = 15;
+    [Parameter] public string AtributName { get; set; } = "Vlastnost";
+    [Parameter] public int NumberOfDiceRolls { get; set; } = 1;
+
+
+    void ChangeRange(ChangeEventArgs e)
+    {
+        int number = Convert.ToInt32(e.Value);
+        RangeMax = RangeMin + (number*5);
+    }
+
+
+    private void Decrease(MouseEventArgs e)
+    {   
+        if(RangeMin > 1)
+        {
+            RangeMin--;
+            RangeMax--;
+        }
+    }
+
+
+    private void Increment(MouseEventArgs e)
+    {
+        if (RangeMax < 21)
+        {
+            RangeMin++;
+            RangeMax++;
+        }
+    }
+}
+
+<style>
+
+    .border {
+        border: 1px solid black;
+        padding: 10px;
+        margin: 10px;
+        width: 300px;
+    }
+</style>
+   

@@ -1,0 +1,54 @@
+﻿@page "/raceHome"
+@using BlazorBootstrap
+@rendermode InteractiveServer
+@inject IRaceManager RaceManager
+@inject IProfessionManager ProfessionManager
+
+<h3>Rasy</h3>
+
+
+<Tabs EnableFadeEffect="false">
+
+    
+    @foreach(var race in RaceManager.GetAllData())
+    {
+        <Tab >
+            <TitleTemplate>
+                <Icon Name="IconName.PersonFill" /> @race.RaceName
+            </TitleTemplate>
+
+            <Content>
+                <div class="row">
+                    <div class="col-6">
+                        <RaceInfoCard RaceData="race" />
+                    </div>
+                    <div class="col-6">
+                        <NewCharacter 
+                                ProfessionData="ProfessionManager.GetAllData()"
+                                RaceData="race" />
+                    </div>
+                </div> 
+            </Content>
+
+        </Tab>
+    }
+
+    
+</Tabs>
+
+
+
+@code {
+
+    //private List<string>RaceName { get; set; } = new List<string>();
+    
+
+   @*  protected override async Task OnInitializedAsync()
+    {
+        var raceQery =  RaceManager.GetAllRaceAsync();
+        foreach (var item in await raceQery)
+        {
+            RaceName.Add(item.RaceName);
+        }
+    } *@
+}

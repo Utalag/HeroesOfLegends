@@ -39,6 +39,7 @@ namespace HeroesOfLegends.Businsess.Models
             // Z Model do Dto
 
             CreateMap<Profession,ProfessionDto>();
+            CreateMap<ProfessionDto,Profession>();
             //    .ForMember(m=>m.NarrativeName,x=>x.MapFrom(x=>x.NarrativId));
 
 
