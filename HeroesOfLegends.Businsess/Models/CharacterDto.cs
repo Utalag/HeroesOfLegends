@@ -1,71 +1,96 @@
-﻿namespace HeroesOfLegends.Businsess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HeroesOfLegends.Businsess.Models
+
 {
+    public enum AtributEnum
+    {
+        [Display(Name = "Síla")]
+        strength = 0,
+        [Display(Name = "Obratnost")]
+        agility = 1,
+        [Display(Name = "Odolnost")]
+        constitution = 2,
+        [Display(Name = "Inteligence")]
+        intelligence = 3,
+        [Display(Name = "Charisma")]
+        charisma = 4
+    }
+
     public class CharacterDto
     {
+        //--------------SAVE TO DATABASE----------------
+
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public int RaceId { get; set; }
-        public int ProfessionId { get; set; }  //??
-                                               //public virtual Profession Professions { get; set; }
+        public string Name { get; set; } = string.Empty; // character name (Cz: Jméno postavy)
+        public string Description { get; set; } = string.Empty; // charatcer description (Cz: Popis postavy)
+        public int RaceId { get; set; } // Race ID (Cz: Rasa)
+        public int ProfessionId { get; set; }
 
-
-        public int Strength { get; set; }
-        public int Agility { get; set; }
-        public int Constitution { get; set; }
-        public int Intelligence { get; set; }
-        public int Charisma { get; set; }
-        //public int Mobility { get; } // implementovat vypočet
-
-
-        public int St_DiceRoll { get; set; }
-        public int Ag_DiceRoll { get; set; }
-        public int Co_DiceRoll { get; set; }
-        public int In_DiceRoll { get; set; }
-        public int Cha_DiceRoll { get; set; }
-
-
-        // 4-7 bodů
         /// <summary>
-        /// 1-4 body do Síly
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
         /// </summary>
-        public int St_Primar { get; set; }
+        public ValueTuple<int,int> Strengt { get; set; }        //15+2   // (Cz: Síla) 
         /// <summary>
-        /// 1-4 body do Obratnosti
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
         /// </summary>
-        public int Ag_Primar { get; set; }
+        public ValueTuple<int,int> Agility { get; set; }        //10+0   // (Cz: Obratnost) 
         /// <summary>
-        /// 1-4 body do Odolnosti
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
         /// </summary>
-        public int Co_Primar { get; set; }
+        public ValueTuple<int,int> Constitution { get; set; }   //9-1    // (Cz: Odolnost)
         /// <summary>
-        /// 1-4 body do Inteligence
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
         /// </summary>
-        public int In_Primar { get; set; }
+        public ValueTuple<int,int> Intelligence { get; set; }   //17+3   // (Cz: Inteligence)
         /// <summary>
-        /// 1-4 body do Charismy
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
         /// </summary>
-        public int Cha_Primar { get; set; }
+        public ValueTuple<int,int> Charisma { get; set; }       //19+4   // (Cz: Charisma)
+        /// <summary>
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
+        /// </summary>
+        public ValueTuple<int,int> Mobility { get; set; }       //7-2    // (Cz: Pohyblivost)
+
+
+        public int Strength_DiceRollSum { get; set; }       // Sum dice roll (Cz: Součet hodů kostkou)
+        public int Agility_DiceRollSum { get; set; }        // Sum dice roll (Cz: Součet hodů kostkou)
+        public int Constitution_DiceRollSum { get; set; }   // Sum dice roll (Cz: Součet hodů kostkou)
+        public int Intelligence_DiceRollSum { get; set; }   // Sum dice roll (Cz: Součet hodů kostkou)
+        public int Charisma_DiceRollSum { get; set; }       // Sum dice roll (Cz: Součet hodů kostkou)
+
+        public AtributEnum PrimaryAtribut_1  { get; set; }  // primary atribute 1 (CZ: primární atribut 1)
+        public AtributEnum PrimaryAtribut_2 { get; set; }   // primary atribute 2 (CZ: primární atribut 2)
+
+        //--------------NOT SAVE TO DATABASE----------------
 
 
 
+        // primary atributes range (CZ: rozsah primárních atributů)
+        public ValueTuple<int,int> StrengthRangePrimary {get;set;}
+        public ValueTuple<int,int> AgilityRangePrimary {get;set;}
+        public ValueTuple<int,int> ConstitutionRangePrimary {get;set;}
+        public ValueTuple<int,int> IntelligenceRangePrimary {get;set;}
+        public ValueTuple<int,int> CharismaRangePrimary {get;set;}
 
-        public int Strength_Max { get; set; }
-        public int Agility_Max { get; set; }
-        public int Constitution_Max { get; set; }
-        public int Intelligence_Max { get; set; }
-        public int Charisma_Max { get; set; }
+        // final range atributes (CZ: finální rozsah atributů)
+        public ValueTuple<int,int> StrengthFinalRange{get;set;}
+        public ValueTuple<int,int> AgilityFinalRange {get;set;}
+        public ValueTuple<int,int> ConstitutionFinalRange {get;set;}
+        public ValueTuple<int,int> IntelligenceFinalRange {get;set;}
+        public ValueTuple<int,int> CharismaFinalRange {get;set;}
 
-        public int Strength_Min { get; set; }
-        public int Agility_Min { get; set; }
-        public int Constitution_Min { get; set; }
-        public int Intelligence_Min { get; set; }
-        public int Charisma_Min { get; set; }
-
-        public bool St_bool { get; set; }
-        public bool Ag_bool { get; set; }
-        public bool Int_bool { get; set; }
-        public bool Cha_bool { get; set; }
-        public bool Con_bool { get; set; }
     }
 }

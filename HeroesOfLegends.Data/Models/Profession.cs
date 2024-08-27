@@ -122,6 +122,18 @@ namespace HeroesOfLegends.Models
 
 
         //---------------------------------------------------------  PROFIBODY  --------------
+
+        public int[] PrimaryStrength { get => new[] { 11,12,13 }; }
+        public int[] PrimaryAgility { get => new[] { 12,13,14 }; }
+        public int[] PrimaryConstitution { get => new[] { 12,13 }; }
+        public int[] PrimaryIntelligence { get => new[] { 12,13,14 }; }
+        public int[] PrimaryCharisma { get => new[] { 12,13 }; }
+
+
+
+
+
+
         private int atributePointed;
         private int professionPoint;
         public int GetProfessionPointedDiceRoll { get; set; }
