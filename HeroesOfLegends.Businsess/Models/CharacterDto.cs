@@ -3,6 +3,7 @@
 namespace HeroesOfLegends.Businsess.Models
 
 {
+
     public enum AtributEnum
     {
         [Display(Name = "Síla")]
