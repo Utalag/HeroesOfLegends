@@ -27,12 +27,30 @@
 <div>
 
 
-    <p>Síla:  @character.StrengthFinalRange.Item1 - @character.StrengthFinalRange.Item2</p>
-    <p>Obratnost: @character.AgilityFinalRange.Item1 - @character.AgilityFinalRange.Item2</p>
-    <p>Odolnost: @character.ConstitutionFinalRange.Item1 - @character.ConstitutionFinalRange.Item2</p>
-    <p>Inteligence: @character.IntelligenceFinalRange.Item1 - @character.IntelligenceFinalRange.Item2</p>
-    <p>Charisma: @character.CharismaFinalRange.Item1 - @character.CharismaFinalRange.Item2</p>
+    <BitSlider Label="Síla" IsRanged="true" IsEnabled="false" 
+               Step="1"Min="1"Max="21"
+               RangeValue="@(new() { Lower = @character.StrengthFinalRange.Item1,
+                                     Upper =  @character.StrengthFinalRange.Item2} )" />
 
+    <BitSlider Label="Obratnost" IsRanged="true" IsEnabled="false"
+               Step="1" Min="1" Max="21"
+               RangeValue="@(new() { Lower = @character.AgilityFinalRange.Item1,
+                                     Upper =  @character.AgilityFinalRange.Item2} )" />
+
+    <BitSlider Label="Odolnost" IsRanged="true" IsEnabled="false"
+               Step="1" Min="1" Max="21"
+               RangeValue="@(new() { Lower = @character.ConstitutionFinalRange.Item1,
+                                     Upper = @character.ConstitutionFinalRange.Item2} )" />
+    <BitSlider Label="Inteligence" IsRanged="true" IsEnabled="false"
+               Step="1" Min="1" Max="21"
+               RangeValue="@(new() { Lower = @character.IntelligenceFinalRange.Item1,
+                                     Upper = @character.IntelligenceFinalRange.Item2} )" />
+    <BitSlider Label="Charisma" IsRanged="true" IsEnabled="false"
+               Step="1" Min="1" Max="21"
+               RangeValue="@(new() { Lower = @character.CharismaFinalRange.Item1,
+                                     Upper = @character.CharismaFinalRange.Item2} )" />
+    
+   
 </div>
 <hr />
 <h5>4. Hody kostkami</h5>
@@ -59,25 +77,44 @@
             <span>@item ,</span>
         }
     </p>
-    <p>
-        Vlastní hody kostkou:
-        @for(int i = 0;i < character.NumberOfDiceRolls();i++)
-        {
-
-            <span> <input type="number"  class="" />(@i)</span>
-            
-        }
-    </p>
+    
 </div>
 <hr />
 <h5>5. Přiřazení hodů</h5>
 
 
+
+
+<BitSlider Label="Síla"
+           Min="@character.StrengthFinalRange.Item1"
+           Max="@character.StrengthFinalRange.Item2"
+           OnChange="v => character.Strengt = (Convert.ToInt32(v.Value),0) " 
+           />
+
+<p>@character.Strengt</p>
+
+
+
+<p>Obratnost: @character.AgilityFinalRange.Item1 - @character.AgilityFinalRange.Item2</p>
+<p>Odolnost: @character.ConstitutionFinalRange.Item1 - @character.ConstitutionFinalRange.Item2</p>
+<p>Inteligence: @character.IntelligenceFinalRange.Item1 - @character.IntelligenceFinalRange.Item2</p>
+<p>Charisma: @character.CharismaFinalRange.Item1 - @character.CharismaFinalRange.Item2</p>
+
+
+
+
+
+<MultiSlider/>
+
 @code {
+
+
+    
 
     protected override void OnInitialized()
     {
         character.RaceId = RaceData.RaceId;
+        
     }
 
 
@@ -90,6 +127,7 @@
     private void UpdateDataFromAtributeComponent(CharacterDto characterDataFromAtributeComponent)
     {
         characterDataFromAtributeComponent.SetAllPrimaryAtributes(RaceData);
+        
     }
 
 

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Components\Pages\RaceComponent\MultiSlider.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroessOfLegends.Businsess.csproj" />
     <ProjectReference Include="..\..\HeroesOfLegends.Data\HeroesOfLegends.Data.csproj" />
     <ProjectReference Include="..\HeroesOfLegends.Client\HeroesOfLegends.Client.csproj" />
@@ -29,6 +33,18 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Components\Pages\RaceComponent\MultiSlider.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Components\Pages\RaceComponent\MultiSlider.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Components\Pages\RaceComponent\MultiSlider.razor" />
   </ItemGroup>
 
 </Project>
