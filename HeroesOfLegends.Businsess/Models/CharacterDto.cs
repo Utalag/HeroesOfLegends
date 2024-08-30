@@ -31,12 +31,22 @@ namespace HeroesOfLegends.Businsess.Models
         public int ProfessionId { get; set; }
 
 
+        private ValueTuple<int,int> strengt;
+        
+
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Strengt { get; set; }        //15+2   // (Cz: Síla) 
+        public ValueTuple<int,int> Strengt 
+        { 
+            get=> strengt; 
+            set 
+            { strengt.Item1 = value.Item1;
+              strengt.Item2 = value.Item2 == 0 ? AtributBonus[value.Item1] : value.Item2; 
+            } 
+        }        //15+2   // (Cz: Síla) 
         /// <summary>
         /// <int> Atribut </int>
         /// |
@@ -86,7 +96,8 @@ namespace HeroesOfLegends.Businsess.Models
 
         // ----------------------- NOT SAVE TO DATABASE-------------------
 
-        [NotMapped]private Dictionary<int,int> atributBonus = new Dictionary<int,int>()
+        [NotMapped]
+        public Dictionary<int,int> AtributBonus { get; } = new Dictionary<int,int>()
         {
             [1] = -5,
             [2] = -4,
@@ -120,11 +131,11 @@ namespace HeroesOfLegends.Businsess.Models
             [30] = 10,
         };
 
-        [NotMapped] public string strength = "Síla";
-        [NotMapped] public string agility = "Obratnost";
-        [NotMapped] public string constitution = "Odolnost";
-        [NotMapped] public string intelligence = "Inteligence";
-        [NotMapped] public string charisma = "Charisma";
+        [NotMapped] public string strengthLabel = "Síla";
+        [NotMapped] public string agilityLabel = "Obratnost";
+        [NotMapped] public string constitutionLabel = "Odolnost";
+        [NotMapped] public string intelligenceLabel = "Inteligence";
+        [NotMapped] public string charismaLabel = "Charisma";
 
         [NotMapped] private int[] primaryStrength = new[] { 11,13 };
         [NotMapped] private int[] primaryAgility = new[] { 13,14 };
@@ -143,11 +154,11 @@ namespace HeroesOfLegends.Businsess.Models
         {
             Dictionary<AtributEnum,string> baseAtributesDictionary = new();
 
-            baseAtributesDictionary.Add(AtributEnum.strength,strength);
-            baseAtributesDictionary.Add(AtributEnum.agility,agility);
-            baseAtributesDictionary.Add(AtributEnum.constitution,constitution);
-            baseAtributesDictionary.Add(AtributEnum.intelligence,intelligence);
-            baseAtributesDictionary.Add(AtributEnum.charisma,charisma);
+            baseAtributesDictionary.Add(AtributEnum.strength,strengthLabel);
+            baseAtributesDictionary.Add(AtributEnum.agility,agilityLabel);
+            baseAtributesDictionary.Add(AtributEnum.constitution,constitutionLabel);
+            baseAtributesDictionary.Add(AtributEnum.intelligence,intelligenceLabel);
+            baseAtributesDictionary.Add(AtributEnum.charisma,charismaLabel);
             return baseAtributesDictionary;
         }
         public List<int> GetValuesForPrimaryAtrubute_Selector(AtributEnum atribut)
