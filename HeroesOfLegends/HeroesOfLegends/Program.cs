@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using Microsoft.Build.Framework;
 using Microsoft.Identity.Client;
 using Microsoft.Identity.Client.Extensibility;
+using Serilog;
 
 namespace HeroesOfLegends
 {
@@ -54,7 +55,8 @@ namespace HeroesOfLegends
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             // modely
-            builder.Services.AddScoped<IProfession,Profession>();
+            //builder.Services.AddScoped<IProfession,Profession>();
+            
 
             // registrace repositare
             builder.Services.AddScoped<IRaceRepository,RaceRepository>();
@@ -76,8 +78,8 @@ namespace HeroesOfLegends
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));
 
             builder.Services.AddBlazorBootstrap();
-
-
+            
+           
 
             var app = builder.Build();
 

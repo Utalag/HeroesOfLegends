@@ -7,11 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Components\Pages\RaceComponent\MultiSlider.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroessOfLegends.Businsess.csproj" />
+    <ProjectReference Include="..\..\HeroesOfLegends.Businsess\HeroesOfLegends.Businsess.csproj" />
     <ProjectReference Include="..\..\HeroesOfLegends.Data\HeroesOfLegends.Data.csproj" />
     <ProjectReference Include="..\HeroesOfLegends.Client\HeroesOfLegends.Client.csproj" />
     <PackageReference Include="Bit.BlazorUI" Version="8.10.0" />
@@ -28,6 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
+    <PackageReference Include="Serilog" Version="4.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.0" />
   </ItemGroup>
 
@@ -41,10 +38,6 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Components\Pages\RaceComponent\MultiSlider.razor" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="Components\Pages\RaceComponent\MultiSlider.razor" />
   </ItemGroup>
 
 </Project>

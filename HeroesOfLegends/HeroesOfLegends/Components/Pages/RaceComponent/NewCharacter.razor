@@ -1,214 +1,572 @@
-﻿@using System.ComponentModel.DataAnnotations
+﻿@page "/characterSite/{CharacterDtoID:int}"
+@page "/characterSite"
+
+@inject IRaceManager raceManager
+@inject ICharacterManager characterManager
 @rendermode InteractiveServer
-
-<hr />
-<h5>Jmeno</h5>
-<input type="text" @bind="character.Name" class="form-control" />
-<hr />
-<h5>Příběh</h5>
-<input type="text" @bind="character.Description" class="form-control" />
-<hr />
-<h5>Zvolená rasa: </h5>
-<label>@character.RaceId</label>
-<hr />
-<h5>1. Přednastavené povolání</h5>
-<hr />
-<h5>2. Primární dovednosti</h5>
-<div> <!--PRIMÁRNÍ DOVEDNOSTI-->
-    <SelectTwoAtributes 
-        CharacterData="character"
-        GetChatacterData="UpdateDataFromAtributeComponent"
-        SetAtribute="(AtributEnum.intelligence,AtributEnum.constitution)"
-        SetIndexValue="(1,1)" />
-
-</div>
-<hr />
-<h5>3. Základní rozsahy</h5>
-<div>
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+@inject ILogger<NewCharacter> Logger
+@using HeroesOfLegends.Businsess.Models
 
 
-    <BitSlider Label="Síla" IsRanged="true" IsEnabled="false" 
-               Step="1"Min="1"Max="21"
-               RangeValue="@(new() { Lower = @character.StrengthFinalRange.Item1,
-                                     Upper =  @character.StrengthFinalRange.Item2} )" />
+<EditForm Model="model">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-    <BitSlider Label="Obratnost" IsRanged="true" IsEnabled="false"
-               Step="1" Min="1" Max="21"
-               RangeValue="@(new() { Lower = @character.AgilityFinalRange.Item1,
-                                     Upper =  @character.AgilityFinalRange.Item2} )" />
-
-    <BitSlider Label="Odolnost" IsRanged="true" IsEnabled="false"
-               Step="1" Min="1" Max="21"
-               RangeValue="@(new() { Lower = @character.ConstitutionFinalRange.Item1,
-                                     Upper = @character.ConstitutionFinalRange.Item2} )" />
-    <BitSlider Label="Inteligence" IsRanged="true" IsEnabled="false"
-               Step="1" Min="1" Max="21"
-               RangeValue="@(new() { Lower = @character.IntelligenceFinalRange.Item1,
-                                     Upper = @character.IntelligenceFinalRange.Item2} )" />
-    <BitSlider Label="Charisma" IsRanged="true" IsEnabled="false"
-               Step="1" Min="1" Max="21"
-               RangeValue="@(new() { Lower = @character.CharismaFinalRange.Item1,
-                                     Upper = @character.CharismaFinalRange.Item2} )" />
-    
-   
-</div>
-<hr />
-<h5>4. Hody kostkami</h5>
-<div> <!--HODY KOSTKAMI-->
-    <p>Součet hodů kostkami: <span>@sumAwerageDiceRolls</span></p>
-
-    <button class="btn btn-primary" @onclick="RollDice_Random">Hodit kostkami</button>
-    <button class="btn btn-primary" @onclick="AverageDiceRolls">Nastavit průměrné hody</button>
-
-    <p>
-        <br/>
-       S: @character.Strength_DiceRoll
-       O: @character.Agility_DiceRoll
-       Od: @character.Constitution_DiceRoll
-       I: @character.Intelligence_DiceRoll
-       Ch: @character.Charisma_DiceRoll
-        <br />
-    </p>
-
-    <p>
-        Hody kostkou:
-        @foreach(var item in awerageDiceRolls)
-        {
-            <span>@item ,</span>
-        }
-    </p>
-    
-</div>
-<hr />
-<h5>5. Přiřazení hodů</h5>
+    <div class="row">
+        <div class="col-12 text-center">
+            <div>
+                <label for="name">Name:</label>
+                <InputText id="name" @bind-Value="model.Name" placeholder="Jméno postavy" />
+                <ValidationMessage For="@(() => model.Name)" />
+            </div>
 
 
+            <div>
+                <label for="name">Příběh postavy:</label>
+                <InputTextArea @bind-Value="model.Description" placeholder="Příběh postavy" />
+                <ValidationMessage For="@(() => model.Description)" />
+            </div> <!--Description-->
+
+            <div>
+                <InputSelect @bind-Value="RaceID">
+                    @foreach(RaceDto race in RaceDataList)
+                    {
+                        <option value="@race.RaceId">@race.RaceName</option>
+                    }
+                </InputSelect>
+            </div> <!--Select Race-->
+
+            <div>
+                <!--PRIMÁRNÍ DOVEDNOSTI-->
+                <SelectTwoAtributes CharacterData="model"
+                                    GetChatacterData="UpdateDataFromAtributeComponent"
+                                    SetAtribute="(model.PrimaryAtribut_1,model.PrimaryAtribut_2)"
+                                    SetIndexValue="(model.PrimarValueIndex_1,model.PrimarValueIndex_2)"
+                                    NewCharacter="this" />
+
+            </div> <!--Primar attributs-->
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div>
+                <h3>Rozsah dané rasy</h3>
+                <BitSlider Label="Síla" IsRanged="true" IsEnabled="false"
+                           Step="1" Min="1" Max="21"
+                           RangeValue="@(new() { Lower = @model.StrengthFinalRange.Item1,
+                                     Upper =  @model.StrengthFinalRange.Item2} )" />
+
+                <BitSlider Label="Obratnost" IsRanged="true" IsEnabled="false"
+                           Step="1" Min="1" Max="21"
+                           RangeValue="@(new() { Lower = @model.AgilityFinalRange.Item1,
+                                     Upper =  @model.AgilityFinalRange.Item2} )" />
+
+                <BitSlider Label="Odolnost" IsRanged="true" IsEnabled="false"
+                           Step="1" Min="1" Max="21"
+                           RangeValue="@(new() { Lower = @model.ConstitutionFinalRange.Item1,
+                                     Upper = @model.ConstitutionFinalRange.Item2} )" />
+                <BitSlider Label="Inteligence" IsRanged="true" IsEnabled="false"
+                           Step="1" Min="1" Max="21"
+                           RangeValue="@(new() { Lower = @model.IntelligenceFinalRange.Item1,
+                                     Upper = @model.IntelligenceFinalRange.Item2} )" />
+                <BitSlider Label="Charisma" IsRanged="true" IsEnabled="false"
+                           Step="1" Min="1" Max="21"
+                           RangeValue="@(new() { Lower = @model.CharismaFinalRange.Item1,
+                                     Upper = @model.CharismaFinalRange.Item2} )" />
 
 
-<BitSlider Label="Síla"
-           Min="@character.StrengthFinalRange.Item1"
-           Max="@character.StrengthFinalRange.Item2"
-           OnChange="v => character.Strengt = (Convert.ToInt32(v.Value),0) " 
-           />
-
-<p>@character.Strengt</p>
+            </div> <!--Race Range-->
+        </div>
 
 
+        <div class="col-sm-12 col-md-6">
+            <h3>Tvorba postavy</h3>
 
-<p>Obratnost: @character.AgilityFinalRange.Item1 - @character.AgilityFinalRange.Item2</p>
-<p>Odolnost: @character.ConstitutionFinalRange.Item1 - @character.ConstitutionFinalRange.Item2</p>
-<p>Inteligence: @character.IntelligenceFinalRange.Item1 - @character.IntelligenceFinalRange.Item2</p>
-<p>Charisma: @character.CharismaFinalRange.Item1 - @character.CharismaFinalRange.Item2</p>
+            <div>
+                <button class="btn btn-primary" @onclick="SetDiceRolls">Nastavit průměrné hody</button>
+            </div>
+            <div>
+                <label for="sumDiceRolls">Souet hodů kostkou</label>
+                <input type="number" @bind="@sumDiceRolls" /> <span> zbývající body @FreeDiceRollsPoints()</span>
+            </div>
+
+            <table>
+                <tr>
+                    <th>Atribut</th>
+                    <th>kostky</th>
+                    <th>hodnoty</th>
+                    <th></th>
+                    <th></th>
+                </tr> <!--Header-->
+                <tr>
+                    <td>Síla</td>
+                    <td>@(model.Strength_DiceRoll)d6</td>
+                    <td><input type="number" value=@strengthNumber @onchange=UpdateStrengthNumber min="@(model.Strength_DiceRoll)" max="@(model.Strength_DiceRoll*6)" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Strengt)</td>
+                    <ValidationMessage For="@(() => strengthNumber)" />
+                </tr> <!--Strength-->
+                <tr>
+                    <td>Obratnost</td>
+                    <td>@(model.Agility_DiceRoll)d6</td>
+                    <td><input type="number" value=@agilityNumber @onchange=UpdateAgilityNumber min="@(model.Agility_DiceRoll)" max="@(model.Agility_DiceRoll*6)" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Agility)</td>
+                    <ValidationMessage For="@(() => agilityNumber)" />
+                </tr> <!--Agility-->
+                <tr>
+                    <td>Odolnost</td>
+                    <td>@(model.Constitution_DiceRoll)d6</td>
+                    <td><input type="number" value=@constitutionNumber @onchange=UpdateConstitutionNumber min="@(model.Constitution_DiceRoll)" max="@(model.Constitution_DiceRoll*6)" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Constitution)</td>
+                    <ValidationMessage For="@(() => constitutionNumber)" />
+                </tr> <!--Constitution-->
+                <tr>
+                    <td>Inteligence</td>
+                    <td>@(model.Intelligence_DiceRoll)d6</td>
+                    <td><input type="number" value=@intelligenceNumber @onchange=UpdateIntelligenceNumber min="@(model.Intelligence_DiceRoll)" max="@(model.Intelligence_DiceRoll*6)" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Intelligence)</td>
+                </tr> <!--Intelligence-->
+                <tr>
+                    <td>Charisma</td>
+                    <td>@(model.Charisma_DiceRoll)d6</td>
+                    <td><input type="number" value=@charismaNumber @onchange=UpdateCharismaNumber min="@(model.Charisma_DiceRoll)" max="@(model.Charisma_DiceRoll*6)" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Charisma)</td>
+                    <ValidationMessage For="@(() => intelligenceNumber)" />
+                </tr> <!--Charisma-->
+                <tr>
+                    <td>Vzhled</td>
+                    <td>1d6</td>
+                    <td><input type="number" value="@visageNumber" @onchange=UpdateVisageNumber min="1" max="6" /></td>
+                    <td>@VisualFormatAttributeOutpus(model.Visage)</td>
+                    <ValidationMessage For="@(() => charismaNumber)" />
+                </tr> <!--Visage-->
+                <tr>
+                    <td>Pohyblivost</td>
+                    <td>1d6</td>
+                    <td></td>
+                    <td>@VisualFormatAttributeOutpus(model.Mobility)</td>
+                </tr> <!--Mobility-->
+                <tr>
+                    <td>Profibody</td>
+                    <td>1d6</td>
+                    <td><input type="number" value="@profipointNumber" @onchange=UpdateProfipointsNumber min="1" max="6" /></td>
+                    <td>@(model.Profipoints)</td>
+                    <ValidationMessage For="@(() => profipointNumber)" />
+                </tr> <!--Profipoint-->
+            </table> <!--Set Attributes-->
+
+        </div>
+    </div>
 
 
+</EditForm>
 
+<input type="submit" name="name" @onclick=ValidSubmit />
 
-
-<MultiSlider/>
 
 @code {
+    [Parameter]
+    public int CharacterDtoID { get; set; } = 0;
+    CharacterModel? model;
+    CharacterDto? characterDto;
+    RaceDto? raceData;
 
+    IList<RaceDto>? RaceDataList { get; set; }
 
-    
+    private int raceid;
+    private int RaceID { get => raceid; set { raceid = value; raceData = RaceDataList.Where(x => x.RaceId == value).First(); UpdateDataFromAtributeComponent(); } }
 
     protected override void OnInitialized()
     {
-        character.RaceId = RaceData.RaceId;
-        
-    }
+        model = new CharacterModel();
+        RaceDataList = raceManager.GetAllData(); // get all data from the database (CZ: získání všech dat z databáze)
 
-
-    // ------------------ ATRIBUT COMPONENT ----------------------------------
-    CharacterDto character = new CharacterDto();
-    [Parameter] public RaceDto? RaceData { get; set; }
-
-    [Parameter] public IEnumerable<ProfessionDto?> ProfessionData { get; set; }
-
-    private void UpdateDataFromAtributeComponent(CharacterDto characterDataFromAtributeComponent)
-    {
-        characterDataFromAtributeComponent.SetAllPrimaryAtributes(RaceData);
-        
-    }
-
-
-    ////---------------- DICE ROLLS -----------------------------
-
-    //------------------ RANDOM GENERATED DICE ROLL--------------------------
-
-    private bool selectAtemGeneratedDiceRolls = false;
-    private int numberOfAttempts = 3; //number of attempts for generated (Cz: počet pokusů pro generování)
-    private int sumAttemp;
-    private List<int> manySumAttepm = new List<int>();
-    private List<int> oneGenerateListDiceRolls = new List<int>();
-    private List<List<int>> manyAtemGeneratedDiceRolls = new List<List<int>>();
-
-    private void RollDice_Random()
-    {
-        Random random = new Random();
-
-        for(int j = 0;j < numberOfAttempts;j++)
+        if(RaceDataList == null)
         {
-            sumAttemp = 0;
-            oneGenerateListDiceRolls.Clear();
-            for (int i = 0; i < character.NumberOfDiceRolls(); i++)
+            raceData = new()
             {
-                int nuber = random.Next(0,6) + 1;
-                sumAttemp += nuber;
-                oneGenerateListDiceRolls.Add(nuber);
-            }
-            manySumAttepm.Add(sumAttemp);
-            manyAtemGeneratedDiceRolls.Add(oneGenerateListDiceRolls);
+                    RaceName = "Člověk",
+                    RaceDescription = "Lidé jsou snad nejrozšířenější rasou, žijící jak v oblastech hor, tak i ve stepích, lesích a tundrách. Budují rozsáhlá sídla, ať už města či vesnice, která zpravidla leží na velkých obchodních křižovatkách. Lidé jsou velmi houževnatí, nacházejí uplatnění v celé škále povoláni. Většina z nich se zabývá především zemědělstvím a řemeslnou výrobou, ale najdete mezi nimi i zdatné lovce a zkušené dobrodruhy všeho druhu.",
+                    RaceSize = "B",
+                    Mobility = 11,
+                    SpecialAbilities = "",
+                    Strength = 6,
+                    Strength_Max = 16,
+                    Strength_Corection = 0,
+                    Strength_DiceRoll = 2,
+                    Agility = 9,
+                    Agility_Max = 14,
+                    Agility_Corection = 0,
+                    Dexterity_DiceRoll = 1,
+                    Constitution = 9,
+                    Constitution_Max = 14,
+                    Constitution_Corection = 0,
+                    Constitution_DiceRoll = 1,
+                    Intelligence = 10,
+                    Intelligence_Max = 15,
+                    Intelligence_Correction = 0,
+                    Intelligence_DiceRoll = 1,
+                    Charisma = 2,
+                    Charisma_Max = 17,
+                    Charisma_Correction = 0,
+                    Charisma_DiceRoll = 3,
+                }; // create Test Data (CZ: vytvoření testovacích dat)
+            RaceDataList = new List<RaceDto> { raceData };
+
+            Logger.LogError("race not found");
         }
-    }
-
-    //-------------------- AWERAGE DICE ROLL -------------------------------
-
-    private bool selectAwerageDiceRolls = false;
-    private int sumAwerageDiceRolls;
-    private List<int> awerageDiceRolls = new List<int>();
-
-    private void AverageDiceRolls()
-    {
-        sumAwerageDiceRolls = 0;
-        awerageDiceRolls.Clear();
-        for(int i = 0;i < character.NumberOfDiceRolls();i++)
+        else
         {
-            sumAwerageDiceRolls += 4;
-            awerageDiceRolls.Add(4);
+            raceData = RaceDataList.FirstOrDefault(); //
+        }
+
+        if(CharacterDtoID == 0)
+        {
+            characterDto = new CharacterDto(); // create new instanc character (CZ: vytvoření nové instace postavy)
+                                               //characterDtoHasData = false;
+        }
+        else
+        {
+
+            try
+            {
+                var character = characterManager.GetDateById(CharacterDtoID);
+                if(character == null)
+                {
+                    characterDto = new CharacterDto();
+                    characterDtoHasData = false;
+                    throw new NullReferenceException("Character data is null");
+                }
+                else
+                {
+                    characterDtoHasData = true;
+                    characterDto = character;
+                    model.Name = characterDto.Name;
+                    model.Description = characterDto.Description;
+                    model.RaceID = characterDto.RaceId;
+
+                    model.Strengt = (characterDto.Strengt[0], characterDto.Strengt[1]);
+                    model.Agility = (characterDto.Agility[0], characterDto.Agility[1]);
+                    model.Constitution = (characterDto.Constitution[0], characterDto.Constitution[1]);
+                    model.Intelligence = (characterDto.Intelligence[0], characterDto.Intelligence[1]);
+                    model.Charisma = (characterDto.Charisma[0], characterDto.Charisma[1]);
+                    model.Mobility = (characterDto.Mobility[0], characterDto.Mobility[1]);
+                    model.Visage = (characterDto.Visage[0], characterDto.Visage[1]);
+                    model.Profipoints = characterDto.Profipoints;
+
+                    model.PrimaryAtribut_1 = characterDto.PrimaryAtribut_1;
+                    model.PrimaryAtribut_2 = characterDto.PrimaryAtribut_2;
+                    model.PrimarValueIndex_1 = characterDto.PrimarValueIndex_1;
+                    model.PrimarValueIndex_2 = characterDto.PrimarValueIndex_2;
+
+                    model.StrengthFinalRange = (characterDto.StrengthFinalRange[0], characterDto.StrengthFinalRange[1]);
+                    model.AgilityFinalRange = (characterDto.AgilityFinalRange[0], characterDto.AgilityFinalRange[1]);
+                    model.ConstitutionFinalRange = (characterDto.ConstitutionFinalRange[0], characterDto.ConstitutionFinalRange[1]);
+                    model.IntelligenceFinalRange = (characterDto.IntelligenceFinalRange[0], characterDto.IntelligenceFinalRange[1]);
+                    model.CharismaFinalRange = (characterDto.CharismaFinalRange[0], characterDto.CharismaFinalRange[1]);
+                    model.Visage = (characterDto.Visage[0], characterDto.Visage[1]);
+                    model.Mobility = (characterDto.Mobility[0], characterDto.Mobility[1]);
+
+                    model.Profipoints = characterDto.Profipoints;
+
+
+                }
+            }
+            catch(NullReferenceException ex)
+            {
+                Logger.LogCritical(ex.Message);
+            }
         }
     }
 
-    // ------------------- CUSTOM DICE ROLLS ------------------
-
-    private bool selectCustomDiceRolls = false;
-    private int sumCustomDiceRolls;
-
-
-    [MaxLength(1)]
-    private int number;
-    private int numberOfDiceRolls = 0;
-
-    private void CustomDiceRolls()
+    private void UpdateDataFromAtributeComponent()
     {
-        
+        SetAllPrimaryAtributes(raceData);
+
+
+
+        if(!characterDtoHasData)
+        {
+            strengthNumber = model.Strength_DiceRoll;
+            agilityNumber = model.Agility_DiceRoll;
+            constitutionNumber = model.Constitution_DiceRoll;
+            intelligenceNumber = model.Intelligence_DiceRoll;
+            charismaNumber = model.Charisma_DiceRoll;
+
+            model.Strengt = SetAtribut(model.StrengthFinalRange.Item1,strengthNumber,model.Strength_DiceRoll);
+            model.Agility = SetAtribut(model.AgilityFinalRange.Item1,agilityNumber,model.Agility_DiceRoll);
+            model.Constitution = SetAtribut(model.ConstitutionFinalRange.Item1,constitutionNumber,model.Constitution_DiceRoll);
+            model.Intelligence = SetAtribut(model.IntelligenceFinalRange.Item1,intelligenceNumber,model.Intelligence_DiceRoll);
+            model.Charisma = SetAtribut(model.CharismaFinalRange.Item1,charismaNumber,model.Charisma_DiceRoll);
+            model.Visage = (model.Charisma.Item1 + visageNumber - 3,characterDto.AtributBonus[model.Charisma.Item1 + visageNumber - 3]);
+            model.Mobility = (model.Strengt.Item2 * 2 + model.Agility.Item2 + raceData.Mobility,characterDto.AtributBonus[model.Strengt.Item2 * 2 + model.Agility.Item2 + raceData.Mobility]);
+            model.Profipoints = profipointNumber + 17;
+            SetDiceRolls();
+
+        }
+        else
+        {
+            strengthNumber = ReverzAtributNumber(model.Strengt.Item1,model.StrengthFinalRange.Item1,model.Strength_DiceRoll);
+            agilityNumber = ReverzAtributNumber(model.Agility.Item1,model.AgilityFinalRange.Item1,model.Agility_DiceRoll);
+            constitutionNumber = ReverzAtributNumber(model.Constitution.Item1,model.ConstitutionFinalRange.Item1,model.Constitution_DiceRoll);
+            intelligenceNumber = ReverzAtributNumber(model.Intelligence.Item1,model.IntelligenceFinalRange.Item1,model.Intelligence_DiceRoll);
+            charismaNumber = ReverzAtributNumber(model.Charisma.Item1,model.CharismaFinalRange.Item1,model.Charisma_DiceRoll);
+            profipointNumber = characterDto.Profipoints - 17;
+            SetDiceRolls();
+
+        }
     }
 
-
-
-
-
-
-
-
-    // -------------------- OUTHER CODE------------------
-
-    private string GetEnumDescription(Enum value)
+    private ValueTuple<int,int> SetAtribut(int item1,int attributNumber,int diceRoll)
     {
-        var field = value.GetType().GetField(value.ToString());
-        var attribute = (DescriptionAttribute)Attribute.GetCustomAttribute(field,typeof(DescriptionAttribute));
-        return attribute == null ? value.ToString() : attribute.Description;
+        int supportValue = item1 + attributNumber - diceRoll;
+        return (supportValue, characterDto.AtributBonus[supportValue]);
     }
 
+    private void SetAllPrimaryAtributes(RaceDto raceData)
+    {
+        SetDefaultAtributeAsRaceRange(raceData);
+        SetOnePrimaryAtribut(model.PrimaryAtribut_1,model.PrimarValueIndex_1,raceData);
+        SetOnePrimaryAtribut(model.PrimaryAtribut_2,model.PrimarValueIndex_2,raceData);
+    }
 
-    
+    private void SetOnePrimaryAtribut(AtributEnum atribute,int primaryIndex,RaceDto race)
+    {
+        switch(atribute)
+        {
+            case AtributEnum.strength: model.StrengthFinalRange = (characterDto.PrimaryStrength[primaryIndex] + race.Strength_Corection, characterDto.PrimaryStrength[primaryIndex] + race.Strength_Corection + 5); break;
+            case AtributEnum.agility: model.AgilityFinalRange = (characterDto.PrimaryAgility[primaryIndex] + race.Agility_Corection, characterDto.PrimaryAgility[primaryIndex] + race.Agility_Corection + 5); break;
+            case AtributEnum.constitution: model.ConstitutionFinalRange = (characterDto.PrimaryConstitution[primaryIndex] + race.Constitution_Corection, characterDto.PrimaryConstitution[primaryIndex] + race.Constitution_Corection + 5); break;
+            case AtributEnum.intelligence: model.IntelligenceFinalRange = (characterDto.PrimaryIntelligence[primaryIndex] + race.Intelligence_Correction, characterDto.PrimaryIntelligence[primaryIndex] + race.Intelligence_Correction + 5); break;
+            case AtributEnum.charisma: model.CharismaFinalRange = (characterDto.PrimaryCharisma[primaryIndex] + race.Charisma_Correction, characterDto.PrimaryCharisma[primaryIndex] + race.Charisma_Correction + 5); break;
+        }
+    }
+
+    // set final attributes from race ranges (CZ: nastavit finální atributy z rozsahů rasy)
+    private void SetDefaultAtributeAsRaceRange(RaceDto raceData)
+    {
+        model.StrengthFinalRange = (raceData.Strength, raceData.Strength_Max);
+        model.AgilityFinalRange = (raceData.Agility, raceData.Agility_Max);
+        model.ConstitutionFinalRange = (raceData.Constitution, raceData.Constitution_Max);
+        model.IntelligenceFinalRange = (raceData.Intelligence, raceData.Intelligence_Max);
+        model.CharismaFinalRange = (raceData.Charisma, raceData.Charisma_Max);
+    }
+
+    private void ValidSubmit()
+    {
+        characterDto.Name =                    model.Name;
+        characterDto.Description =             model.Description;
+        characterDto.RaceId =                  model.RaceID;
+        characterDto.Strengt =                [model.Strengt.Item1,model.Strengt.Item2];
+        characterDto.Agility =                [model.Agility.Item1,model.Agility.Item2];
+        characterDto.Constitution =           [model.Constitution.Item1,model.Constitution.Item2];
+        characterDto.Intelligence =           [model.Intelligence.Item1,model.Intelligence.Item2];
+        characterDto.Charisma =               [model.Charisma.Item1, model.Charisma.Item2];
+        characterDto.Mobility =               [model.Mobility.Item1,model.Mobility.Item2];
+        characterDto.Visage =                 [model.Visage.Item1,model.Visage.Item2];
+        characterDto.Profipoints =             model.Profipoints;
+        characterDto.PrimaryAtribut_1 =        model.PrimaryAtribut_1;
+        characterDto.PrimaryAtribut_2 =        model.PrimaryAtribut_2;
+        characterDto.PrimarValueIndex_1 =      model.PrimarValueIndex_1;
+        characterDto.PrimarValueIndex_2=       model.PrimarValueIndex_2;
+        characterDto.StrengthFinalRange =     [model.StrengthFinalRange.Item1, model.StrengthFinalRange.Item2];
+        characterDto.AgilityFinalRange =      [model.AgilityFinalRange.Item1, model.AgilityFinalRange.Item2];
+        characterDto.ConstitutionFinalRange = [model.ConstitutionFinalRange.Item1, model.ConstitutionFinalRange.Item2];
+        characterDto.IntelligenceFinalRange = [model.IntelligenceFinalRange.Item1, model.IntelligenceFinalRange.Item2];
+        characterDto.CharismaFinalRange =     [model.CharismaFinalRange.Item1, model.CharismaFinalRange.Item2];
+
+        if(FreeDiceRollsPoints()!=0)
+        {
+            Logger.LogWarning("Nedostatečný počet bodů pro vytvoření postavy");
+            return;
+        }
+        else
+        {
+            Logger.LogInformation("Generate Caracter => ");
+            if(characterDto.Id != null && characterDto.Id > 0)
+            {
+                characterDto.Id = CharacterDtoID;
+                characterManager.UpdateData(characterDto,CharacterDtoID);
+                Logger.LogInformation("Update Character");
+            }
+            else
+            {
+                characterManager.AddDataAsync(characterDto);
+                Logger.LogInformation("New Character");
+            }
+        }
+
+
+
+
+    }
+
+    private int NumberOfDiceRolls()
+    {
+        return ((model.StrengthFinalRange.Item2 - model.StrengthFinalRange.Item1) / 5)
+        + ((model.AgilityFinalRange.Item2 - model.AgilityFinalRange.Item1) / 5)
+        + ((model.ConstitutionFinalRange.Item2 - model.ConstitutionFinalRange.Item1) / 5)
+        + ((model.IntelligenceFinalRange.Item2 - model.IntelligenceFinalRange.Item1) / 5)
+        + ((model.CharismaFinalRange.Item2 - model.CharismaFinalRange.Item1) / 5)
+        + 1  // prifipoint (Cz: profibody)
+        + 1; // appearance (Cz: vzhled)
+    } // (Cz: počet hodů kostkou 1k6)
+
+    private int FreeDiceRollsPoints()
+    {
+        var sum = sumDiceRolls - strengthNumber - agilityNumber - constitutionNumber - intelligenceNumber - charismaNumber - profipointNumber - visageNumber;
+        return sum;
+    }
+
+    private void SetDiceRolls()
+    {
+        sumDiceRolls = NumberOfDiceRolls() * 4;
+    }
+
+    private string VisualFormatAttributeOutpus(ValueTuple<int,int> atribut)
+    {
+        if(atribut.Item1 > 9)
+        {
+            return String.Format("{0}+{1}",atribut.Item1,atribut.Item2);
+        }
+        else
+        {
+            return String.Format("{0}{1}",atribut.Item1,atribut.Item2);
+        }
+    }
+
+    private void UpdateStrengthNumber(ChangeEventArgs e)
+    {
+        strengthNumber = Convert.ToInt32(e.Value);
+        model.Strengt = SetAtribut(model.StrengthFinalRange.Item1,strengthNumber,model.Strength_DiceRoll);
+
+        UpdateMobility(model.Strengt.Item2,model.Agility.Item2);
+    }
+
+    private void UpdateAgilityNumber(ChangeEventArgs e)
+    {
+        agilityNumber = Convert.ToInt32(e.Value);
+        model.Agility = SetAtribut(model.AgilityFinalRange.Item1,agilityNumber,model.Agility_DiceRoll);
+        UpdateMobility(model.Strengt.Item2,model.Agility.Item2);
+    }
+
+    private void UpdateConstitutionNumber(ChangeEventArgs e)
+    {
+        constitutionNumber = Convert.ToInt32(e.Value);
+        model.Constitution = SetAtribut(model.ConstitutionFinalRange.Item1,constitutionNumber,model.Constitution_DiceRoll);
+    }
+
+    private void UpdateIntelligenceNumber(ChangeEventArgs e)
+    {
+        intelligenceNumber = Convert.ToInt32(e.Value);
+        model.Intelligence = SetAtribut(model.IntelligenceFinalRange.Item1,intelligenceNumber,model.Intelligence_DiceRoll);
+    }
+
+    private void UpdateCharismaNumber(ChangeEventArgs e)
+    {
+        charismaNumber = Convert.ToInt32(e.Value);
+        model.Charisma = SetAtribut(model.CharismaFinalRange.Item1,charismaNumber,model.Charisma_DiceRoll);
+        model.Visage = (model.Charisma.Item1 + visageNumber - 3,characterDto.AtributBonus[model.Charisma.Item1 + visageNumber - 3]);
+    }
+
+    private void UpdateVisageNumber(ChangeEventArgs e)
+    {
+        visageNumber = Convert.ToInt32(e.Value);
+        model.Visage = (SetAtribut(model.CharismaFinalRange.Item1,charismaNumber,model.Charisma_DiceRoll).Item1 + visageNumber - 3,
+                                    characterDto.AtributBonus[SetAtribut(model.CharismaFinalRange.Item1,charismaNumber,model.Charisma_DiceRoll).Item1 + visageNumber - 3]);
+    }
+
+    private void UpdateProfipointsNumber(ChangeEventArgs e)
+    {
+        profipointNumber = Convert.ToInt32(e.Value);
+        model.Profipoints = profipointNumber + 17;
+    }
+
+    private void UpdateMobility(int strengthBonus,int agilityBonus)
+    {
+        int supportValue = strengthBonus * 2 + agilityBonus + raceData.Mobility;
+        model.Mobility = (supportValue,characterDto.AtributBonus[supportValue]);
+    }
+
+    private int ReverzAtributNumber(int currentValue,int attributNumberLow, int diceRoll)
+    {
+        return currentValue+ diceRoll - attributNumberLow;
+    }
+
+    [Required]
+    [Range(1,12)]
+    private int strengthNumber;
+    [Required]
+    [Range(1,12)]
+    private int agilityNumber;
+    [Required]
+    [Range(1,12)]
+    private int constitutionNumber;
+    [Required]
+    [Range(1,12)]
+    private int intelligenceNumber;
+    [Required]
+    [Range(1,18)]
+    private int charismaNumber;
+    [Required]
+    [Range(1,6)]
+    private int profipointNumber = 1;
+    [Required]
+    [Range(1,6)]
+    private int visageNumber = 3;
+    private int sumDiceRolls;
+    bool characterDtoHasData;
+
+
+
+    public class CharacterModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public int RaceID { get; set; } = 1;
+
+        public ValueTuple<int,int> Strengt { get; set; }
+        public ValueTuple<int,int> Agility { get; set; }
+        public ValueTuple<int,int> Constitution { get; set; }
+        public ValueTuple<int,int> Intelligence { get; set; }
+        public ValueTuple<int,int> Charisma { get; set; }
+        public ValueTuple<int,int> Mobility { get; set; }
+        public ValueTuple<int,int> Visage { get; set; }
+        public int Profipoints { get; set; }
+
+        public AtributEnum PrimaryAtribut_1 { get; set; } = AtributEnum.strength; // primary atribute 1 (CZ: primární atribut 1)
+        public AtributEnum PrimaryAtribut_2 { get; set; } = AtributEnum.constitution;  // primary atribute 2 (CZ: primární atribut 2)
+        public int PrimarValueIndex_1 { get; set; } = 0;        // index of primary atribute 1 (CZ: index primárního atributu 1)
+        public int PrimarValueIndex_2 { get; set; } = 0;        // index of primary atribute 2 (CZ: index primárního atributu 2)
+
+        // final range atributes (CZ: finální rozsah atributů)
+        public ValueTuple<int,int> StrengthFinalRange { get; set; }
+        public ValueTuple<int,int> AgilityFinalRange { get; set; }
+        public ValueTuple<int,int> ConstitutionFinalRange { get; set; }
+        public ValueTuple<int,int> IntelligenceFinalRange { get; set; }
+        public ValueTuple<int,int> CharismaFinalRange { get; set; }
+
+
+        public int Visage_DiceRoll { get; set; }
+        public int Mobility_DiceRoll { get; set; }
+        public int Profipoints_DiceRoll { get; set; }
+
+        public int Strength_DiceRoll { get => ((StrengthFinalRange.Item2 - StrengthFinalRange.Item1) / 5); }
+        public int Agility_DiceRoll { get => ((AgilityFinalRange.Item2 - AgilityFinalRange.Item1) / 5); }
+        public int Constitution_DiceRoll { get => ((ConstitutionFinalRange.Item2 - ConstitutionFinalRange.Item1) / 5); }
+        public int Intelligence_DiceRoll { get => ((IntelligenceFinalRange.Item2 - IntelligenceFinalRange.Item1) / 5); }
+        public int Charisma_DiceRoll { get => ((CharismaFinalRange.Item2 - CharismaFinalRange.Item1) / 5); }
+    }
+
+        /*
+        Logger.LogInformation("HELOOOOOOOOOOO");   // info
+        Logger.LogCritical("HELOOOOOOOOOOO");       // critical
+        Logger.LogWarning("HELOOOOOOOOOOO");        // warning
+        Logger.LogError("HELOOOOOOOOOOO");          // error
+    */
 }
+

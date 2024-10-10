@@ -1,0 +1,178 @@
+﻿@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Web
+
+
+<div class="slider-container">
+    <div class="body-slider">
+        <div class="trace">
+            <input type="range" min="@MinValue" max="@MaxValue" value="@value" @oninput=UpdateValue class="slider" style="--value:@value%; width:@(ratio+1)%; left:@left%; "  />
+            
+            <div class="thumb-value" style="left:@thumbPosition%;">@value</div>
+            
+            <div class="rozestup">
+                @for(int i = 0;i < (Max);i++)
+                {
+                    <div class="lomitko">@(i+1)</div>     
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<p>@thumbPosition</p>
+
+@code {
+        [Parameter]
+        public int MinValue { get; set; } = 12;
+    public int MaxValue { get; set; } = 17;
+    public int Min { get; set; } = 1;
+    public int Max { get; set; } = 21;
+
+
+    /// <summary>
+    /// Value in %
+    /// </summary>
+    public int Width { get; set; } = 100; // %
+
+    private int thumbPosition;
+
+    int value;
+    int left = 0;
+    int ratio = 100;
+
+    private void UpdateValue(ChangeEventArgs e)
+    {
+        value = Convert.ToInt32(e.Value);
+        ratio = (MaxValue-MinValue)*(100/(Max-1));
+        left= (MinValue-Min)*(100/(Max-1));
+        thumbPosition = ((value) * (100 / 20)) - 5;
+    }
+
+}
+
+<style>
+
+    .thumb-value {
+        position: absolute;
+        top: -30px;
+        transform: translateX(-50%);
+        background: white;
+        padding: 2px 5px;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+
+    }
+
+    .slider-container {
+        position: relative;
+        width: @Width%;
+        background-color: rgba(0,0,0,.1);
+        
+    }
+
+    .body-slider {
+        display: flex;
+        position: relative;
+    }
+
+    .trace {
+        height: 10px;
+        width: 98%;
+        background-color: darkgrey;
+        border-radius: 5px;
+        border: 1px solid black;
+        margin-left:1% ;
+
+
+    }
+
+    .rozestup {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        padding-left: 2.5%;
+        padding-right: 2.5%;
+        width: 100%;
+        padding:0;
+    }
+
+    .lomitko{
+        height: 8px;
+        width: 1px;
+        background-color: sienna;
+        z-index: 3;
+        font-family: Arial;
+        font-size: 10px;
+        padding-top: 10px;
+        font-weight: bold;
+        
+    }
+
+   
+
+    .slider {
+        position:absolute;
+        -webkit-appearance: none;
+        width: 100%;
+        height: 8px;
+        background: transparent;
+        outline: none;
+        opacity: 0.9;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        z-index: 4;
+
+    }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border: 1px;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+
+
+        .slider::-moz-range-thumb {
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            border: 1px solid black;
+            background-color: white;
+            border-radius: 25px;
+            cursor: pointer;  
+        }
+
+
+
+        .slider::-webkit-slider-runnable-track {
+            /* background: linear-gradient(to right, blue 0%, red calc(var(--value)*(100/21)), blue 100%); */
+            background: #931112;
+            height: 10px;
+           
+        }
+
+        .slider::-moz-range-track {
+            /* background: linear-gradient(to right, blue 0%, red calc(var(--value)*(100/21)), blue 100%); */
+            background: #931112;
+            height: 10px;
+            margin-left 25px;
+            margin-right: 25px;
+
+        }
+
+
+
+
+
+
+
+
+</style>
+

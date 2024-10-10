@@ -1,101 +1,89 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+
 namespace HeroesOfLegends.Businsess.Models
-
 {
-
-    public enum AtributEnum
-    {
-        [Display(Name = "Síla")]
-        strength = 0,
-        [Display(Name = "Obratnost")]
-        agility = 1,
-        [Display(Name = "Odolnost")]
-        constitution = 2,
-        [Display(Name = "Inteligence")]
-        intelligence = 3,
-        [Display(Name = "Charisma")]
-        charisma = 4
-    }
-
     public class CharacterDto
     {
 
-        //--------------SAVE TO DATABASE----------------
+        //-------------- DATABASE DATA----------------
 
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty; // character name (Cz: Jméno postavy)
-        public string Description { get; set; } = string.Empty; // charatcer description (Cz: Popis postavy)
-        public int RaceId { get; set; } // Race ID (Cz: Rasa)
-        public int ProfessionId { get; set; }
+        public string Name { get; set; } = string.Empty;        // example : "Bilbo"
+        public string Description { get; set; } = string.Empty; // example : "Lorem Ypsum"
+        public int RaceId { get; set; }                         // example : 1
 
-
-        private ValueTuple<int,int> strengt;
-        
 
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Strengt 
-        { 
-            get=> strengt; 
-            set 
-            { strengt.Item1 = value.Item1;
-              strengt.Item2 = value.Item2 == 0 ? AtributBonus[value.Item1] : value.Item2; 
-            } 
-        }        //15+2   // (Cz: Síla) 
+        public int[] Strengt { get; set; }          //example :  [9,-1]
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Agility { get; set; }        //10+0   // (Cz: Obratnost) 
+        public int[] Agility { get; set; }          //example :  [14,1]
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Constitution { get; set; }   //9-1    // (Cz: Odolnost)
+        public int[] Constitution { get; set; }     //example :  [16,2]
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Intelligence { get; set; }   //17+3   // (Cz: Inteligence)
+        public int[] Intelligence { get; set; }     //example :  [13,1]
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Charisma { get; set; }       //19+4   // (Cz: Charisma)
+        public int[] Charisma { get; set; }         //example :  [14,1]
         /// <summary>
         /// <int> Atribut </int>
         /// |
         /// <int> Bonus </int>
         /// </summary>
-        public ValueTuple<int,int> Mobility { get; set; }       //7-2    // (Cz: Pohyblivost)
+        public int[] Mobility { get; set; }         //example :  [9,-1]
+        /// <summary>
+        /// <int> Atribut </int>
+        /// |
+        /// <int> Bonus </int>
+        /// </summary>
+        public int[] Visage { get; set; }           //example :  [13,1]
+        public int Profipoints { get; set; }        //example :  23
 
+        public AtributEnum PrimaryAtribut_1 { get; set; }  // primary atribute 1 (CZ: primární atribut 1)               example : AtributEnum.strength,
+        public AtributEnum PrimaryAtribut_2 { get; set; }   // primary atribute 2 (CZ: primární atribut 2)              example : AtributEnum.agility
 
-        public AtributEnum PrimaryAtribut_1 { get; set; }  // primary atribute 1 (CZ: primární atribut 1)
-        public AtributEnum PrimaryAtribut_2 { get; set; }   // primary atribute 2 (CZ: primární atribut 2)
-
-        public int PrimarValueIndex_1 { get; set; }
-        public int PrimarValueIndex_2 { get; set; }
+        public int PrimarValueIndex_1 { get; set; } // index of primary atribute 1 (CZ: index primárního atributu 1)    example :0 (primary atribut is 11) 
+        public int PrimarValueIndex_2 { get; set; } // index of primary atribute 2 (CZ: index primárního atributu 2)    example :1 (primary atribut is 14)
 
 
         // final range atributes (CZ: finální rozsah atributů)
-        public ValueTuple<int,int> StrengthFinalRange { get; set; }
-        public ValueTuple<int,int> AgilityFinalRange { get; set; }
-        public ValueTuple<int,int> ConstitutionFinalRange { get; set; }
-        public ValueTuple<int,int> IntelligenceFinalRange { get; set; }
-        public ValueTuple<int,int> CharismaFinalRange { get; set; }
+        public int[] StrengthFinalRange { get; set; }       //example :  [6,11]
+        public int[] AgilityFinalRange { get; set; }        //example :  [11,16]
+        public int[] ConstitutionFinalRange { get; set; }   //example :  [13,18]
+        public int[] IntelligenceFinalRange { get; set; }   //example :  [10,15]
+        public int[] CharismaFinalRange { get; set; }       //example :  [8,18]
 
 
-        // ----------------------- NOT SAVE TO DATABASE-------------------
 
+
+
+
+
+
+
+
+
+        // ----------------------- NOT SAVE TO DATABASE -------------------
         [NotMapped]
         public Dictionary<int,int> AtributBonus { get; } = new Dictionary<int,int>()
         {
@@ -116,11 +104,11 @@ namespace HeroesOfLegends.Businsess.Models
             [15] = 2,
             [16] = 2,
             [17] = 3,
-            [18] = 4,
+            [18] = 3,
             [19] = 4,
-            [20] = 5,
+            [20] = 4,
             [21] = 5,
-            [22] = 6,
+            [22] = 5,
             [23] = 7,
             [24] = 7,
             [25] = 8,
@@ -131,116 +119,19 @@ namespace HeroesOfLegends.Businsess.Models
             [30] = 10,
         };
 
+        // atribute labels (CZ: názvy atributů)
         [NotMapped] public string strengthLabel = "Síla";
         [NotMapped] public string agilityLabel = "Obratnost";
         [NotMapped] public string constitutionLabel = "Odolnost";
         [NotMapped] public string intelligenceLabel = "Inteligence";
         [NotMapped] public string charismaLabel = "Charisma";
 
-        [NotMapped] private int[] primaryStrength = new[] { 11,13 };
-        [NotMapped] private int[] primaryAgility = new[] { 13,14 };
-        [NotMapped] private int[] primaryConstitution = new[] { 12,13 };
-        [NotMapped] private int[] primaryIntelligence = new[] { 13,14 };
-        [NotMapped] private int[] primaryCharisma = new[] { 12,13 };
-
-
-        public void SetAllPrimaryAtributes(RaceDto raceData)
-        {
-            SetDefaultAtributeAsRaceRange(raceData);
-            SetOnePrimaryAtribut(PrimaryAtribut_1,PrimarValueIndex_1,raceData);
-            SetOnePrimaryAtribut(PrimaryAtribut_2,PrimarValueIndex_2,raceData);
-        }
-        public Dictionary<AtributEnum,string> GetBaseAtributesDictionary()
-        {
-            Dictionary<AtributEnum,string> baseAtributesDictionary = new();
-
-            baseAtributesDictionary.Add(AtributEnum.strength,strengthLabel);
-            baseAtributesDictionary.Add(AtributEnum.agility,agilityLabel);
-            baseAtributesDictionary.Add(AtributEnum.constitution,constitutionLabel);
-            baseAtributesDictionary.Add(AtributEnum.intelligence,intelligenceLabel);
-            baseAtributesDictionary.Add(AtributEnum.charisma,charismaLabel);
-            return baseAtributesDictionary;
-        }
-        public List<int> GetValuesForPrimaryAtrubute_Selector(AtributEnum atribut)
-        {
-            List<int> rangeSelectedAtrubute = new List<int>(); //support List
-
-            switch(atribut)
-            {
-                case AtributEnum.strength: rangeSelectedAtrubute = primaryStrength.ToList(); break;
-                case AtributEnum.agility: rangeSelectedAtrubute = primaryAgility.ToList(); break;
-                case AtributEnum.constitution: rangeSelectedAtrubute = primaryConstitution.ToList(); break;
-                case AtributEnum.intelligence: rangeSelectedAtrubute = primaryIntelligence.ToList(); break;
-                case AtributEnum.charisma: rangeSelectedAtrubute = primaryCharisma.ToList(); break;
-            }
-            return rangeSelectedAtrubute.ToList();
-        }
-
-
-
-
-        private void SetOnePrimaryAtribut(AtributEnum atribute,int primaryIndex,RaceDto race)
-        {
-            switch(atribute)
-            {
-                case AtributEnum.strength: StrengthFinalRange = (primaryStrength[primaryIndex] + race.Strength_Corection, primaryStrength[primaryIndex] + race.Strength_Corection + 5); break;
-                case AtributEnum.agility: AgilityFinalRange = (primaryAgility[primaryIndex] + race.Agility_Corection, primaryAgility[primaryIndex] + race.Agility_Corection + 5); break;
-                case AtributEnum.constitution: ConstitutionFinalRange = (primaryConstitution[primaryIndex] + race.Constitution_Corection, primaryConstitution[primaryIndex] + race.Constitution_Corection + 5); break;
-                case AtributEnum.intelligence: IntelligenceFinalRange = (primaryIntelligence[primaryIndex] + race.Intelligence_Correction, primaryIntelligence[primaryIndex] + race.Intelligence_Correction + 5); break;
-                case AtributEnum.charisma: CharismaFinalRange = (primaryCharisma[primaryIndex] + race.Charisma_Correction, primaryCharisma[primaryIndex] + race.Charisma_Correction + 5); break;
-            }
-        }
-        private void SetDefaultAtributeAsRaceRange(RaceDto raceData)
-        {
-            StrengthFinalRange = (raceData.Strength, raceData.Strength_Max);
-            AgilityFinalRange = (raceData.Agility, raceData.Agility_Max);
-            ConstitutionFinalRange = (raceData.Constitution, raceData.Constitution_Max);
-            IntelligenceFinalRange = (raceData.Intelligence, raceData.Intelligence_Max);
-            CharismaFinalRange = (raceData.Charisma, raceData.Charisma_Max);
-        }
-
-
-
-
-        //------------------ DICE ROLLS----------------
-        
-        
-        
-        public int Strength_DiceRoll { get => ((StrengthFinalRange.Item2 - StrengthFinalRange.Item1) / 5); }
-        public int Agility_DiceRoll { get => ((AgilityFinalRange.Item2 - AgilityFinalRange.Item1) / 5); }
-        public int Constitution_DiceRoll { get => ((ConstitutionFinalRange.Item2 - ConstitutionFinalRange.Item1) / 5); }
-        public int Intelligence_DiceRoll { get => ((IntelligenceFinalRange.Item2 - IntelligenceFinalRange.Item1) / 5); }
-        public int Charisma_DiceRoll { get => ((CharismaFinalRange.Item2 - CharismaFinalRange.Item1) / 5); }
-
-
-        public int NumberOfDiceRolls()
-        {
-            return ((StrengthFinalRange.Item2 - StrengthFinalRange.Item1) / 5)
-            + ((AgilityFinalRange.Item2 - AgilityFinalRange.Item1) / 5)
-            + ((ConstitutionFinalRange.Item2 - ConstitutionFinalRange.Item1) / 5)
-            + ((IntelligenceFinalRange.Item2 - IntelligenceFinalRange.Item1) / 5)
-            + ((CharismaFinalRange.Item2 - CharismaFinalRange.Item1) / 5)
-            + 1  // prifipoint (Cz: profibody)
-            + 1; // appearance (Cz: vzhled)
-        } // (Cz: počet hodů kostkou 1k6)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // defined primary atributes (CZ: definované primární atributy)
+        [NotMapped] public int[] PrimaryStrength { get => [11,13]; }
+        [NotMapped] public int[] PrimaryAgility { get => [13,14]; }
+        [NotMapped] public int[] PrimaryConstitution { get => [12,13]; }
+        [NotMapped] public int[] PrimaryIntelligence { get => [13,14]; }
+        [NotMapped] public int[] PrimaryCharisma { get => [12,13]; } 
 
     }
 }

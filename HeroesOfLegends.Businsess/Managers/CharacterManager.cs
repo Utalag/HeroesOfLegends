@@ -1,37 +1,21 @@
 ﻿using AutoMapper;
 using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
+using HeroesOfLegends.Data;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Models;
+using HeroessOfLegends.Businsess.Managers;
 
 namespace HeroesOfLegends.Businsess.Managers
 {
-    public class CharacterManager : ICharacterManager
+    public class CharacterManager : GenericManager<Character,CharacterDto>, ICharacterManager
     {
+        private readonly IRaceRepository raceRepository;
         private readonly IMapper mapper;
-        private readonly ICharacterRepository characterRepository;
-        public CharacterManager(IMapper mapper,ICharacterRepository characterRepository)
+
+        public CharacterManager(HoLDbContext db,IMapper mapper) : base(db,mapper)
         {
-            this.mapper = mapper;
-            this.characterRepository = characterRepository;
         }
-
-        public ICollection<CharacterDto> GetAllData()
-        {
-            IList<Character> characters = characterRepository.All();
-            return mapper.Map<List<CharacterDto>>(characters);
-        }
-
-
-        public CharacterDto AddCharacter(CharacterDto charcterDto)
-        {
-            Character character = mapper.Map<Character>(charcterDto);
-            Character addCharacter = characterRepository.AddCharacter(character);
-            return mapper.Map<CharacterDto>(addCharacter);
-        }
-
-
-
-    }
+    };
 
 }

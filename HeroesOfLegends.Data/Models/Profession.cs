@@ -1,4 +1,4 @@
-﻿using HeroesOfLegends.Data.Interfaces;
+﻿
 
 namespace HeroesOfLegends.Models
 {
@@ -8,7 +8,7 @@ namespace HeroesOfLegends.Models
         level   // výběr dovedností podle přidělených bodů
     }
 
-    public class Profession : IProfession
+    public class Profession
     {
         public int ProfessionId { get; set; }
         public string Name { get; set; } = string.Empty;            // [Display (Name = "Základní povolání")]
@@ -22,7 +22,7 @@ namespace HeroesOfLegends.Models
         public virtual IList<Narrative> Narratives { get; set; } = new List<Narrative>();
 
 
-        public virtual IList<Character> Character { get; set; } = new List<Character>();
+
 
 
         //----------------------------------------------------------   HP   ---------------
@@ -123,11 +123,7 @@ namespace HeroesOfLegends.Models
 
         //---------------------------------------------------------  PROFIBODY  --------------
 
-        public int[] PrimaryStrength { get => new[] { 11,12,13 }; }
-        public int[] PrimaryAgility { get => new[] { 12,13,14 }; }
-        public int[] PrimaryConstitution { get => new[] { 12,13 }; }
-        public int[] PrimaryIntelligence { get => new[] { 12,13,14 }; }
-        public int[] PrimaryCharisma { get => new[] { 12,13 }; }
+
 
 
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeroesOfLegends.Data.Migrations
 {
     [DbContext(typeof(HoLDbContext))]
-    [Migration("20240821014654_ProfessionRangeAtributes")]
-    partial class ProfessionRangeAtributes
+    [Migration("20241007201031_UpdateProfession")]
+    partial class UpdateProfession
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,115 +36,86 @@ namespace HeroesOfLegends.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Ag_DiceRoll")
-                        .HasColumnType("int");
+                    b.Property<string>("Agility")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Ag_Primar")
-                        .HasColumnType("int");
+                    b.Property<string>("AgilityFinalRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Ag_bool")
-                        .HasColumnType("bit");
+                    b.Property<string>("Charisma")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Agility")
-                        .HasColumnType("int");
+                    b.Property<string>("CharismaFinalRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Cha_DiceRoll")
-                        .HasColumnType("int");
+                    b.Property<string>("Constitution")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Cha_Primar")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Cha_bool")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Charisma")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Co_DiceRoll")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Co_Primar")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Con_bool")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Constitution")
-                        .HasColumnType("int");
+                    b.Property<string>("ConstitutionFinalRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("In_DiceRoll")
-                        .HasColumnType("int");
+                    b.Property<string>("Intelligence")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("In_Primar")
-                        .HasColumnType("int");
+                    b.Property<string>("IntelligenceFinalRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Int_bool")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Intelligence")
-                        .HasColumnType("int");
+                    b.Property<string>("Mobility")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PrimarValueIndex_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrimarValueIndex_2")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrimaryAtribut_1")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PrimaryAtribut_2")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProfessionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Profipoints")
                         .HasColumnType("int");
 
                     b.Property<int>("RaceId")
                         .HasColumnType("int");
 
-                    b.Property<int>("St_DiceRoll")
-                        .HasColumnType("int");
+                    b.Property<string>("Strengt")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("St_Primar")
-                        .HasColumnType("int");
+                    b.Property<string>("StrengthFinalRange")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("St_bool")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Strength")
-                        .HasColumnType("int");
+                    b.Property<string>("Visage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProfessionId");
-
                     b.ToTable("Characters");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Ag_DiceRoll = 4,
-                            Ag_Primar = 2,
-                            Ag_bool = true,
-                            Agility = 0,
-                            Cha_DiceRoll = 4,
-                            Cha_Primar = 0,
-                            Cha_bool = false,
-                            Charisma = 0,
-                            Co_DiceRoll = 4,
-                            Co_Primar = 2,
-                            Con_bool = false,
-                            Constitution = 0,
-                            Description = "Drobný hobit pocházející z Kraje za Hvozdem.",
-                            In_DiceRoll = 4,
-                            In_Primar = 2,
-                            Int_bool = false,
-                            Intelligence = 0,
-                            Name = "Bilbo Pytlík",
-                            ProfessionId = 1,
-                            RaceId = 1,
-                            St_DiceRoll = 4,
-                            St_Primar = 2,
-                            St_bool = true,
-                            Strength = 0
-                        });
                 });
 
             modelBuilder.Entity("HeroesOfLegends.Models.Fight", b =>
@@ -274,26 +245,6 @@ namespace HeroesOfLegends.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PrimaryAgility")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimaryCharisma")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimaryConstitution")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimaryIntelligence")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PrimaryStrength")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ProfessionPoint")
                         .HasColumnType("int");
 
@@ -316,11 +267,6 @@ namespace HeroesOfLegends.Data.Migrations
                             ManaRengerBool = false,
                             ManaWizardBool = false,
                             Name = "Válečník",
-                            PrimaryAgility = "[12,13,14]",
-                            PrimaryCharisma = "[12,13]",
-                            PrimaryConstitution = "[12,13]",
-                            PrimaryIntelligence = "[12,13,14]",
-                            PrimaryStrength = "[11,12,13]",
                             ProfessionPoint = 18
                         },
                         new
@@ -337,11 +283,6 @@ namespace HeroesOfLegends.Data.Migrations
                             ManaRengerBool = true,
                             ManaWizardBool = false,
                             Name = "Hraničář",
-                            PrimaryAgility = "[12,13,14]",
-                            PrimaryCharisma = "[12,13]",
-                            PrimaryConstitution = "[12,13]",
-                            PrimaryIntelligence = "[12,13,14]",
-                            PrimaryStrength = "[11,12,13]",
                             ProfessionPoint = 21
                         },
                         new
@@ -358,11 +299,6 @@ namespace HeroesOfLegends.Data.Migrations
                             ManaRengerBool = false,
                             ManaWizardBool = false,
                             Name = "Alchymista",
-                            PrimaryAgility = "[12,13,14]",
-                            PrimaryCharisma = "[12,13]",
-                            PrimaryConstitution = "[12,13]",
-                            PrimaryIntelligence = "[12,13,14]",
-                            PrimaryStrength = "[11,12,13]",
                             ProfessionPoint = 23
                         },
                         new
@@ -379,11 +315,6 @@ namespace HeroesOfLegends.Data.Migrations
                             ManaRengerBool = false,
                             ManaWizardBool = true,
                             Name = "Kouzelník",
-                            PrimaryAgility = "[12,13,14]",
-                            PrimaryCharisma = "[12,13]",
-                            PrimaryConstitution = "[12,13]",
-                            PrimaryIntelligence = "[12,13,14]",
-                            PrimaryStrength = "[11,12,13]",
                             ProfessionPoint = 19
                         },
                         new
@@ -400,11 +331,6 @@ namespace HeroesOfLegends.Data.Migrations
                             ManaRengerBool = false,
                             ManaWizardBool = false,
                             Name = "Zloděj",
-                            PrimaryAgility = "[12,13,14]",
-                            PrimaryCharisma = "[12,13]",
-                            PrimaryConstitution = "[12,13]",
-                            PrimaryIntelligence = "[12,13,14]",
-                            PrimaryStrength = "[11,12,13]",
                             ProfessionPoint = 20
                         });
                 });
@@ -1026,23 +952,12 @@ namespace HeroesOfLegends.Data.Migrations
                     b.ToTable("RaceWorld");
                 });
 
-            modelBuilder.Entity("HeroesOfLegends.Models.Character", b =>
-                {
-                    b.HasOne("HeroesOfLegends.Models.Profession", "Professions")
-                        .WithMany("Character")
-                        .HasForeignKey("ProfessionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Professions");
-                });
-
             modelBuilder.Entity("HeroesOfLegends.Models.Narrative", b =>
                 {
                     b.HasOne("HeroesOfLegends.Models.World", "World")
                         .WithMany("Narratives")
                         .HasForeignKey("WorldId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("World");
@@ -1053,7 +968,7 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1062,7 +977,7 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1071,7 +986,7 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1080,13 +995,13 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1095,7 +1010,7 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1104,13 +1019,13 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("HeroesOfLegends.Models.Narrative", null)
                         .WithMany()
                         .HasForeignKey("NarrativesId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HeroesOfLegends.Models.Profession", null)
                         .WithMany()
                         .HasForeignKey("ProfessionsProfessionId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1119,19 +1034,14 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("HeroesOfLegends.Models.Race", null)
                         .WithMany()
                         .HasForeignKey("RacesRaceId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HeroesOfLegends.Models.World", null)
                         .WithMany()
                         .HasForeignKey("WorldsId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HeroesOfLegends.Models.Profession", b =>
-                {
-                    b.Navigation("Character");
                 });
 
             modelBuilder.Entity("HeroesOfLegends.Models.World", b =>

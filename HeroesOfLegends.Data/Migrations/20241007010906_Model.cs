@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HeroesOfLegends.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Start : Migration
+    public partial class Model : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -262,26 +262,23 @@ namespace HeroesOfLegends.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RaceId = table.Column<int>(type: "int", nullable: false),
                     ProfessionId = table.Column<int>(type: "int", nullable: false),
-                    Strength = table.Column<int>(type: "int", nullable: false),
-                    Agility = table.Column<int>(type: "int", nullable: false),
-                    Constitution = table.Column<int>(type: "int", nullable: false),
-                    Intelligence = table.Column<int>(type: "int", nullable: false),
-                    Charisma = table.Column<int>(type: "int", nullable: false),
-                    St_DiceRoll = table.Column<int>(type: "int", nullable: false),
-                    Ag_DiceRoll = table.Column<int>(type: "int", nullable: false),
-                    Co_DiceRoll = table.Column<int>(type: "int", nullable: false),
-                    In_DiceRoll = table.Column<int>(type: "int", nullable: false),
-                    Cha_DiceRoll = table.Column<int>(type: "int", nullable: false),
-                    St_Primar = table.Column<int>(type: "int", nullable: false),
-                    Ag_Primar = table.Column<int>(type: "int", nullable: false),
-                    Co_Primar = table.Column<int>(type: "int", nullable: false),
-                    In_Primar = table.Column<int>(type: "int", nullable: false),
-                    Cha_Primar = table.Column<int>(type: "int", nullable: false),
-                    St_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Ag_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Int_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Cha_bool = table.Column<bool>(type: "bit", nullable: false),
-                    Con_bool = table.Column<bool>(type: "bit", nullable: false)
+                    Strengt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agility = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Constitution = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Intelligence = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Charisma = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mobility = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Visage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profipoints = table.Column<int>(type: "int", nullable: false),
+                    PrimaryAtribut_1 = table.Column<int>(type: "int", nullable: false),
+                    PrimaryAtribut_2 = table.Column<int>(type: "int", nullable: false),
+                    PrimarValueIndex_1 = table.Column<int>(type: "int", nullable: false),
+                    PrimarValueIndex_2 = table.Column<int>(type: "int", nullable: false),
+                    StrengthFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgilityFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConstitutionFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IntelligenceFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CharismaFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -400,11 +397,6 @@ namespace HeroesOfLegends.Data.Migrations
                     { 2, "Postapo" },
                     { 3, "Reálný svět" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "Characters",
-                columns: new[] { "Id", "Ag_DiceRoll", "Ag_Primar", "Ag_bool", "Agility", "Cha_DiceRoll", "Cha_Primar", "Cha_bool", "Charisma", "Co_DiceRoll", "Co_Primar", "Con_bool", "Constitution", "Description", "In_DiceRoll", "In_Primar", "Int_bool", "Intelligence", "Name", "ProfessionId", "RaceId", "St_DiceRoll", "St_Primar", "St_bool", "Strength" },
-                values: new object[] { 1, 4, 2, true, 0, 4, 0, false, 0, 4, 2, false, 0, "Drobný hobit pocházející z Kraje za Hvozdem.", 4, 2, false, 0, "Bilbo Pytlík", 1, 1, 4, 2, true, 0 });
 
             migrationBuilder.InsertData(
                 table: "Naratives",

@@ -1,8 +1,8 @@
-﻿
+﻿@using HeroesOfLegends.Businsess.Models
 
 
-        <Card>
-            <img class="rounded-top" src="/images/PlaceholderImg.png" alt="placeholder" />
+<Card>
+            @* <img class="rounded-top" src="/images/PlaceholderImg.png" alt="placeholder" /> *@
 
             <CardBody>
                 <CardTitle Class="text-center">@RaceData.RaceName (@RaceData.RaceId)</CardTitle>
@@ -10,58 +10,81 @@
                 <CardSubTitle Class="mb-2 text-muted"></CardSubTitle>
 
                 <CardText>
-                    <table class="table-responsive w-100 text-center">
-                        <thead >
-                            <tr>
-                                <th class="text-start">Atributy</th>
-                                <th><Tooltip Title="Minimální hodnota v základním rozsahu" Placement="TooltipPlacement.Top">Min</Tooltip></th>
-                                <th></th>
-                                <th><Tooltip Title="Maximální hodnota v základním rozsahu" Placement="TooltipPlacement.Top">Max</Tooltip></th>
-                                <th><Tooltip Title="Oprava hodnoty pro rozšířený rozsah" Placement="TooltipPlacement.Top">oprava</Tooltip></th>
-                                <th><Tooltip Title="Počet hodů kostkou" Placement="TooltipPlacement.Top">n-k6</Tooltip></th>
-                            </tr>
-                        </thead>
-                        <tr>
-                            <td class="text-start">Sila:</td>
-                            <td>@RaceData.Strength</td>
-                            <td>-</td>
-                            <td>@RaceData.Strength_Max</td>
-                            <td>@RaceData.Strength_Corection</td>
-                            <td>@RaceData.Strength_DiceRoll</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Obratnost:</td>
-                            <td>@RaceData.Agility</td>
-                            <td>-</td>
-                            <td>@RaceData.Agility_Max</td>
-                            <td>@RaceData.Agility_Corection</td>
-                            <td>@RaceData.Dexterity_DiceRoll</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Odolnost:</td>
-                            <td>@RaceData.Constitution</td>
-                            <td>-</td>
-                            <td>@RaceData.Constitution_Max</td>
-                            <td>@RaceData.Constitution_Corection</td>
-                            <td>@RaceData.Constitution_DiceRoll</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Inteligence:</td>
-                            <td>@RaceData.Intelligence</td>
-                            <td>-</td>
-                            <td>@RaceData.Intelligence_Max</td>
-                            <td>@RaceData.Intelligence_Correction</td>
-                            <td>@RaceData.Intelligence_DiceRoll</td>
-                        </tr>
-                        <tr>
-                            <td class="text-start">Charisma:</td>
-                            <td>@RaceData.Charisma</td>
-                            <td>-</td>
-                            <td>@RaceData.Charisma_Max</td>
-                            <td>@RaceData.Charisma_Correction</td>
-                            <td>@RaceData.Charisma_DiceRoll</td>
-                        </tr>
-                    </table>
+            <table class="table-responsive w-100 text-center">
+                <thead>
+                    <tr>
+                        <th><Tooltip Title="Rozsah dovedností" Placement="TooltipPlacement.Top">Rozsah</Tooltip></th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>
+                        <BitSlider Label="@StaticData.StrengthLabel" IsRanged="true" 
+                                   Step="1" Min="1" Max="21"
+                                   RangeValue="@(new() { Lower = @RaceData.Strength, Upper = @RaceData.Strength_Max })"
+                                   AriaValueText="@(value => $"Hodnota je {value}")"
+                                   ShowValue="true"
+                                   Styles="@(new(){ Label = "font-weight: 900; font-size: 1.25rem;"})"
+                                   />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <BitSlider Label=@StaticData.AgilityLabel IsRanged="true" IsEnabled="@isEnamled"
+                                   Step="1" Min="1" Max="21"
+                                   RangeValue="@(new() { Lower = @RaceData.Agility,Upper =  @RaceData.Agility_Max} )"
+                        AriaValueText="@(value => $"Hodnota je {value}")" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <BitSlider Label=@StaticData.ConstitutionLabel IsRanged="true" IsEnabled="@isEnamled"
+                                   Step="1" Min="1" Max="21"
+                                   RangeValue="@(new() { Lower = @RaceData.Constitution,Upper =  @RaceData.Constitution_Max} )"
+                                   AriaValueText="@(value => $"Hodnota je {value}")" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <BitSlider Label=@StaticData.IntelligenceLabel IsRanged="true" IsEnabled="@isEnamled"
+                                   Step="1" Min="1" Max="21"
+                                   RangeValue="@(new() { Lower = @RaceData.Intelligence,Upper =  @RaceData.Intelligence_Max} )"
+                                   AriaValueText="@(value => $"Hodnota je {value}")" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <BitSlider Label=@StaticData.CharismaLabel IsRanged="true" IsEnabled="@isEnamled"
+                                   Step="1" Min="1" Max="21"
+                                   RangeValue="@(new() { Lower = @RaceData.Charisma,Upper =  @RaceData.Charisma_Max} )" 
+                                   AriaValueText="@(value => $"Hodnota je {value}")" />
+                    </td>
+                </tr>
+            </table>
+
+            <hr />
+
+            <table class="table-responsive w-100 text-center">
+                
+                <thead> 
+                    <tr>
+                        <th>@StaticData.StrengthLabel</th>
+                        <th>@StaticData.AgilityLabel</th>
+                        <th>@StaticData.ConstitutionLabel</th>
+                        <th>@StaticData.IntelligenceLabel</th>
+                        <th>@StaticData.CharismaLabel</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>@RaceData.Strength_Corection</td>
+                    <td>@RaceData.Agility_Corection</td>
+                    <td>@RaceData.Constitution_Corection</td>
+                    <td>@RaceData.Intelligence_Correction</td>
+                    <td>@RaceData.Charisma_Correction</td>
+                </tr>
+                </tbody>
+            </table>
 
                         <hr/>
 
@@ -79,13 +102,47 @@
                             <td>@RaceData.SpecialAbilities</td> 
                         </tr>
                     </table>
+            <hr />
+            <BitScrollablePane Style="height:10rem; padding: 0 0.25rem; border: 1px solid #999;" Class="pane">
+                @RaceData.RaceDescription
+            </BitScrollablePane>
+
+            
+
                 </CardText>
-                <Button Color="ButtonColor.Primary" To="#" Type="ButtonType.Link">Go somewhere</Button>
+
+                <CardFooter>
+                    <Button Color="ButtonColor.Primary" To="#" Type="ButtonType.Link">Nová rasa</Button>
+            <Button Color="ButtonColor.Primary" @onclick=CardEnabled Type="ButtonType.Button">@editLabel</Button>
+                    <Button Color="ButtonColor.Primary" To="#" Type="ButtonType.Link">Smaž</Button>
+                </CardFooter>
+
+        
+                
             </CardBody>
         </Card>
 
+<BitButtonGroup Variant="BitVariant.Text" Items="disabledItems" />
+
+
 @code {
 
-    [Parameter] public RaceDto? RaceData { get; set; }
+    [Parameter] public RaceDto RaceData { get; set; }
 
+    private bool isEnamled = false;
+    private string editLabel => isEnamled ? "Ulož" : "Uprav";
+    
+    private List<BitButtonGroupItem> disabledItems = new()
+     {
+         new() { Text = "Add",  },
+         new() { Text = "Edit", IsEnabled = false },
+         new() { Text = "Delete", }
+     };
+
+
+    private void CardEnabled(MouseEventArgs e)
+    {
+       isEnamled = !isEnamled;
+    }
 }
+

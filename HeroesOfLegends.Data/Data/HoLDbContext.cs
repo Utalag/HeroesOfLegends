@@ -30,29 +30,19 @@ namespace HeroesOfLegends.Data
             //      .WithMany(m=>m.Races)
             //      .UsingEntity(mg=>mg.ToTable(nameof(World)));
 
-
-
-
-
-
-
-
-
-
-
             builder.Entity<Race>().HasData(new Race().Initial());
             builder.Entity<World>().HasData(new World().Initial());
             builder.Entity<Narrative>().HasData(new Narrative().Initial());
             builder.Entity<Profession>().HasData(new Profession().Initial());
-            builder.Entity<Character>().HasData(new Character().Initial());
+            //builder.Entity<Character>().HasData(new Character().Initial());
 
 
 
-            IEnumerable<IMutableForeignKey> cascadeFKs = builder.Model.GetEntityTypes()
-                .SelectMany(type => type.GetForeignKeys())
-                .Where(foreignKey => !foreignKey.IsOwnership && foreignKey.DeleteBehavior == DeleteBehavior.Cascade);
-            foreach(IMutableForeignKey foreignKey in cascadeFKs)
-                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            //IEnumerable<IMutableForeignKey> cascadeFKs = builder.Model.GetEntityTypes()
+            //    .SelectMany(type => type.GetForeignKeys())
+            //    .Where(foreignKey => !foreignKey.IsOwnership && foreignKey.DeleteBehavior == DeleteBehavior.Cascade);
+            //foreach(IMutableForeignKey foreignKey in cascadeFKs)
+            //    foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
         }
 
 

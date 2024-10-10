@@ -31,18 +31,24 @@ namespace HeroesOfLegends.Businsess.Models
 
             //CreateMap<NarrativeDto,Narrative>();
 
-            CreateMap<Character,CharacterDto>();
+            //CreateMap<Character,CharacterDto>()
+            // .ForMember(dest => dest.Strengt,opt => opt.MapFrom(src => new TupleValue<int,int>(src.Strengt[0],src.Strengt[1])))
+            // .ForMember(dest => dest.Agility,opt => opt.MapFrom(src => new TupleValue<int,int>(src.Agility[0],src.Agility[1])));
+
+
             CreateMap<CharacterDto,Character>();
-            //.ForMember(m=>m.ProfessionIds,opt=>opt.MapFrom(m=>m.Profession.ProfessionId));
+            CreateMap<Character,CharacterDto>();
+                
+
 
 
             // Z Model do Dto
-
             CreateMap<Profession,ProfessionDto>();
             CreateMap<ProfessionDto,Profession>();
-            //    .ForMember(m=>m.NarrativeName,x=>x.MapFrom(x=>x.NarrativId));
 
 
+            CreateMap<Tuple<int,int>,int[]>()
+            .ConvertUsing(tuple => new int[] { tuple.Item1,tuple.Item2 });
 
         }
 

@@ -1,0 +1,82 @@
+﻿
+
+
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+    .header h1 {
+        margin: 0;
+    }
+
+.profile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+    .profile div {
+        flex: 1;
+    }
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+    .tabs div {
+        padding: 10px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+    .content .options {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .content .text {
+        flex: 2;
+        margin-right: 10px;
+    }
+
+    .content .lorem {
+        flex: 3;
+    }
+
+.sections {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .sections .section {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+        .sections .section:last-child {
+            margin-right: 0;
+        }
+
+.section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.section ul 
+}

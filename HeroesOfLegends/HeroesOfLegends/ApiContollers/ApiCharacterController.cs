@@ -42,7 +42,7 @@ namespace CharacterBook.Controllers.Api
         [HttpPost]
         public void Post([FromBody] CharacterDto value)
         {
-            characterManager.AddCharacter(value);
+            characterManager.AddData(value);
         }
 
         //// PUT api/<CharacterController>/5

@@ -16,7 +16,7 @@
 
         <!--Selected value for atribut-->
         <select @bind="Selector1_Value" name="PrimarRange1">
-            @foreach(var item in CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1))
+            @foreach(var item in GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1))
             {
                 <option value="@item">@item - @(item+5)</option>
             }
@@ -35,7 +35,7 @@
         </select>
         <!--Selected value for atribut-->
         <select @bind="Selector2_Value" name="PrimarRange2">
-            @foreach(var item in CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2))
+            @foreach(var item in GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2))
             {
                 <option value="@item">@item - @(item + 5)</option>
             }
@@ -58,15 +58,22 @@
     //                     .Name ?? enumValue.ToString();
     // }
 
+    
+
+
+    // [Parameter]
+    // public CharacterDto CharacterData { get; set; }
 
     [Parameter]
-    public CharacterDto CharacterData { get; set; }
+    public NewCharacter.CharacterModel CharacterData { get; set; }
+
+    private CharacterDto characterDto = new CharacterDto();
     
     [Parameter]
-    public RaceDto RaceData { get; set; }  // not implemented
+    public NewCharacter NewCharacter { get; set; }
 
     [Parameter]
-    public EventCallback<CharacterDto> GetChatacterData { get; set; }
+    public EventCallback<NewCharacter.CharacterModel> GetChatacterData { get; set; }
 
 
     // set selected atributes from the parent component (CZ: nastavení vybraných atributů z rodičovské komponenty)
@@ -108,12 +115,39 @@
             // default value index for selector (CZ: výchozí hodnota indexu pro selektor)
             CharacterData.PrimarValueIndex_2 = 0;
             }
-        Selector1_Value = CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1).ElementAt(CharacterData.PrimarValueIndex_1);
-        Selector2_Value = CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ElementAt(CharacterData.PrimarValueIndex_2);
-        selector1Dictionary = new(CharacterData.GetBaseAtributesDictionary());
-        selector2Dictionary = new(CharacterData.GetBaseAtributesDictionary());
+        Selector1_Value = GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1).ElementAt(CharacterData.PrimarValueIndex_1);
+        Selector2_Value = GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ElementAt(CharacterData.PrimarValueIndex_2);
+        selector1Dictionary = new(GetBaseAtributesDictionary());
+        selector2Dictionary = new(GetBaseAtributesDictionary());
         selector2Dictionary.Remove(CharacterData.PrimaryAtribut_1);
         GetChatacterData.InvokeAsync(CharacterData);
+    }
+
+    public List<int> GetValuesForPrimaryAtrubute_Selector(AtributEnum atribut)
+    {
+        List<int> rangeSelectedAtrubute = new List<int>(); //support List
+
+        switch(atribut)
+        {
+            case AtributEnum.strength: rangeSelectedAtrubute = characterDto.PrimaryStrength.ToList(); break;
+            case AtributEnum.agility: rangeSelectedAtrubute = characterDto.PrimaryAgility.ToList(); break;
+            case AtributEnum.constitution: rangeSelectedAtrubute = characterDto.PrimaryConstitution.ToList(); break;
+            case AtributEnum.intelligence: rangeSelectedAtrubute = characterDto.PrimaryIntelligence.ToList(); break;
+            case AtributEnum.charisma: rangeSelectedAtrubute = characterDto.PrimaryCharisma.ToList(); break;
+        }
+        return rangeSelectedAtrubute.ToList();
+    }
+
+    public Dictionary<AtributEnum,string> GetBaseAtributesDictionary()
+    {
+        Dictionary<AtributEnum,string> baseAtributesDictionary = new();
+
+        baseAtributesDictionary.Add(AtributEnum.strength,characterDto.strengthLabel);
+        baseAtributesDictionary.Add(AtributEnum.agility,characterDto.agilityLabel);
+        baseAtributesDictionary.Add(AtributEnum.constitution,characterDto.constitutionLabel);
+        baseAtributesDictionary.Add(AtributEnum.intelligence,characterDto.intelligenceLabel);
+        baseAtributesDictionary.Add(AtributEnum.charisma,characterDto.charismaLabel);
+        return baseAtributesDictionary;
     }
 
 
@@ -135,7 +169,7 @@
         selector2Dictionary.Clear(); // clear the selector2 (CZ: vyčištění selektoru2
         index1_Atribut = selector1Dictionary.ToList().FindIndex(x => x.Key == input); // get the index of the selected value (CZ: získání indexu vybrané hodnoty)
 
-        selector2Dictionary = new(CharacterData.GetBaseAtributesDictionary()); //copi Dictionary
+        selector2Dictionary = new(GetBaseAtributesDictionary()); //copi Dictionary
         selector2Dictionary.Remove(input);  // remove 
 
         CharacterData.PrimaryAtribut_2 = selector2Dictionary.ElementAt(index2_Atribut).Key; //selects the value according to the original index from selector2 (CZ: vybere hodnotu podle původního indexu ze selektor2)
@@ -156,7 +190,7 @@
     private void Selector2Atribut(AtributEnum input)
     {
         index2_Atribut = selector2Dictionary.ToList().FindIndex(x => x.Key == input); // get the index of the selected value (CZ: získání indexu vybrané hodnoty)
-        Selector2_Value = CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ElementAt(CharacterData.PrimarValueIndex_2); // set the value from selector2 (CZ: nastavení hodnoty ze selektor2)                                                                                                                                         // GetAtributeSendParent.InvokeAsync(selectedAtributesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě)                                                                                                                                      // GetAtributeValueSendParent.InvokeAsync(selectedValuesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě))
+        Selector2_Value = GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ElementAt(CharacterData.PrimarValueIndex_2); // set the value from selector2 (CZ: nastavení hodnoty ze selektor2)                                                                                                                                         // GetAtributeSendParent.InvokeAsync(selectedAtributesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě)                                                                                                                                      // GetAtributeValueSendParent.InvokeAsync(selectedValuesForSendParent); // sending the current values ​​to the parent component (CZ: odeslání aktuálních hodnot rodičovské komponentě))
         GetChatacterData.InvokeAsync(CharacterData);
     }
 
@@ -173,13 +207,13 @@
     //set index for selector1 (CZ: nastavení indexu pro selektor1)
     private void Selector1RangeIndex(int input)
     {
-        CharacterData.PrimarValueIndex_1 = CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1).ToList().FindIndex(x => x == input);
+        CharacterData.PrimarValueIndex_1 = GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_1).ToList().FindIndex(x => x == input);
     }
 
     //set index for selector2 (CZ: nastavení indexu pro selektor2)
     private void Selector2RangeIndex(int input)
     {
-        CharacterData.PrimarValueIndex_2 = CharacterData.GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ToList().FindIndex(x => x == input);
+        CharacterData.PrimarValueIndex_2 = GetValuesForPrimaryAtrubute_Selector(CharacterData.PrimaryAtribut_2).ToList().FindIndex(x => x == input);
     }
 
     
