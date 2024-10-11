@@ -3,7 +3,6 @@ using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Models;
 using HeroesOfLegends.Database;
-using HeroessOfLegends.Businsess.Managers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

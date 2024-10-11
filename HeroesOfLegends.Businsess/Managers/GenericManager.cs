@@ -1,23 +1,26 @@
 ﻿using AutoMapper;
 using HeroesOfLegends.Businsess.Interfaces;
-using HeroesOfLegends.Data;
 using HeroesOfLegends.Data.Repositories;
-using Microsoft.Extensions.Logging;
 using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
-namespace HeroessOfLegends.Businsess.Managers
+namespace HeroesOfLegends.Businsess.Managers
 {
     public abstract class GenericManager<T, TDto> : GenericCRUD<T>, IGenericManager<TDto>
         where T : class
         where TDto : class
     {
         protected readonly IMapper mapper;
-        protected readonly ILogger<GenericManager<T,TDto>> logger;
+        protected readonly ILogger<DbSet<T>> logger;
 
         protected GenericManager(HoLDbContext db,ILogger<DbSet<T>> logger) : base(db,logger)
         {
+            this.logger = logger;
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<T,TDto>());
+            mapper = config.CreateMapper();
         }
+
 
         /// <summary>
         /// konstruktor
