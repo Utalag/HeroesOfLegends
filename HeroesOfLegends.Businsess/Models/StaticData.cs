@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HeroesOfLegends.Businsess.Models
 {
@@ -21,6 +15,19 @@ namespace HeroesOfLegends.Businsess.Models
         [Display(Name = "Charisma")]
         charisma = 4
     }
+
+    //public enum SkillClassEnum
+    //{
+        
+    //    combatSkill = 0,
+
+    //    magicSkill = 1,
+
+    //    huntingSkill = 2,
+
+    //    alchemySkill = 3,
+        
+    
 
     public static class StaticData
     {

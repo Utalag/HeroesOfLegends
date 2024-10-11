@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace HeroesOfLegends.Businsess.Models
@@ -131,7 +130,7 @@ namespace HeroesOfLegends.Businsess.Models
         [NotMapped] public int[] PrimaryAgility { get => [13,14]; }
         [NotMapped] public int[] PrimaryConstitution { get => [12,13]; }
         [NotMapped] public int[] PrimaryIntelligence { get => [13,14]; }
-        [NotMapped] public int[] PrimaryCharisma { get => [12,13]; } 
+        [NotMapped] public int[] PrimaryCharisma { get => [12,13]; }
 
     }
 }

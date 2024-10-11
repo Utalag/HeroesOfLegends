@@ -1,42 +1,43 @@
-﻿
-using HeroesOfLegends.Data.Interfaces;
+﻿using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System.Reflection.Metadata.Ecma335;
+using Microsoft.Extensions.Logging;
 
 namespace HeroesOfLegends.Data.Repositories
 {
-	public abstract class GenericCRUD<TEntity, Databaze> : IGenericCRUD<TEntity>
+    public abstract class GenericCRUD<TEntity> : IGenericCRUD<TEntity>
 
-		where Databaze : DbContext
-		where TEntity : class
-	{
-		protected readonly Databaze db;
-		protected readonly DbSet<TEntity> dbSet;
+        where TEntity : class
+    {
+        protected readonly HoLDbContext db;
+        protected readonly DbSet<TEntity> dbSet;
+        protected readonly ILogger<DbSet<TEntity>> logger;
 
-		public GenericCRUD(Databaze db)
-		{
-			this.db = db;
-			dbSet = db.Set<TEntity>();
-		}
+        public GenericCRUD(HoLDbContext db,ILogger<DbSet<TEntity>> logger)
+        {
+            this.db = db;
+            dbSet = db.Set<TEntity>();
+            this.logger = logger;
+        }
 
-		/// <summary>
-		/// Vložení položky do databáze
-		/// </summary>
-		/// <param name="entity">položka</param>
-		/// <returns></returns>
-		public TEntity  Insert(TEntity entity)
-		{
-			EntityEntry<TEntity> entityEntry = dbSet.Add(entity);
-			db.SaveChanges();
-			return entityEntry.Entity;
-		}
+        /// <summary>
+        /// Vložení položky do databáze
+        /// </summary>
+        /// <param name="entity">položka</param>
+        /// <returns></returns>
+        public TEntity Insert(TEntity entity)
+        {
+            EntityEntry<TEntity> entityEntry = dbSet.Add(entity);
+            db.SaveChanges();
+            return entityEntry.Entity;
+        }
 
-		/// <summary>
-		/// async variant of Insert method 
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// async variant of Insert method 
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task<TEntity> InsertAsync(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = await dbSet.AddAsync(entity);
@@ -53,23 +54,23 @@ namespace HeroesOfLegends.Data.Repositories
         /// </summary>
         /// <param name="id"></param>
         public virtual void Delete(int id)
-		{
-			TEntity? entity = dbSet.Find(id);
+        {
+            TEntity? entity = dbSet.Find(id);
 
-			if(entity is null)
-				return;
+            if(entity is null)
+                return;
 
-			try
-			{
-				dbSet.Remove(entity);
-				db.SaveChanges();
-			}
-			catch
-			{
-				db.Entry(entity).State = EntityState.Unchanged;
-				throw;
-			}
-		}
+            try
+            {
+                dbSet.Remove(entity);
+                db.SaveChanges();
+            }
+            catch
+            {
+                db.Entry(entity).State = EntityState.Unchanged;
+                throw;
+            }
+        }
 
         /// <summary>
         /// Async variant method for deleting entity by id
@@ -84,8 +85,8 @@ namespace HeroesOfLegends.Data.Repositories
 
             try
             {
-               dbSet.Remove(entity);
-               await db.SaveChangesAsync();
+                dbSet.Remove(entity);
+                await db.SaveChangesAsync();
             }
             catch
             {
@@ -103,9 +104,9 @@ namespace HeroesOfLegends.Data.Repositories
         /// <param name="id"></param>
         /// <returns>Entity with id</returns>
         public TEntity? FindById(int id)
-		{
-			return dbSet.Find(id);
-		}
+        {
+            return dbSet.Find(id);
+        }
 
         /// <summary>
         /// Async variant Finf entity by id
@@ -126,9 +127,9 @@ namespace HeroesOfLegends.Data.Repositories
         /// <param name="predicate">selected parameter</param>
         /// <returns>List result</returns>
         public IList<TEntity> FindByParameter(Func<TEntity,bool> predicate)
-		{
-			return dbSet.Where(predicate).ToList();
-		}
+        {
+            return dbSet.Where(predicate).ToList();
+        }
 
 
         /// <summary>
@@ -151,14 +152,14 @@ namespace HeroesOfLegends.Data.Repositories
         /// <returns>IList</returns>
         public IList<TEntity> All() => dbSet.ToList();
 
-		/// <summary>
-		///Async variant Lists all items
-		/// </summary>
-		/// <returns>IList</returns>
-		public async Task<IList<TEntity>> AllAsync() 
-		{
-		 return await dbSet.ToListAsync();
-		}
+        /// <summary>
+        ///Async variant Lists all items
+        /// </summary>
+        /// <returns>IList</returns>
+        public async Task<IList<TEntity>> AllAsync()
+        {
+            return await dbSet.ToListAsync();
+        }
 
 
 
@@ -171,12 +172,12 @@ namespace HeroesOfLegends.Data.Repositories
         /// <param name="pageSize">x items on the page</param>
         /// <returns>IList</returns>
         public IList<TEntity> Page(int page,int pageSize)
-		{
-			return dbSet
-					.Skip(page * pageSize)
-					.Take(pageSize)
-					.ToList();
-		}
+        {
+            return dbSet
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+        }
 
         /// <summary>
         /// Async variant Displays x items on the n page
@@ -186,7 +187,7 @@ namespace HeroesOfLegends.Data.Repositories
         /// <returns>IList</returns>
         public async Task<IList<TEntity>> PageAsync(int page,int pageSize)
         {
-            return await Task.Run(()=> dbSet
+            return await Task.Run(() => dbSet
                     .Skip(page * pageSize)
                     .Take(pageSize)
                     .ToList());
@@ -204,13 +205,13 @@ namespace HeroesOfLegends.Data.Repositories
         /// <param name="search">serch term</param>
         /// <returns></returns>
         public IList<TEntity> PageSelect(int page,int pageSize,Func<TEntity,bool> search)
-		{
-			return dbSet
-					.Where(search)
-					.Skip(page * pageSize)
-					.Take(pageSize)
-					.ToList();
-		}
+        {
+            return dbSet
+                    .Where(search)
+                    .Skip(page * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+        }
 
         /// <summary>
         /// Async variant Displays x items on the nth page according to the criteria
@@ -232,11 +233,11 @@ namespace HeroesOfLegends.Data.Repositories
 
 
         public TEntity Update(TEntity entity)
-		{
-			EntityEntry<TEntity> entityEntry = dbSet.Update(entity);
-			db.SaveChanges();
-			return entityEntry.Entity;
-		}
+        {
+            EntityEntry<TEntity> entityEntry = dbSet.Update(entity);
+            db.SaveChanges();
+            return entityEntry.Entity;
+        }
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = dbSet.Update(entity);
@@ -252,12 +253,12 @@ namespace HeroesOfLegends.Data.Repositories
         /// <param name="id"></param>
         /// <returns>true/false</returns>
         public bool ExistsWithId(int id)
-		{
-			TEntity? entity = dbSet.Find(id);
-			if(entity is not null)
-				db.Entry(entity).State = EntityState.Detached;
-			return entity is not null;
-		}
+        {
+            TEntity? entity = dbSet.Find(id);
+            if(entity is not null)
+                db.Entry(entity).State = EntityState.Detached;
+            return entity is not null;
+        }
 
         /// <summary>
         /// Async variant ID existence check
@@ -272,5 +273,5 @@ namespace HeroesOfLegends.Data.Repositories
             return entity is not null;
         }
 
-	}
+    }
 }

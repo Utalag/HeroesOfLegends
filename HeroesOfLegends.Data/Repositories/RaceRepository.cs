@@ -1,11 +1,14 @@
 ﻿using HeroesOfLegends.Data.Interfaces;
-using HeroesOfLegends.Models;
+using HeroesOfLegends.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using HeroesOfLegends.Database;
 
 namespace HeroesOfLegends.Data.Repositories
 {
-    public class RaceRepository : GenericCRUD<Race,HoLDbContext>, IRaceRepository
+    public class RaceRepository : GenericCRUD<Race>, IRaceRepository
     {
-        public RaceRepository(HoLDbContext db) : base(db)
+        public RaceRepository(HoLDbContext db,ILogger<DbSet<Race>> logger) : base(db,logger)
         {
         }
 

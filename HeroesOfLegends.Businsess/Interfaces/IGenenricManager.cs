@@ -1,4 +1,4 @@
-﻿namespace HeroessOfLegends.Businsess.Intefaces
+﻿namespace HeroesOfLegends.Businsess.Interfaces
 {
     public interface IGenericManager<TDto>
         where TDto : class

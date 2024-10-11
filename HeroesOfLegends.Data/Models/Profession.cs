@@ -1,6 +1,6 @@
 ﻿
 
-namespace HeroesOfLegends.Models
+namespace HeroesOfLegends.Data.Models
 {
     public enum GenerateSystem
     {

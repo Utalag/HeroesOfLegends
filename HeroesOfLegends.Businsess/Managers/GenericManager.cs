@@ -1,20 +1,23 @@
 ﻿using AutoMapper;
+using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Data;
 using HeroesOfLegends.Data.Repositories;
-using HeroessOfLegends.Businsess.Intefaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using HeroesOfLegends.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace HeroessOfLegends.Businsess.Managers
 {
-    public abstract class GenericManager<T, TDto> : GenericCRUD<T,HoLDbContext>, IGenericManager<TDto>
+    public abstract class GenericManager<T, TDto> : GenericCRUD<T>, IGenericManager<TDto>
         where T : class
         where TDto : class
     {
         protected readonly IMapper mapper;
+        protected readonly ILogger<GenericManager<T,TDto>> logger;
+
+        protected GenericManager(HoLDbContext db,ILogger<DbSet<T>> logger) : base(db,logger)
+        {
+        }
 
         /// <summary>
         /// konstruktor
@@ -22,10 +25,7 @@ namespace HeroessOfLegends.Businsess.Managers
         /// <param name="db">DbContext</param>
         /// <param name="mapper">mapper</param>
         //public GenerecManager(Db db,IMapper mapper) : base(db)
-        public GenericManager(HoLDbContext db,IMapper mapper) : base(db)
-        {
-            this.mapper = mapper;
-        }
+
 
         /// <summary>
         /// Vypíše všechny položky
@@ -115,13 +115,13 @@ namespace HeroessOfLegends.Businsess.Managers
         public async Task<IList<TDto>> GetAllDataAsync()
         {
             IList<T> date = await AllAsync();
-            return await Task.Run(()=> mapper.Map<IList<TDto>>(date));
+            return await Task.Run(() => mapper.Map<IList<TDto>>(date));
         }
 
         public async Task<IList<TDto>> GetPageAsyc(int page = 0,int pageSize = int.MaxValue)
         {
             IList<T> date = await PageAsync(page,pageSize);
-            return await Task.Run(()=> mapper.Map<IList<TDto>>(date));
+            return await Task.Run(() => mapper.Map<IList<TDto>>(date));
         }
 
         public async Task<TDto?> GetDateByIdAsync(int id)
@@ -129,12 +129,12 @@ namespace HeroessOfLegends.Businsess.Managers
             T? data = await FindByIdAsync(id);
             if(data is null)
             { return null; }
-            return await Task.Run(()=>mapper.Map<TDto>(data));
+            return await Task.Run(() => mapper.Map<TDto>(data));
         }
 
         public async Task<TDto> AddDataAsync(TDto dto)
         {
-            return await Task.Run(()=> mapper.Map<TDto>(Insert(mapper.Map<T>(dto))));
+            return await Task.Run(() => mapper.Map<TDto>(Insert(mapper.Map<T>(dto))));
         }
 
         public async Task<TDto?> DeleteDateAsync(int id)
@@ -143,7 +143,7 @@ namespace HeroessOfLegends.Businsess.Managers
                 return null;
 
             T date = await FindByIdAsync(id)!;
-            TDto dateDto = await Task.Run(()=> mapper.Map<TDto>(date));
+            TDto dateDto = await Task.Run(() => mapper.Map<TDto>(date));
             await DeleteAsync(id);
             return dateDto;
         }
@@ -156,7 +156,7 @@ namespace HeroessOfLegends.Businsess.Managers
             // T updateData = Update(data);
             // return mapper.Map<TDto>(updateData);
 
-            return await Task.Run(()=> mapper.Map<TDto>(Update(mapper.Map<T>(dto))));
+            return await Task.Run(() => mapper.Map<TDto>(Update(mapper.Map<T>(dto))));
 
         }
 

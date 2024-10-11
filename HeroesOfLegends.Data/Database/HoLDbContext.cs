@@ -1,10 +1,9 @@
-﻿using HeroesOfLegends.Models;
+﻿using HeroesOfLegends.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 
-namespace HeroesOfLegends.Data
+namespace HeroesOfLegends.Database
 {
     public class HoLDbContext : IdentityDbContext
     {
@@ -14,6 +13,7 @@ namespace HeroesOfLegends.Data
         public DbSet<Profession>? Professions { get; set; }
         public DbSet<Fight>? Fights { get; set; }
         public DbSet<Character>? Characters { get; set; }
+        public DbSet<ProfessionSkill>? Skills { get; set; }
 
 
         public HoLDbContext(DbContextOptions<HoLDbContext> options) : base(options)
@@ -35,7 +35,7 @@ namespace HeroesOfLegends.Data
             builder.Entity<Narrative>().HasData(new Narrative().Initial());
             builder.Entity<Profession>().HasData(new Profession().Initial());
             //builder.Entity<Character>().HasData(new Character().Initial());
-
+            builder.Entity<ProfessionSkill>().HasData(new ProfessionSkill().Initial());
 
 
             //IEnumerable<IMutableForeignKey> cascadeFKs = builder.Model.GetEntityTypes()

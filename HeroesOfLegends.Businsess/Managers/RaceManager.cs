@@ -3,18 +3,21 @@ using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data;
 using HeroesOfLegends.Data.Interfaces;
-using HeroesOfLegends.Models;
+using HeroesOfLegends.Data.Models;
+using HeroesOfLegends.Database;
 using HeroessOfLegends.Businsess.Managers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HeroesOfLegends.Businsess.Managers
 {
-    public class RaceManager :GenericManager<Race,RaceDto> ,IRaceManager
+    public class RaceManager : GenericManager<Race,RaceDto>, IRaceManager
     {
-        private readonly IRaceRepository raceRepository;
-        private readonly IMapper mapper;
+        private readonly IRaceRepository repository;
 
-        public RaceManager(HoLDbContext db,IMapper mapper) : base(db,mapper)
+        public RaceManager(HoLDbContext db,ILogger<DbSet<Race>> logger,IRaceRepository repository) : base(db,logger)
         {
+            this.repository = repository;
         }
     };
 }

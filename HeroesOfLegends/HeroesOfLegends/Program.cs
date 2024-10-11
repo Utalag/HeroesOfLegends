@@ -1,19 +1,12 @@
 ﻿using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Managers;
 using HeroesOfLegends.Businsess.Models;
-using HeroesOfLegends.Data;
+using HeroesOfLegends.Components;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Repositories;
-using HeroesOfLegends.Models;
-using HeroesOfLegends.Client.Pages;
-using HeroesOfLegends.Components;
+using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using System.Text.Json.Serialization;
-using Microsoft.Build.Framework;
-using Microsoft.Identity.Client;
-using Microsoft.Identity.Client.Extensibility;
-using Serilog;
 
 namespace HeroesOfLegends
 {
@@ -56,7 +49,7 @@ namespace HeroesOfLegends
 
             // modely
             //builder.Services.AddScoped<IProfession,Profession>();
-            
+
 
             // registrace repositare
             builder.Services.AddScoped<IRaceRepository,RaceRepository>();
@@ -64,22 +57,25 @@ namespace HeroesOfLegends
             builder.Services.AddScoped<IWorldRepository,WorldRepository>();
             builder.Services.AddScoped<IProfessionRepository,ProfessionRepository>();
             builder.Services.AddScoped<ICharacterRepository,CharacterRepository>();
+            builder.Services.AddScoped<IProfessionSkillRepository,ProfessionSkillRepository>();
 
             //manazery
+            
             builder.Services.AddScoped<INarrativeManager,NarrativeManager>();
             builder.Services.AddScoped<IRaceManager,RaceManager>();
             builder.Services.AddScoped<IWorldManager,WorldManager>();
             builder.Services.AddScoped<IProfessionManager,ProfessionManager>();
             builder.Services.AddScoped<ICharacterManager,CharacterManager>();
+            builder.Services.AddScoped<IProfessionSkillManager,ProfessionSkillManager>();
 
-           // builder.Services.AddScoped<IWorldManager>();
+            // builder.Services.AddScoped<IWorldManager>();
 
             // registrase automapperu
             builder.Services.AddAutoMapper(typeof(AutoMapperConfigurationProfile));
 
             builder.Services.AddBlazorBootstrap();
-            
-           
+
+
 
             var app = builder.Build();
 
@@ -95,7 +91,7 @@ namespace HeroesOfLegends
             {
                 app.UseMigrationsEndPoint();
                 app.UseSwagger();
-                app.UseSwaggerUI(c =>{c.SwaggerEndpoint("/swagger/v1/swagger.json","HeroesOfLegends API V1");});
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json","HeroesOfLegends API V1"); });
 
                 app.UseWebAssemblyDebugging();
             }

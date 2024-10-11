@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HeroesOfLegends.Models
+namespace HeroesOfLegends.Data.Models
 {
 	/// <summary>
 	/// Vazební tabulka 

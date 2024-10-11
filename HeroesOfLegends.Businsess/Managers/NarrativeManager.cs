@@ -1,20 +1,23 @@
 ﻿using AutoMapper;
 using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
+using HeroesOfLegends.Data;
 using HeroesOfLegends.Data.Interfaces;
-using HeroesOfLegends.Models;
+using HeroesOfLegends.Data.Models;
+using HeroesOfLegends.Database;
+using HeroessOfLegends.Businsess.Managers;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HeroesOfLegends.Businsess.Managers
 {
-    public class NarrativeManager : INarrativeManager
+    public class NarrativeManager : GenericManager<NarrativeDto,Narrative>, INarrativeManager
     {
         private readonly INarrativeRepository repository;
-        private readonly IMapper mapper;
 
-        public NarrativeManager(INarrativeRepository repository,IMapper mapper)
+        public NarrativeManager(HoLDbContext db,ILogger<DbSet<NarrativeDto>> logger,INarrativeRepository repository) : base(db,logger)
         {
             this.repository = repository;
-            this.mapper = mapper;
         }
 
         public IList<string> GetAllName()

@@ -2,7 +2,8 @@
 using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data.Interfaces;
-using HeroesOfLegends.Models;
+using HeroesOfLegends.Data.Models;
+using HeroesOfLegends.Data.Repositories;
 
 namespace HeroesOfLegends.Businsess.Managers
 {

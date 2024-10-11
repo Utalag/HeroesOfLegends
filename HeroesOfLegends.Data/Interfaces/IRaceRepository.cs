@@ -1,4 +1,4 @@
-﻿using HeroesOfLegends.Models;
+﻿using HeroesOfLegends.Data.Models;
 
 namespace HeroesOfLegends.Data.Interfaces
 {

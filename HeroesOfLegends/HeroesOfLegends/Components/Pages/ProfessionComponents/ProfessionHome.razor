@@ -1,80 +1,61 @@
 ﻿@page "/ProfessionHome"
 @rendermode InteractiveServer
+@using HeroesOfLegends.Data.Models
+@inject IProfessionSkillManager PFService
 
+<h3>Vyberte Povolení</h3>
 
-
-<div class="container">
-    <div class="header">
-        <h1>Heroes Of Legends</h1>
-        <p>Profession Skills</p>
-    </div>
-    <div class="profile">
-        <div>
-            <p>Level: 1</p>
-            <p>Životy: 10</p>
-            <p>Mana: -</p>
-            <p>Volné profibody: 22</p>
-        </div>
-        <div>
-            <p>Jméno</p>
-            <p>Rasa ???</p>
-        </div>
-    </div>
-    <div class="tabs">
-        <div>Boj</div>
-        <div>Kouzla</div>
-        <div>Lov</div>
-        <div>Alchymie</div>
-    </div>
-    <div class="content">
-        <div class="options">
-            <p>Option 1</p>
-            <p>Option 2</p>
-            <p>Option 3</p>
-            <p>Option 4</p>
-            <p>Option 5</p>
-        </div>
-        <div class="text">
-            <p>Some default text to fill some space, and something more so there is more text</p>
-            <p>Some default text to fill some space, and something more so there is more text</p>
-            <p>Some default text to fill some space, and something more so there is more text</p>
-            <p>Some default text to fill some space, and something more so there is more text</p>
-        </div>
-        <div class="lorem">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-        </div>
-    </div>
-    <div class="sections">
-        <div class="section">
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
-        </div>
-        <div class="section">
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
-        </div>
-        <div class="section">
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
-        </div>
-        <div class="section">
-            <ul>
-                <li>Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
-            </ul>
-        </div>
-    </div>
+<div>
+    <h4>Boj</h4>
+    <ul>
+        @foreach(var skill in combatSkills)
+        {
+            <li>@skill.Name - Úroveň: @skill.Level</li>
+        }
+    </ul>
 </div>
-@code {
 
+<div>
+    <h4>Kouzla</h4>
+    <ul>
+        @foreach(var skill in magicSkills)
+        {
+            <li>@skill.Name - Úroveň: @skill.Level</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h4>Lov</h4>
+    <ul>
+        @foreach(var skill in huntingSkills)
+        {
+            <li>@skill.Name - Úroveň: @skill.Level</li>
+        }
+    </ul>
+</div>
+
+<div>
+    <h4>Alchymie</h4>
+    <ul>
+        @foreach(var skill in alchemySkills)
+        {
+            <li>@skill.Name - Úroveň: @skill.Level</li>
+        }
+    </ul>
+</div>
+
+@code {
+    private List<ProfessionSkillDto> combatSkills;
+    private List<ProfessionSkillDto> magicSkills;
+    private List<ProfessionSkillDto> huntingSkills;
+    private List<ProfessionSkillDto> alchemySkills;
+
+    protected override async Task OnInitializedAsync()
+    {
+        combatSkills = PFService.GetProfessionSkillBySkillClass(SkillClassEnum.combatSkill);
+        magicSkills = PFService.GetProfessionSkillBySkillClass(SkillClassEnum.alchemySkill);
+        huntingSkills = PFService.GetProfessionSkillBySkillClass(SkillClassEnum.magicSkill);
+        alchemySkills = PFService.GetProfessionSkillBySkillClass(SkillClassEnum.huntingSkill);
+    }
 }

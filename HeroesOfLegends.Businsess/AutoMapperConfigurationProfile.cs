@@ -1,7 +1,8 @@
 ﻿
 
 using AutoMapper;
-using HeroesOfLegends.Models;
+using HeroesOfLegends.Data.Models;
+
 
 namespace HeroesOfLegends.Businsess.Models
 {
@@ -38,7 +39,14 @@ namespace HeroesOfLegends.Businsess.Models
 
             CreateMap<CharacterDto,Character>();
             CreateMap<Character,CharacterDto>();
-                
+
+
+            CreateMap<ProfessionSkill,ProfessionSkillDto>();
+                //.ForMember(dest => dest.SkillClass,opt => opt.MapFrom(src => src.SkillClass));
+
+            CreateMap<ProfessionSkillDto,ProfessionSkill>();
+               // .ForMember(dest => dest.SkillClass,opt => opt.MapFrom(src => src.SkillClass));
+
 
 
 
