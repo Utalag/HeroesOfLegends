@@ -1,5 +1,6 @@
 ﻿
 
+
 namespace HeroesOfLegends.Data.Interfaces
 {
 	public interface IGenericCRUD<TEntity> where TEntity : class
@@ -14,6 +15,8 @@ namespace HeroesOfLegends.Data.Interfaces
         Task<TEntity?> FindByIdAsync(int id);
         IList<TEntity> FindByParameter(Func<TEntity,bool> predicate);
         Task<IList<TEntity>> FindByParameterAsync(Func<TEntity,bool> predicate);
+        IList<TEntity>? FindEntitiesByIds(List<int> ids);
+        Task<IList<TEntity>?> FindEntitiesByIdsAsync(List<int> ids);
         TEntity Insert(TEntity entity);
         Task<TEntity> InsertAsync(TEntity entity);
         IList<TEntity> Page(int page,int pageSize);

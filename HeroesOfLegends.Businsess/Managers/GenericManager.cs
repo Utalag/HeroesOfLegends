@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HeroesOfLegends.Businsess.Interfaces;
+using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data.Repositories;
 using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
@@ -14,27 +15,20 @@ namespace HeroesOfLegends.Businsess.Managers
         protected readonly IMapper mapper;
         protected readonly ILogger<DbSet<T>> logger;
 
-        protected GenericManager(HoLDbContext db,ILogger<DbSet<T>> logger) : base(db,logger)
+        protected GenericManager(HoLDbContext db,ILogger<DbSet<T>> logger,IMapper mapper) : base(db,logger)
         {
             this.logger = logger;
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<T,TDto>());
-            mapper = config.CreateMapper();
+            //var config = new MapperConfiguration(cfg => cfg.CreateMap<T,TDto>());
+            //mapper = config.CreateMapper(); 
+            this.mapper = mapper;
         }
-
-
-        /// <summary>
-        /// konstruktor
-        /// </summary>
-        /// <param name="db">DbContext</param>
-        /// <param name="mapper">mapper</param>
-        //public GenerecManager(Db db,IMapper mapper) : base(db)
 
 
         /// <summary>
         /// Vypíše všechny položky
         /// </summary>
         /// <returns></returns>
-        public IList<TDto> GetAllData()
+        public virtual IList<TDto> GetAllData()
         {
             IList<T> date = All();
             return mapper.Map<IList<TDto>>(date);
@@ -70,7 +64,7 @@ namespace HeroesOfLegends.Businsess.Managers
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public TDto AddData(TDto dto)
+        public virtual TDto AddData(TDto dto)
         {
             // T data = mapper.Map<T>(dto); // monsterDto namapuju na monster
             // T addData = Insert(data);    // vložím monstrum do databze
@@ -113,7 +107,24 @@ namespace HeroesOfLegends.Businsess.Managers
 
         }
 
-        //----- Async CRUD-----//
+        public IList<TDto> GetDataByIds(List<int> ids)
+        {
+            if (ids.Count == 0)
+            {
+                logger.LogWarning("GetDataByIds input is null/0");
+                return new List<TDto>();
+            }
+            else
+            {
+                IList<T> data = FindEntitiesByIds(ids);
+                return mapper.Map<IList<TDto>>(data);
+
+            }
+        }
+
+
+
+        //--------------------- Async CRUD---------------------------------//
 
         public async Task<IList<TDto>> GetAllDataAsync()
         {
@@ -161,6 +172,18 @@ namespace HeroesOfLegends.Businsess.Managers
 
             return await Task.Run(() => mapper.Map<TDto>(Update(mapper.Map<T>(dto))));
 
+        }
+
+        public async Task<IList<TDto>> GetDataByIdsAsync(List<int> ids)
+        {
+            if(ids.Count == 0)
+            {
+                logger.LogWarning("GetDataByIds input is null/0");
+                return new List<TDto>();
+            }
+
+            IList<T> data = await FindEntitiesByIdsAsync(ids);
+            return mapper.Map<IList<TDto>>(data);
         }
 
     }

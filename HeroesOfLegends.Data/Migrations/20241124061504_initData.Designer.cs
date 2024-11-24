@@ -4,6 +4,7 @@ using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HeroesOfLegends.Data.Migrations
 {
     [DbContext(typeof(HoLDbContext))]
-    partial class HoLDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241124061504_initData")]
+    partial class initData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1888,7 +1891,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 2 za 2 směn/y životů",
                             MaxHealingPoints = 2,
                             SpeedOfHealing = 2
                         },
@@ -1901,7 +1904,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 4 za 3 směn/y životů",
                             MaxHealingPoints = 4,
                             SpeedOfHealing = 3
                         },
@@ -1914,7 +1917,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 6 za 3 směn/y životů",
                             MaxHealingPoints = 6,
                             SpeedOfHealing = 3
                         },
@@ -1927,7 +1930,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 8 za 3 směn/y životů",
                             MaxHealingPoints = 8,
                             SpeedOfHealing = 3
                         },
@@ -1940,7 +1943,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 10 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 10 za 3 směn/y životů",
                             MaxHealingPoints = 10,
                             SpeedOfHealing = 3
                         },
@@ -1953,7 +1956,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 12 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 12 za 3 směn/y životů",
                             MaxHealingPoints = 12,
                             SpeedOfHealing = 3
                         },
@@ -1966,7 +1969,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 14 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 14 za 3 směn/y životů",
                             MaxHealingPoints = 14,
                             SpeedOfHealing = 3
                         },
@@ -1979,7 +1982,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 16 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 16 za 3 směn/y životů",
                             MaxHealingPoints = 16,
                             SpeedOfHealing = 3
                         },
@@ -1992,7 +1995,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 16 za 4 směn/y životů",
                             MaxHealingPoints = 16,
                             SpeedOfHealing = 4
                         },
@@ -2005,7 +2008,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 16 za 4 směn/y životů",
                             MaxHealingPoints = 16,
                             SpeedOfHealing = 4
                         },
@@ -2018,7 +2021,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 5 Hp za 1 směnu, maximálně 16 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 16 za 5 směn/y životů",
                             MaxHealingPoints = 16,
                             SpeedOfHealing = 5
                         },
@@ -2031,7 +2034,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 6 Hp za 1 směnu, maximálně 16 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 16 za 6 směn/y životů",
                             MaxHealingPoints = 16,
                             SpeedOfHealing = 6
                         },
@@ -2044,7 +2047,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 1 Hp za 1 směnu, maximálně 1 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 1 za 1 směn/y životů",
                             MaxHealingPoints = 1,
                             SpeedOfHealing = 1
                         },
@@ -2057,7 +2060,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 2 za 2 směn/y životů",
                             MaxHealingPoints = 2,
                             SpeedOfHealing = 2
                         },
@@ -2070,7 +2073,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 3 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 3 za 3 směn/y životů",
                             MaxHealingPoints = 3,
                             SpeedOfHealing = 3
                         },
@@ -2083,7 +2086,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 4 za 3 směn/y životů",
                             MaxHealingPoints = 4,
                             SpeedOfHealing = 3
                         },
@@ -2096,7 +2099,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 5 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 5 za 3 směn/y životů",
                             MaxHealingPoints = 5,
                             SpeedOfHealing = 3
                         },
@@ -2109,7 +2112,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 6 za 3 směn/y životů",
                             MaxHealingPoints = 6,
                             SpeedOfHealing = 3
                         },
@@ -2122,7 +2125,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 7 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 7 za 3 směn/y životů",
                             MaxHealingPoints = 7,
                             SpeedOfHealing = 3
                         },
@@ -2135,7 +2138,7 @@ namespace HeroesOfLegends.Data.Migrations
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
                             SkillSumPrice = 20,
-                            SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.",
+                            SpecificDescription = "Postava si může vyléčit 8 za 3 směn/y životů",
                             MaxHealingPoints = 8,
                             SpeedOfHealing = 3
                         });

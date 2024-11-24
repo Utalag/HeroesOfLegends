@@ -1,0 +1,4 @@
+﻿Dodělat Professions:  Api
+Dodělat Professions:  Managers metody -> Update, Delete
+Přidat Skilly 
+Vytvořit klikátko pro Profession a přidávání skilů 

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroesOfLegends.Data", "Her
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroesOfLegends.Businsess", "HeroesOfLegends.Businsess\HeroesOfLegends.Businsess.csproj", "{7FE7506E-72C5-45C6-90E0-47FDF5C84151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HeroesOfLegends.BusinsessTests", "HeroesOfLegends.BusinsessTests\HeroesOfLegends.BusinsessTests.csproj", "{1ED75917-E26B-41CF-89AC-79E54C32D556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HeroesOfLegends.BusinsessTests", "HeroesOfLegends.BusinsessTests\HeroesOfLegends.BusinsessTests.csproj", "{1ED75917-E26B-41CF-89AC-79E54C32D556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

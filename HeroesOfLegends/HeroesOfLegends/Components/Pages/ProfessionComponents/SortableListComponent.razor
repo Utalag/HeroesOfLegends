@@ -1,0 +1,121 @@
+@using BlazorBootstrap
+
+<div class="row">
+    <div class="col">
+        <SortableList TItem="Employee"
+                      Group="SharedListExample3"
+                      Name="empList1"
+                      Data="novic"
+                      Context="item"
+                      OnUpdate="OnEmployeeList1Update"
+                      OnRemove="OnEmployeeListRemove">
+            <ItemTemplate>
+                @item.Name
+            </ItemTemplate>
+        </SortableList>
+    </div>
+    <div class="col">
+        <SortableList TItem="Employee"
+                      Group="SharedListExample3"
+                      Name="empList2"
+                      Data="advancer"
+                      Context="item"
+                      OnUpdate="OnEmployeeList2Update"
+                      OnRemove="OnEmployeeListRemove">
+            <ItemTemplate>
+                @item.Name
+            </ItemTemplate>
+        </SortableList>
+    </div>
+    <div class="col">
+        <SortableList TItem="Employee"
+                      Group="SharedListExample3"
+                      Name="empList3"
+                      Data="expert"
+                      Context="item"
+                      OnUpdate="OnEmployeeList3Update"
+                      OnRemove="OnEmployeeListRemove">
+            <ItemTemplate>
+                @item.Name
+            </ItemTemplate>
+        </SortableList>
+    </div>
+</div>
+
+@code {
+    public List<Employee> novic = Enumerable.Range(10, 5).Select(i => new Employee(i, $"Employee {i}")).ToList();
+
+    public List<Employee> advancer = Enumerable.Range(20, 5).Select(i => new Employee(i, $"Employee {i}")).ToList();
+
+    public List<Employee> expert = Enumerable.Range(30, 5).Select(i => new Employee(i, $"Employee {i}")).ToList();
+
+    private void OnEmployeeList1Update(SortableListEventArgs args)
+    {
+        var itemToMove = novic[args.OldIndex];
+
+        novic.RemoveAt(args.OldIndex);
+
+        if (args.NewIndex < novic.Count)
+            novic.Insert(args.NewIndex, itemToMove);
+        else
+            novic.Add(itemToMove);
+    }
+
+    private void OnEmployeeList2Update(SortableListEventArgs args)
+    {
+        var itemToMove = advancer[args.OldIndex];
+
+        advancer.RemoveAt(args.OldIndex);
+
+        if (args.NewIndex < advancer.Count)
+            advancer.Insert(args.NewIndex, itemToMove);
+        else
+            advancer.Add(itemToMove);
+    }
+
+    private void OnEmployeeList3Update(SortableListEventArgs args)
+    {
+        var itemToMove = expert[args.OldIndex];
+
+        expert.RemoveAt(args.OldIndex);
+
+        if (args.NewIndex < expert.Count)
+            expert.Insert(args.NewIndex, itemToMove);
+        else
+            expert.Add(itemToMove);
+    }
+
+    private void OnEmployeeListRemove(SortableListEventArgs args)
+    {
+        Employee? item = default!;
+
+        // get the item at the old index
+        if (args.FromListName == "empList1")
+            item = novic[args.OldIndex];
+        else if (args.FromListName == "empList2")
+            item = advancer[args.OldIndex];
+        else
+            item = expert[args.OldIndex];
+
+        // add it to the new index
+        if (args.ToListName == "empList1")
+            novic.Insert(args.NewIndex, item);
+        else if (args.ToListName == "empList2")
+            advancer.Insert(args.NewIndex, item);
+        else
+            expert.Insert(args.NewIndex, item);
+
+        // remove the item from the old index
+        if (args.FromListName == "empList1")
+            novic.Remove(novic[args.OldIndex]);
+        else if (args.FromListName == "empList2")
+            advancer.Remove(advancer[args.OldIndex]);
+        else
+            expert.Remove(expert[args.OldIndex]);
+    }
+
+
+
+
+    public record Employee(int Id, string? Name);
+}

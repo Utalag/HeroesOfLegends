@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 
+
 namespace HeroesOfLegends.Data.Repositories
 {
     public abstract class GenericCRUD<TEntity> : IGenericCRUD<TEntity>
@@ -26,7 +27,7 @@ namespace HeroesOfLegends.Data.Repositories
         /// </summary>
         /// <param name="entity">položka</param>
         /// <returns></returns>
-        public TEntity Insert(TEntity entity)
+        public virtual TEntity Insert(TEntity entity)
         {
             EntityEntry<TEntity> entityEntry = dbSet.Add(entity);
             db.SaveChanges();
@@ -105,7 +106,13 @@ namespace HeroesOfLegends.Data.Repositories
         /// <returns>Entity with id</returns>
         public TEntity? FindById(int id)
         {
-            return dbSet.Find(id);
+            logger.LogInformation("Looking for entity with ID: {Id}",id);
+            var entity = dbSet.Find(id);
+            if(entity == null)
+            {
+                logger.LogWarning("Entity with ID: {Id} not found",id);
+            }
+            return entity;
         }
 
         /// <summary>
@@ -115,7 +122,13 @@ namespace HeroesOfLegends.Data.Repositories
         /// <returns>Entity with id</returns>
         public async Task<TEntity?> FindByIdAsync(int id)
         {
-            return await dbSet.FindAsync(id);
+            logger.LogInformation("Looking for entity with ID: {Id}",id);
+            var entity = dbSet.FindAsync(id);
+            if(entity == null)
+            {
+                logger.LogWarning("Entity with ID: {Id} not found",id);
+            }
+            return await entity;
         }
 
 
@@ -150,7 +163,7 @@ namespace HeroesOfLegends.Data.Repositories
         /// Lists all items
         /// </summary>
         /// <returns>IList</returns>
-        public IList<TEntity> All() => dbSet.ToList();
+        public virtual IList<TEntity> All() => dbSet.ToList();
 
         /// <summary>
         ///Async variant Lists all items
@@ -246,6 +259,42 @@ namespace HeroesOfLegends.Data.Repositories
         }
 
 
+        public IList<TEntity>? FindEntitiesByIds(List<int> ids)
+        {
+            List<TEntity> entities = new();
+            foreach(int id in ids)
+            {
+                if(ExistsWithId(id))
+                {
+                    TEntity? entity = dbSet.Find(id);
+                    if(entity is not null)
+                        entities.Add(entity);
+                }
+            }
+            if(entities.Count == 0)
+            {
+                logger.LogWarning("No entities found");
+            }
+            return entities;
+        }
+        public async Task<IList<TEntity>?> FindEntitiesByIdsAsync(List<int> ids)
+        {
+            List<TEntity> entities = new();
+            foreach(int id in ids)
+            {
+                if(await ExistsWithIdAsync(id))
+                {
+                    TEntity? entity = await dbSet.FindAsync(id);
+                    if(entity is not null)
+                        entities.Add(entity);
+                }
+            }
+            if(entities.Count == 0)
+            {
+                logger.LogWarning("No entities found");
+            }
+            return entities;
+        }
 
         /// <summary>
         /// ID existence check

@@ -1,74 +1,50 @@
-﻿namespace HeroesOfLegends.Businsess.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace HeroesOfLegends.Businsess.Models
 {
     public class ProfessionDto
     {
 
 
-        public int ProfessionId { get; set; }
-        public string Name { get; set; } = string.Empty;            // [Display (Name = "Základní povolání")]
-        public string Description { get; set; } = string.Empty;     // [Display (Name = "Popis")]
+        public int Id { get; set; }
+
+        [Required(ErrorMessage = "Název povolání je povinný")]
+        [Length(4, 100)]
+        [Display(Name = "Název povolání")]
+        public string Name { get; set; } = string.Empty;
+
+        [Display(Description = "Popis")]// 
+        public string Description { get; set; } = string.Empty;
+
+        [Display(Name = "Úroveň")]
+        [Range(1, 36)]
         public int Level { get; set; }
 
+        [Display(Name = "Životy Min")]
+        [Range(1,1000)]
+        public int HpRangeMin { get; set; }
 
-        public int RaceId { get; set; }
-        /// <summary>
-        /// Hodnota pro zobrazení nebo skrytí talčítka na přidání životů
-        /// </summary>
-        public bool HpAllDiceRolls { get; set; } = true;
-        public int Hp { get; set; }
-        /// <summary>
-        /// 1-4 body do na volbu životů
-        /// </summary>
-        public int HpPointeded { get; set; }
-        public List<int> GetHpDiceRoll { get; set; }
-        /// <summary>
-        /// Počet profibodl pro výběr profesních dovedností
-        /// </summary>
-        /// /// <summary>
-        /// rozdah profibodů (1k6), výchozí hodnota 4
-        /// </summary>
-        public int GetProfessionPointedDiceRoll { get; set; }
-        /// <summary>
-        /// 1-4 body a výstupem bude součet vlastností 24-27
-        /// </summary>
-        public int AtributePointed { get; set; }
-        /// <summary>
-        ///  počet bodů pro system výběru podle levlových bloků ( GenerateSystem.group)
-        /// </summary>
-        public int LevelGroupFreePoint { get; set; }
-        /// <summary>
-        /// počet bodů pro system výběru podle přiřazovaných bodů ( GenerateSystem.level)
-        /// </summary>
-        public int LevelFreePointed { get; set; }
+        [Display(Name = "Životy Max")]
+        [Range(2,1000)]// [Display (Hp = "Životy")]
+        public int HpRangeMax { get; set; }
 
+        [Display(Name = "Kouzelnická Mana")]
+        [Range(1, 1000000)]
+        public int WizardMana { get; set; }
 
-        //------------------------------------------  OTEVŘE VÝBĚR MAGICKÝCH SCHOPNOSTÍ ----------
-        /// <summary>
-        /// povolí kouzelnickou manu
-        /// </summary>
-        public bool ManaWizardBool { get; set; } = false;
-        /// <summary>
-        /// povolí Alchymistickou manu
-        /// </summary>
-        public bool ManaAlchemistBool { get; set; } = false;
-        /// <summary>
-        /// povolí hraničářskou manu
-        /// </summary>
-        /// 
-        public bool ManaRengerBool { get; set; } = false;
+        [Range(1,1000000)]
+        [Display(Name = "Hraničářská Mana")]
+        public int RengerMana { get; set; }
 
+        [Range(1,1000000)]
+        [Display(Name = "Kouzelnická Mana")]
+        public int AlchemiMana { get; set; }
 
-        public int[] PrimaryStrength { get; set; } = new[] { 11,12,13 };
-        public int[] PrimaryAgility { get; set; } = new[] { 12,13,14 };
-        public int[] PrimaryConstitution { get; set; } = new[] { 12,13 };
-        public int[] PrimaryIntelligence { get; set; } = new[] { 12,13,14 };
-        public int[] PrimaryCharisma { get; set; } = new[] { 12,13 };
+        [Range(1,1000000)]
+        [Display(Name = "Speciální Mana")]
+        public int SpecialdMana { get; set; }
 
-
-
-        //public IList<string>? CharacterNames { get; set; }
-
-        //public IList<string> RaceNames { get; set; }
+        public List<int> SkillIds { get; set; } = new List<int>();
 
     }
 }

@@ -2,7 +2,9 @@
 using HeroesOfLegends.Businsess.Managers;
 using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Components;
+using HeroesOfLegends.Data.Database;
 using HeroesOfLegends.Data.Interfaces;
+using HeroesOfLegends.Data.Models;
 using HeroesOfLegends.Data.Repositories;
 using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +14,7 @@ namespace HeroesOfLegends
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -51,22 +53,25 @@ namespace HeroesOfLegends
             //builder.Services.AddScoped<IProfession,Profession>();
 
 
-            // registrace repositare
+            // repository
             builder.Services.AddScoped<IRaceRepository,RaceRepository>();
             builder.Services.AddScoped<INarrativeRepository,NarrativeRepository>();
             builder.Services.AddScoped<IWorldRepository,WorldRepository>();
             builder.Services.AddScoped<IProfessionRepository,ProfessionRepository>();
             builder.Services.AddScoped<ICharacterRepository,CharacterRepository>();
             builder.Services.AddScoped<IProfessionSkillRepository,ProfessionSkillRepository>();
+            builder.Services.AddScoped<ISpecificSkillReposotory,SpecificSkillReposotory>();
+            
 
             //manazery
-            
             builder.Services.AddScoped<INarrativeManager,NarrativeManager>();
             builder.Services.AddScoped<IRaceManager,RaceManager>();
             builder.Services.AddScoped<IWorldManager,WorldManager>();
             builder.Services.AddScoped<IProfessionManager,ProfessionManager>();
             builder.Services.AddScoped<ICharacterManager,CharacterManager>();
             builder.Services.AddScoped<IProfessionSkillManager,ProfessionSkillManager>();
+            builder.Services.AddScoped<ISpecificSkillManager,SpecificSkillManager>();
+
 
             // builder.Services.AddScoped<IWorldManager>();
 
@@ -119,6 +124,20 @@ namespace HeroesOfLegends
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            //using(var scope = app.Services.CreateScope())
+            //{
+            //    var context = scope.ServiceProvider.GetRequiredService<HoLDbContext>();
+            //    var professionRepository = scope.ServiceProvider.GetRequiredService<IProfessionRepository>();
+            //    var characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
+            //    var professionSkillRepository = scope.ServiceProvider.GetRequiredService<IProfessionSkillRepository>();
+            //    var specificSkillReposotory = scope.ServiceProvider.GetRequiredService<ISpecificSkillReposotory>();
+            //    var raceRepository = scope.ServiceProvider.GetRequiredService<IRaceRepository>();
+            //    var narrativeRepository = scope.ServiceProvider.GetRequiredService<INarrativeRepository>();
+            //    var worldRepository = scope.ServiceProvider.GetRequiredService<IWorldRepository>();
+            //    await DbInitializer.InitializeAsync(context,professionRepository,characterRepository,professionSkillRepository,specificSkillReposotory,raceRepository,narrativeRepository,worldRepository);
+            //}
+
 
             app.Run();
         }

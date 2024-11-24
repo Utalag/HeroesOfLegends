@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HeroesOfLegends.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Model : Migration
+    public partial class initData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -53,41 +53,82 @@ namespace HeroesOfLegends.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fights",
+                name: "Characters",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NameSkill = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DescriptionSkill = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RaceId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionId = table.Column<int>(type: "int", nullable: false),
+                    Strengt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Agility = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Constitution = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Intelligence = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Charisma = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Mobility = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Visage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Profipoints = table.Column<int>(type: "int", nullable: false),
+                    PrimaryAtribut_1 = table.Column<int>(type: "int", nullable: false),
+                    PrimaryAtribut_2 = table.Column<int>(type: "int", nullable: false),
+                    PrimarValueIndex_1 = table.Column<int>(type: "int", nullable: false),
+                    PrimarValueIndex_2 = table.Column<int>(type: "int", nullable: false),
+                    StrengthFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgilityFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConstitutionFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IntelligenceFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CharismaFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Fights", x => x.Id);
+                    table.PrimaryKey("PK_Characters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Professions",
                 columns: table => new
                 {
-                    ProfessionId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false),
-                    GetHpDiceRoll = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HpAllDiceRolls = table.Column<bool>(type: "bit", nullable: false),
-                    HpPointeded = table.Column<int>(type: "int", nullable: false),
-                    GetProfessionPointedDiceRoll = table.Column<int>(type: "int", nullable: false),
-                    AtributePointed = table.Column<int>(type: "int", nullable: false),
-                    ProfessionPoint = table.Column<int>(type: "int", nullable: false),
-                    ManaWizardBool = table.Column<bool>(type: "bit", nullable: false),
-                    ManaAlchemistBool = table.Column<bool>(type: "bit", nullable: false),
-                    ManaRengerBool = table.Column<bool>(type: "bit", nullable: false)
+                    HpRangeMin = table.Column<int>(type: "int", nullable: false),
+                    HpRangeMax = table.Column<int>(type: "int", nullable: false),
+                    WizardMana = table.Column<int>(type: "int", nullable: false),
+                    HasWizardMana = table.Column<bool>(type: "bit", nullable: false),
+                    RengerMana = table.Column<int>(type: "int", nullable: false),
+                    HasRengerMana = table.Column<bool>(type: "bit", nullable: false),
+                    AlchemiMana = table.Column<int>(type: "int", nullable: false),
+                    HasAlchemiMana = table.Column<bool>(type: "bit", nullable: false),
+                    SpecialdMana = table.Column<int>(type: "int", nullable: false),
+                    HasSpecialdMana = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Professions", x => x.ProfessionId);
+                    table.PrimaryKey("PK_Professions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProfessionSkill",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SkillName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KnowledgeGroup = table.Column<int>(type: "int", nullable: false),
+                    SkillClass = table.Column<int>(type: "int", nullable: false),
+                    ProfessionClass = table.Column<int>(type: "int", nullable: false),
+                    DependencySkillId = table.Column<int>(type: "int", nullable: false),
+                    DependencySkillName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BaseProfessionPoint = table.Column<int>(type: "int", nullable: false),
+                    BaseDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatetByUserName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfessionSkill", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -139,7 +180,9 @@ namespace HeroesOfLegends.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    WorldName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    WorldName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WorldDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AmountOfMagicInTheWorld = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -164,7 +207,7 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -185,7 +228,7 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -205,7 +248,7 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,13 +266,13 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.RoleId,
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,46 +292,62 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Characters",
+                name: "BindingProfessionsSkills",
+                columns: table => new
+                {
+                    ProfessionId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionSkillId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BindingProfessionsSkills", x => new { x.ProfessionId, x.ProfessionSkillId });
+                    table.ForeignKey(
+                        name: "FK_BindingProfessionsSkills_ProfessionSkill_ProfessionSkillId",
+                        column: x => x.ProfessionSkillId,
+                        principalTable: "ProfessionSkill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BindingProfessionsSkills_Professions_ProfessionId",
+                        column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpecificSkill",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RaceId = table.Column<int>(type: "int", nullable: false),
-                    ProfessionId = table.Column<int>(type: "int", nullable: false),
-                    Strengt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Agility = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Constitution = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Intelligence = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Charisma = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Mobility = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Visage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Profipoints = table.Column<int>(type: "int", nullable: false),
-                    PrimaryAtribut_1 = table.Column<int>(type: "int", nullable: false),
-                    PrimaryAtribut_2 = table.Column<int>(type: "int", nullable: false),
-                    PrimarValueIndex_1 = table.Column<int>(type: "int", nullable: false),
-                    PrimarValueIndex_2 = table.Column<int>(type: "int", nullable: false),
-                    StrengthFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AgilityFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConstitutionFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IntelligenceFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CharismaFinalRange = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    InternalName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SpecificDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SkillSumPrice = table.Column<int>(type: "int", nullable: false),
+                    ProfessionClass = table.Column<int>(type: "int", nullable: false),
+                    LevelGroup = table.Column<int>(type: "int", nullable: false),
+                    ProfessionSkillId = table.Column<int>(type: "int", nullable: false),
+                    Skill_type = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    MaxHealingPoints = table.Column<int>(type: "int", nullable: true),
+                    SpeedOfHealing = table.Column<int>(type: "int", nullable: true),
+                    Initiative = table.Column<int>(type: "int", nullable: true),
+                    InitiativeText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryWeapon = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Characters", x => x.Id);
+                    table.PrimaryKey("PK_SpecificSkill", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Characters_Professions_ProfessionId",
-                        column: x => x.ProfessionId,
-                        principalTable: "Professions",
-                        principalColumn: "ProfessionId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_SpecificSkill_ProfessionSkill_ProfessionSkillId",
+                        column: x => x.ProfessionSkillId,
+                        principalTable: "ProfessionSkill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,7 +370,7 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.WorldId,
                         principalTable: "Worlds",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -329,13 +388,13 @@ namespace HeroesOfLegends.Data.Migrations
                         column: x => x.RacesRaceId,
                         principalTable: "Races",
                         principalColumn: "RaceId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_RaceWorld_Worlds_WorldsId",
                         column: x => x.WorldsId,
                         principalTable: "Worlds",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -343,35 +402,104 @@ namespace HeroesOfLegends.Data.Migrations
                 columns: table => new
                 {
                     NarrativesId = table.Column<int>(type: "int", nullable: false),
-                    ProfessionsProfessionId = table.Column<int>(type: "int", nullable: false)
+                    ProfessionsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NarrativeProfession", x => new { x.NarrativesId, x.ProfessionsProfessionId });
+                    table.PrimaryKey("PK_NarrativeProfession", x => new { x.NarrativesId, x.ProfessionsId });
                     table.ForeignKey(
                         name: "FK_NarrativeProfession_Naratives_NarrativesId",
                         column: x => x.NarrativesId,
                         principalTable: "Naratives",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NarrativeProfession_Professions_ProfessionsProfessionId",
-                        column: x => x.ProfessionsProfessionId,
+                        name: "FK_NarrativeProfession_Professions_ProfessionsId",
+                        column: x => x.ProfessionsId,
                         principalTable: "Professions",
-                        principalColumn: "ProfessionId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProfessionSkill",
+                columns: new[] { "Id", "BaseDescription", "BaseProfessionPoint", "CreatetByUserName", "DependencySkillId", "DependencySkillName", "KnowledgeGroup", "ProfessionClass", "SkillClass", "SkillName" },
+                values: new object[,]
+                {
+                    { 1, "", 2, "Admin", 0, "", 0, 1, 0, "Léčba vlastních zranění II" },
+                    { 2, "", 1, "Admin", 0, "", 0, 1, 0, "Odhad soupeře" },
+                    { 3, "", 1, "Admin", 0, "", 0, 1, 0, "Odhad zbraně" },
+                    { 4, "", 1, "Admin", 0, "", 0, 1, 0, "Poznání artefaktu" },
+                    { 5, "", 2, "Admin", 0, "", 0, 1, 0, "Přesnost" },
+                    { 6, "", 1, "Admin", 0, "", 0, 1, 0, "Sehranost" },
+                    { 7, "", 4, "Admin", 0, "", 0, 1, 0, "Vícenásobné útoky" },
+                    { 8, "", 1, "Admin", 0, "", 0, 1, 0, "Zastrašení" },
+                    { 9, "", 1, "Admin", 0, "", 0, 8, 2, "Boj se zvýřaty" },
+                    { 10, "", 2, "Admin", 0, "", 0, 8, 2, "Stopování" },
+                    { 11, "", 2, "Admin", 0, "", 0, 8, 1, "Hraničářská mana" },
+                    { 12, "", 3, "Admin", 12, "", 0, 8, 1, "Kouzla" },
+                    { 13, "", 4, "Admin", 0, "", 0, 8, 1, "Mymosmysloví schopnosti" },
+                    { 14, "", 2, "Admin", 12, "", 0, 8, 1, "Zmámení" },
+                    { 15, "", 2, "Admin", 0, "", 0, 8, 2, "Pes" },
+                    { 16, "", 1, "Admin", 0, "", 0, 11, 3, "Odolnost proti jedům" },
+                    { 17, "", 1, "Admin", 0, "", 0, 11, 3, "Lučba a magenergie" },
+                    { 18, "", 3, "Admin", 17, "", 0, 11, 3, "Lektvary" },
+                    { 19, "", 1, "Admin", 17, "", 0, 11, 3, "Svitky" },
+                    { 20, "", 1, "Admin", 17, "", 0, 11, 3, "Ostatní" },
+                    { 21, "", 1, "Admin", 17, "", 0, 11, 3, "Zbraně" },
+                    { 22, "", 1, "Admin", 17, "", 0, 11, 3, "Prsteny" },
+                    { 23, "", 3, "Admin", 17, "", 0, 11, 3, "Jedy" },
+                    { 24, "", 3, "Admin", 17, "", 0, 11, 3, "Výbušniny" },
+                    { 25, "", 2, "Admin", 26, "", 0, 5, 1, "Kouzelnický přítel" },
+                    { 26, "", 4, "Admin", 0, "", 0, 5, 1, "Kouzelnická magenergie" },
+                    { 27, "", 2, "Admin", 26, "", 0, 5, 1, "Časoprostorová magie" },
+                    { 28, "", 1, "Admin", 26, "", 0, 5, 1, "Energetická útočná magie" },
+                    { 29, "", 1, "Admin", 26, "", 0, 5, 1, "Energetická obranná magie" },
+                    { 30, "", 1, "Admin", 26, "", 0, 5, 1, "Materiální magie" },
+                    { 31, "", 1, "Admin", 26, "", 0, 5, 1, "Vitální magie" },
+                    { 32, "", 1, "Admin", 26, "", 0, 5, 1, "Psychická magie" },
+                    { 33, "", 1, "Admin", 26, "", 0, 5, 1, "Poznávací magie" },
+                    { 34, "", 1, "Admin", 26, "", 0, 5, 1, "Iluzivní magie" },
+                    { 35, "", 2, "Admin", 0, "", 0, 14, 6, "Převleky" },
+                    { 36, "", 1, "Admin", 0, "", 0, 14, 6, "Zisk důvěry" },
+                    { 37, "", 1, "Admin", 0, "", 0, 14, 6, "Objevení mechanismu" },
+                    { 38, "", 1, "Admin", 0, "", 0, 14, 6, "Objevení objektu" },
+                    { 39, "", 2, "Admin", 0, "", 0, 14, 6, "Šplh po zdech" },
+                    { 40, "", 1, "Admin", 0, "", 0, 14, 6, "Skok z výšky" },
+                    { 41, "", 1, "Admin", 0, "", 0, 14, 6, "Tichý pohyb" },
+                    { 42, "", 1, "Admin", 0, "", 0, 14, 6, "Schování se ve stínu" },
+                    { 43, "", 1, "Admin", 0, "", 0, 14, 6, "Vybírání kapes" },
+                    { 44, "", 1, "Admin", 0, "", 0, 14, 6, "Otevření objetu" },
+                    { 45, "", 1, "Admin", 0, "", 0, 14, 6, "Zneškodnění mechanismu" },
+                    { 46, "", 3, "Admin", 0, "", 0, 14, 0, "Probodnutí ze zálohy" },
+                    { 47, "", 1, "Admin", 0, "", 0, 18, 0, "Léčba vlastních zranění I" },
+                    { 48, "", 4, "Admin", 0, "", 0, 18, 0, "Vícenásobné útoky ve střelbě" },
+                    { 49, "", 1, "Admin", 0, "", 0, 18, 0, "Zrak" },
+                    { 50, "", 1, "Admin", 0, "", 0, 18, 0, "Odhad střelných zbraní" },
+                    { 51, "", 1, "Admin", 0, "", 0, 18, 0, "Odhad soupeře" },
+                    { 52, "", 5, "Admin", 0, "", 0, 18, 5, "Výroba šípů" },
+                    { 53, "", 1, "Admin", 0, "", 0, 18, 0, "Krok a střelba" },
+                    { 54, "", 1, "Admin", 0, "", 0, 0, 7, "Životy 1k6" },
+                    { 55, "", 2, "Admin", 0, "", 0, 0, 7, "Životy 1k6+1" },
+                    { 56, "", 3, "Admin", 0, "", 0, 0, 7, "Životy 1k6+2" },
+                    { 57, "", 4, "Admin", 0, "", 0, 0, 7, "Životy 1k10" },
+                    { 58, "", 1, "Admin", 0, "", 0, 0, 7, "Sum range 23-24" },
+                    { 59, "", 2, "Admin", 0, "", 0, 0, 7, "Sum range 25" },
+                    { 60, "", 3, "Admin", 0, "", 0, 0, 7, "Sum range 26" },
+                    { 61, "", 4, "Admin", 0, "", 0, 0, 7, "Sum range 27-28" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Professions",
-                columns: new[] { "ProfessionId", "AtributePointed", "Description", "GetHpDiceRoll", "GetProfessionPointedDiceRoll", "HpAllDiceRolls", "HpPointeded", "Level", "ManaAlchemistBool", "ManaRengerBool", "ManaWizardBool", "Name", "ProfessionPoint" },
+                columns: new[] { "Id", "AlchemiMana", "Description", "HasAlchemiMana", "HasRengerMana", "HasSpecialdMana", "HasWizardMana", "HpRangeMax", "HpRangeMin", "Level", "Name", "RengerMana", "SpecialdMana", "WizardMana" },
                 values: new object[,]
                 {
-                    { 1, 25, "Válečník je silný a houževnatý. Vládne mnoha druhy zbraní a umí se v jejich používání zdokonalovat. V boji má větší šanci, že nepřítele zasáhne. A vzhledem k tomu, že bitvy a souboje jsou v Dračím doupěti běžné, je pro každou družinu nezbytné, aby ve svém středu měla jednoho nebo více válečníků. Postavy jiných povolání sice také mohou bojovat, ale mohou být svázány rozličnými omezeními. Válečníci jsou jediní, kteří boj skutečně studují a mají v něm některé výhody, které žádné jiné povolání nemá.", "[10]", 1, true, 4, 3, false, false, false, "Válečník", 18 },
-                    { 2, 24, "Hraničář je silný a moudrý. Zná přírodu a tvory, kteří ji obývají, a umí svých znalostí využívat. V boji má určitá omezení, ale stále může být platným bojovníkem po boku válečníka. Kromě toho je vhodný jako silná zadní stráž v družinách, které nemají dost válečníků (a takových družin bude většina).\r\nHraničáři zpravidla žijí v hlubokých hvozdech, kde sami, jen se svými psy, střeží stezky a pomáhají těm, kdo pomoc potřebují. Proto jsou takřka všude vítanými hosty. Dlouholetým stykem s přírodou a přírodní magií se u nich vyvíjejí i jisté nadpřirozené schopnosti, které jim pomáhají při jejich nebezpečném a osamoceném životě alespoň tak se to mezi lidmi povídá.\r\nHraničáři se dají přemluvit, aby se připojili k družině. Jsou vynikajícími lovci a stopaři a proto jsou neocenitelní při dobrodružstvích ve volné přírodě. Ale jejich mimořádné schopnosti jsou užitečné i jinde, například v podzemí. V boji i mimo něj je hraničář hodnotným členem každé družiny.\r\n", "[6]", 4, true, 1, 1, false, true, false, "Hraničář", 21 },
-                    { 3, 27, "Alchymista je šikovný a leccos vydrží. Zabývá se výrobou lektvarů a různých kouzelných předmětů. V boji většinou nepomáhá přímo, ale prostřednictvím svého umění. Alchymisté se liší od kouzelníků svým přístupem k magii. Zatímco kouzelníci rozvíjejí svou inteligenci a z ní získávají magenergii, alchymisté ji destilují z různých předmětů a záleží jen na jejich obratnosti, zda a kolik magenergie se jim z nich podaří vytěžit.\r\nDíky tomu jsou alchymisté bližší \"obyčejným\" lidem než kouzelníci a nevzbuzují u nich strach. Přesto mají svým způsobem mnohem důvěrnější vztah k magenergii než jiná povolání nadaná schopností kouzlit.\r\nAlchymistovy kouzelné předměty mohou být užitečné v mnoha různých situacích. Jejich účinky se často liší od účinků kouzelníkových kouzel a žádná družina neprodělá, když bude mít alchymistu ve svém středu.\r\n", "[6]", 6, true, 2, 1, true, false, false, "Alchymista", 23 },
-                    { 4, 24, "Kouzelník je chytrý a umí ovlivňovat druhé. Není příliš silný v boji, ale vynahrazuje si to svými zvláštními schopnostmi, zejména studiem kouzel. Kouzelníci byli vždy terčem nejrůznějších dohadů a nikdo vlastně neví, co všechno mohou dokázat. Lidé se k nim chovají uctivě, ale podezřívavě a se strachem. Kouzelníci sami dávají přednost samotě, ve které studují svá kouzla, a stýkají se jenom se svým učitelem.\r\nKouzla jsou přirozenou so částí světa. Jsou předměty, které jsou bezcenné pro někoho, kdo se v kouzlech nevyzná, a které se mohou stát strašnou zbraní v rukou mága.\r\nŘadu situaci je mnohem lehčí vyřešit pomoci kouzla než obvyklým způsobem. Ale pozor! Nejde to vždy a zvláště zpočátku jsou kouzla spíše vzácná.\r\nPro své mimořádné schopnosti je kouzelník vyhledávaným členem každé družiny. Je pravda, že většinu času alespoň zpočátku - zůstávají tyto schopnosti nevyužity, ale okamžik, kdy je použije, může znamenat rozhodující zvrat v celém dobrodružství.\r\n", "[6]", 2, true, 1, 1, false, false, true, "Kouzelník", 19 },
-                    { 5, 25, "Zloděj je mrštný a umí se vloudit do přízně jiných lidí. V boji zpravidla nestojí v první řadě a není to ani jeho poslání, ale dokáže i tvrdě zasáhnout.\r\nZloději jsou odborníky na nebezpečné situace, které vyžadují vtip a obratnost místo hrubé síly. Zloději studují své řemeslo v obávaném zlodějském cechu a prostí lidé si vyprávějí bájné zkazky o jejich umění. O zlodějích, kteří sami pronikli do přísně střežených pevností nebo zakletých hrobek a ukradli královské poklady, o zlodějích, kteří unikli z okovů v podzemním žaláři, hlídaném těmi nejlepšími z královské gardy.\r\nZloději z pochopitelných důvodů jen neradi odhalují svou profesi. Dokážou být velice zábavní společníci, snadno si získají přízeň jiných lidí a zjisti tak množství zajímavých informaci. Ty pak využijí ke svému prospěchu, nebo k prospěchu družiny.\r\nDíky svým pozoruhodným schopnostem, které nemá žádné jiné povolání, je zloděj žádaným členem v každé družině. Postavám, se kterými půjde, ušetří mnoho nesnází.\r\n", "[6]", 3, true, 1, 1, false, false, false, "Zloděj", 20 }
+                    { 1, 0, "Zkušený bojovník, který se specializuje na zbraně a bojovou taktiku. Je fyzicky zdatný a často nosí těžké brnění. Válečníci vedou své spojence do bitvy a používají svou sílu a odvahu k ochraně ostatních. Jsou loajální a čestní, připravení postavit se jakékoli hrozbě.", false, false, false, false, 10, 1, 1, "Válečník", 0, 0, 0 },
+                    { 2, 0, "Mistr magie, ovládající sílu živlů a starodávných kouzel. Často se věnuje studiu mystických textů a hledá tajemství ukrytá ve stínech. Kouzelníci jsou schopni léčit, klamat nepřátele nebo vytvářet ničivá kouzla. Jsou intelektuálně založení a často se spoléhají na svou moudrost a znalosti.", false, false, false, true, 6, 1, 1, "Kouzelník", 0, 0, 7 },
+                    { 3, 9, "Vědec a badatel, který míchá elixíry a hledá tajemství transmutace. Alchymisté jsou známí svou schopností vytvářet léčivé lektvary, výbušniny a různé magické substance. Jejich práce často hraničí s tajemnem a někteří se snaží najít kámen mudrců. Je to povolání plné experimentů a objevů.", true, false, false, false, 8, 1, 1, "Alchymista", 0, 0, 0 },
+                    { 4, 0, "Mistr lukostřelby a lovec, který se specializuje na střelbu z dálky. Lučištníci jsou rychlí a obratní, schopní zasáhnout nepřítele z velké vzdálenosti. Používají luky, kuše a střelné zbraně k ochraně svých spojenců a lovu zvěře. Jsou často samotáři a preferují život v divočině.", false, false, false, false, 8, 1, 1, "Lučištník", 0, 0, 0 },
+                    { 5, 0, "Mistr lstí a skrytých operací, který se specializuje na krádeže a infiltraci. Je rychlý, tichý a vysoce obratný, což mu umožňuje snadno unikat nepřátelům. Zloději využívají své dovednosti k získávání informací a cenností. Jsou inteligentní a vynalézaví, často pracující ve stínu.", false, false, false, false, 6, 1, 1, "Zloděj", 0, 0, 0 },
+                    { 6, 0, "Mistr přežití v divočině, který často slouží jako stopař a strážce. Má hluboké znalosti o přírodě a umí se pohybovat nepozorovaně. Hraničáři bývají vynikající lučištníci a lovci, kteří využívají svých dovedností k ochraně říše před nebezpečím. Spojují fyzickou zdatnost s bystrým instinktem.", false, true, false, false, 7, 1, 1, "Hraničář", 0, 0, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -390,12 +518,12 @@ namespace HeroesOfLegends.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Worlds",
-                columns: new[] { "Id", "WorldName" },
+                columns: new[] { "Id", "AmountOfMagicInTheWorld", "WorldDescription", "WorldName" },
                 values: new object[,]
                 {
-                    { 1, "Fantasy svět" },
-                    { 2, "Postapo" },
-                    { 3, "Reálný svět" }
+                    { 1, 100, "", "Fantasy svět" },
+                    { 2, 25, "", "Postapo" },
+                    { 3, 0, "", "Reálný svět" }
                 });
 
             migrationBuilder.InsertData(
@@ -406,6 +534,46 @@ namespace HeroesOfLegends.Data.Migrations
                     { 1, "Císaře C-Chou", "Příběh ve vzdálené číně", "Čína", 1, 679 },
                     { 2, "III", "Boje v Persii", "Řecko", 1, 679 },
                     { 3, "XXI", "podle Pc hry", "Warhammer", 2, 3754 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SpecificSkill",
+                columns: new[] { "Id", "InternalName", "Level", "LevelGroup", "MaxHealingPoints", "ProfessionClass", "ProfessionSkillId", "SkillSumPrice", "Skill_type", "SpecificDescription", "SpeedOfHealing" },
+                values: new object[,]
+                {
+                    { 1, "Healing", 2, 3, 2, 1, 1, 20, "healing", "Postava si může vyléčit 2 za 2 směn/y životů", 2 },
+                    { 2, "Healing", 3, 3, 4, 1, 1, 20, "healing", "Postava si může vyléčit 4 za 3 směn/y životů", 3 },
+                    { 3, "Healing", 4, 3, 6, 1, 1, 20, "healing", "Postava si může vyléčit 6 za 3 směn/y životů", 3 },
+                    { 4, "Healing", 5, 3, 8, 1, 1, 20, "healing", "Postava si může vyléčit 8 za 3 směn/y životů", 3 },
+                    { 5, "Healing", 6, 3, 10, 1, 1, 20, "healing", "Postava si může vyléčit 10 za 3 směn/y životů", 3 },
+                    { 6, "Healing", 7, 3, 12, 1, 1, 20, "healing", "Postava si může vyléčit 12 za 3 směn/y životů", 3 },
+                    { 7, "Healing", 8, 3, 14, 1, 1, 20, "healing", "Postava si může vyléčit 14 za 3 směn/y životů", 3 },
+                    { 8, "Healing", 9, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 3 směn/y životů", 3 },
+                    { 9, "Healing", 15, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 4 směn/y životů", 4 },
+                    { 10, "Healing", 16, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 4 směn/y životů", 4 },
+                    { 11, "Healing", 25, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 5 směn/y životů", 5 },
+                    { 12, "Healing", 35, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 6 směn/y životů", 6 },
+                    { 13, "Healing", 2, 3, 1, 18, 16, 20, "healing", "Postava si může vyléčit 1 za 1 směn/y životů", 1 },
+                    { 14, "Healing", 3, 3, 2, 18, 16, 20, "healing", "Postava si může vyléčit 2 za 2 směn/y životů", 2 },
+                    { 15, "Healing", 4, 3, 3, 18, 16, 20, "healing", "Postava si může vyléčit 3 za 3 směn/y životů", 3 },
+                    { 16, "Healing", 5, 3, 4, 18, 16, 20, "healing", "Postava si může vyléčit 4 za 3 směn/y životů", 3 },
+                    { 17, "Healing", 6, 1, 5, 18, 16, 20, "healing", "Postava si může vyléčit 5 za 3 směn/y životů", 3 },
+                    { 18, "Healing", 7, 3, 6, 18, 16, 20, "healing", "Postava si může vyléčit 6 za 3 směn/y životů", 3 },
+                    { 19, "Healing", 8, 3, 7, 18, 16, 20, "healing", "Postava si může vyléčit 7 za 3 směn/y životů", 3 },
+                    { 20, "Healing", 6, 3, 8, 18, 16, 20, "healing", "Postava si může vyléčit 8 za 3 směn/y životů", 3 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "SpecificSkill",
+                columns: new[] { "Id", "CategoryWeapon", "Initiative", "InitiativeText", "InternalName", "Level", "LevelGroup", "ProfessionClass", "ProfessionSkillId", "SkillSumPrice", "Skill_type", "SpecificDescription" },
+                values: new object[,]
+                {
+                    { 21, 3, 3, "3/2", "MultipleAttack", 5, 0, 1, 7, 20, "multiple_attack", "Postava může zaútočit 2x v prvním kole a v dalším kole 1x" },
+                    { 22, 1, 6, "2/1", "MultipleAttack", 10, 1, 4, 7, 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
+                    { 23, 3, 6, "2/1", "MultipleAttack", 15, 1, 4, 7, 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
+                    { 24, 1, 9, "5/2", "MultipleAttack", 16, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" },
+                    { 25, 1, 12, "3/1", "MultipleAttack", 27, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 3x v každém kole" },
+                    { 26, 3, 9, "5/2", "MultipleAttack", 28, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -448,9 +616,9 @@ namespace HeroesOfLegends.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Characters_ProfessionId",
-                table: "Characters",
-                column: "ProfessionId");
+                name: "IX_BindingProfessionsSkills_ProfessionSkillId",
+                table: "BindingProfessionsSkills",
+                column: "ProfessionSkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Naratives_WorldId",
@@ -458,14 +626,19 @@ namespace HeroesOfLegends.Data.Migrations
                 column: "WorldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NarrativeProfession_ProfessionsProfessionId",
+                name: "IX_NarrativeProfession_ProfessionsId",
                 table: "NarrativeProfession",
-                column: "ProfessionsProfessionId");
+                column: "ProfessionsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RaceWorld_WorldsId",
                 table: "RaceWorld",
                 column: "WorldsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SpecificSkill_ProfessionSkillId",
+                table: "SpecificSkill",
+                column: "ProfessionSkillId");
         }
 
         /// <inheritdoc />
@@ -487,7 +660,7 @@ namespace HeroesOfLegends.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Fights");
+                name: "BindingProfessionsSkills");
 
             migrationBuilder.DropTable(
                 name: "Characters");
@@ -497,6 +670,9 @@ namespace HeroesOfLegends.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "RaceWorld");
+
+            migrationBuilder.DropTable(
+                name: "SpecificSkill");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -512,6 +688,9 @@ namespace HeroesOfLegends.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Races");
+
+            migrationBuilder.DropTable(
+                name: "ProfessionSkill");
 
             migrationBuilder.DropTable(
                 name: "Worlds");

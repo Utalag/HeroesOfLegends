@@ -22,5 +22,11 @@ namespace CharacterBook.Controllers.Api
             return professionManager.GetAllData();
         }
 
+        [HttpPost("NewProfession")]
+        public IActionResult InsertProfesion([FromBody] ProfessionDto profession)
+        {
+            ProfessionDto professionDto = professionManager.AddData(profession);
+            return StatusCode(StatusCodes.Status201Created,professionDto);
+        }
     }
 }

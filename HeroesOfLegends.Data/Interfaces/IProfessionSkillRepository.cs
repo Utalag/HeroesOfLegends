@@ -9,9 +9,27 @@ namespace HeroesOfLegends.Data.Interfaces
 {
     public interface IProfessionSkillRepository : IGenericCRUD<ProfessionSkill>
     {
-        IEnumerable<ProfessionSkill> GetSkillClass(SkillClassEnum skill);
-        Task<IEnumerable<ProfessionSkill>> GetSkillClassAsync(SkillClassEnum skill);
-        IEnumerable<ProfessionSkill> GetSkillsByLevel(int level);
-        Task<IEnumerable<ProfessionSkill>> GetSkillsByLevelAsync(int level);
+        
+        IEnumerable<ProfessionSkill> GetSkillClass(SkillClassEnum skillClass);
+
+
+
+
+        // ----------------- Async -----------------
+        Task<IEnumerable<ProfessionSkill>> GetSkillClassAsync(SkillClassEnum skillClass);
+        Task<IEnumerable<ProfessionSkill>> KnowledgeGroupAsync(LevelGroupEnum knowledgeGroup);
+        Task<IEnumerable<ProfessionSkill>> ProfessionClassAsync(ProfessionClassEnum professionClass);
+
+
+
+
+
+
+
+
+
+        Task<IEnumerable<ProfessionSkill>> GetSkillWithFilter_Async(LevelGroupEnum knowledgeGroup,SkillClassEnum skillClass,ProfessionClassEnum professionClass,bool skillsWithDependecies);
+        IEnumerable<ProfessionSkill> GetProfessionClass(ProfessionClassEnum professionClass);
+        IEnumerable<ProfessionSkill> GetSkillWithIds(List<int> ids);
     }
 }

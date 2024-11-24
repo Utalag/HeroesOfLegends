@@ -1,4 +1,5 @@
-﻿using HeroesOfLegends.Businsess.Interfaces;
+﻿using AutoMapper;
+using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Models;
@@ -12,11 +13,10 @@ namespace HeroesOfLegends.Businsess.Managers
     {
         private readonly IRaceRepository repository;
 
-        public CharacterManager(HoLDbContext db,ILogger<DbSet<Character>> logger,IRaceRepository repository) : base(db,logger)
+        public CharacterManager(HoLDbContext db,ILogger<DbSet<Character>> logger,IMapper mapper,IRaceRepository repository) : base(db,logger,mapper)
         {
             this.repository = repository;
         }
-
     };
 
 }

@@ -1,4 +1,5 @@
-﻿using HeroesOfLegends.Businsess.Interfaces;
+﻿using AutoMapper;
+using HeroesOfLegends.Businsess.Interfaces;
 using HeroesOfLegends.Businsess.Models;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Models;
@@ -12,7 +13,7 @@ namespace HeroesOfLegends.Businsess.Managers
     {
         private readonly INarrativeRepository repository;
 
-        public NarrativeManager(HoLDbContext db,ILogger<DbSet<NarrativeDto>> logger,INarrativeRepository repository) : base(db,logger)
+        public NarrativeManager(HoLDbContext db,ILogger<DbSet<NarrativeDto>> logger,INarrativeRepository repository,IMapper mapper) : base(db,logger,mapper)
         {
             this.repository = repository;
         }
