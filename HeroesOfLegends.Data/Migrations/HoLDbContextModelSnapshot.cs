@@ -25,21 +25,6 @@ namespace HeroesOfLegends.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BindingProfessionsSkills", b =>
-                {
-                    b.Property<int>("ProfessionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProfessionSkillId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProfessionId", "ProfessionSkillId");
-
-                    b.HasIndex("ProfessionSkillId");
-
-                    b.ToTable("BindingProfessionsSkills");
-                });
-
             modelBuilder.Entity("HeroesOfLegends.Data.Models.Character", b =>
                 {
                     b.Property<int>("Id")
@@ -232,6 +217,9 @@ namespace HeroesOfLegends.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProfiPoints")
+                        .HasColumnType("int");
+
                     b.Property<int>("RengerMana")
                         .HasColumnType("int");
 
@@ -259,6 +247,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Válečník",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 0
@@ -276,6 +265,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Kouzelník",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 7
@@ -293,6 +283,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Alchymista",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 0
@@ -310,6 +301,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Lučištník",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 0
@@ -327,6 +319,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Zloděj",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 0
@@ -344,6 +337,7 @@ namespace HeroesOfLegends.Data.Migrations
                             HpRangeMin = 1,
                             Level = 1,
                             Name = "Hraničář",
+                            ProfiPoints = 0,
                             RengerMana = 0,
                             SpecialdMana = 0,
                             WizardMana = 0
@@ -1568,6 +1562,10 @@ namespace HeroesOfLegends.Data.Migrations
                     b.Property<int>("ProfessionSkillId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ProfessionSkillName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("SkillSumPrice")
                         .HasColumnType("int");
 
@@ -1851,6 +1849,51 @@ namespace HeroesOfLegends.Data.Migrations
                     b.ToTable("NarrativeProfession");
                 });
 
+            modelBuilder.Entity("ProfessionProfessionSkill", b =>
+                {
+                    b.Property<int>("BeginnerSkillsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfessionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BeginnerSkillsId", "ProfessionId");
+
+                    b.HasIndex("ProfessionId");
+
+                    b.ToTable("BindTable_Beginner_ProfessionSkill", (string)null);
+                });
+
+            modelBuilder.Entity("ProfessionProfessionSkill1", b =>
+                {
+                    b.Property<int>("AdvancedSkillsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Profession1Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("AdvancedSkillsId", "Profession1Id");
+
+                    b.HasIndex("Profession1Id");
+
+                    b.ToTable("BindTable_Advanced_ProfessionSkill", (string)null);
+                });
+
+            modelBuilder.Entity("ProfessionProfessionSkill2", b =>
+                {
+                    b.Property<int>("ExpertSkillsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Profession2Id")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExpertSkillsId", "Profession2Id");
+
+                    b.HasIndex("Profession2Id");
+
+                    b.ToTable("BindTable_Expert_ProfessionSkill", (string)null);
+                });
+
             modelBuilder.Entity("RaceWorld", b =>
                 {
                     b.Property<int>("RacesRaceId")
@@ -1887,6 +1930,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.",
                             MaxHealingPoints = 2,
@@ -1900,6 +1944,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.",
                             MaxHealingPoints = 4,
@@ -1913,6 +1958,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.",
                             MaxHealingPoints = 6,
@@ -1926,6 +1972,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.",
                             MaxHealingPoints = 8,
@@ -1939,6 +1986,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 10 Hp za den.",
                             MaxHealingPoints = 10,
@@ -1952,6 +2000,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 12 Hp za den.",
                             MaxHealingPoints = 12,
@@ -1965,6 +2014,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 14 Hp za den.",
                             MaxHealingPoints = 14,
@@ -1978,6 +2028,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 16 Hp za den.",
                             MaxHealingPoints = 16,
@@ -1991,6 +2042,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.",
                             MaxHealingPoints = 16,
@@ -2004,6 +2056,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.",
                             MaxHealingPoints = 16,
@@ -2017,6 +2070,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 5 Hp za 1 směnu, maximálně 16 Hp za den.",
                             MaxHealingPoints = 16,
@@ -2030,6 +2084,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 1,
                             ProfessionSkillId = 1,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 6 Hp za 1 směnu, maximálně 16 Hp za den.",
                             MaxHealingPoints = 16,
@@ -2043,6 +2098,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 1 Hp za 1 směnu, maximálně 1 Hp za den.",
                             MaxHealingPoints = 1,
@@ -2056,6 +2112,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.",
                             MaxHealingPoints = 2,
@@ -2069,6 +2126,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 3 Hp za den.",
                             MaxHealingPoints = 3,
@@ -2082,6 +2140,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.",
                             MaxHealingPoints = 4,
@@ -2095,6 +2154,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 1,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 5 Hp za den.",
                             MaxHealingPoints = 5,
@@ -2108,6 +2168,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.",
                             MaxHealingPoints = 6,
@@ -2121,6 +2182,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 7 Hp za den.",
                             MaxHealingPoints = 7,
@@ -2134,6 +2196,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 3,
                             ProfessionClass = 18,
                             ProfessionSkillId = 16,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.",
                             MaxHealingPoints = 8,
@@ -2166,6 +2229,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 0,
                             ProfessionClass = 1,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 2x v prvním kole a v dalším kole 1x",
                             CategoryWeapon = 3,
@@ -2180,6 +2244,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 1,
                             ProfessionClass = 4,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 2x v každém kole",
                             CategoryWeapon = 1,
@@ -2194,6 +2259,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 1,
                             ProfessionClass = 4,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 2x v každém kole",
                             CategoryWeapon = 3,
@@ -2208,6 +2274,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 2,
                             ProfessionClass = 4,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 5x v prvním kole a v dalším kole 2x",
                             CategoryWeapon = 1,
@@ -2222,6 +2289,7 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 2,
                             ProfessionClass = 4,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 3x v každém kole",
                             CategoryWeapon = 1,
@@ -2236,27 +2304,13 @@ namespace HeroesOfLegends.Data.Migrations
                             LevelGroup = 2,
                             ProfessionClass = 4,
                             ProfessionSkillId = 7,
+                            ProfessionSkillName = "",
                             SkillSumPrice = 20,
                             SpecificDescription = "Postava může zaútočit 5x v prvním kole a v dalším kole 2x",
                             CategoryWeapon = 3,
                             Initiative = 9,
                             InitiativeText = "5/2"
                         });
-                });
-
-            modelBuilder.Entity("BindingProfessionsSkills", b =>
-                {
-                    b.HasOne("HeroesOfLegends.Data.Models.Profession", null)
-                        .WithMany()
-                        .HasForeignKey("ProfessionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HeroesOfLegends.Data.Models.ProfessionSkill", null)
-                        .WithMany()
-                        .HasForeignKey("ProfessionSkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("HeroesOfLegends.Data.Models.Narrative", b =>
@@ -2343,6 +2397,51 @@ namespace HeroesOfLegends.Data.Migrations
                     b.HasOne("HeroesOfLegends.Data.Models.Profession", null)
                         .WithMany()
                         .HasForeignKey("ProfessionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProfessionProfessionSkill", b =>
+                {
+                    b.HasOne("HeroesOfLegends.Data.Models.ProfessionSkill", null)
+                        .WithMany()
+                        .HasForeignKey("BeginnerSkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeroesOfLegends.Data.Models.Profession", null)
+                        .WithMany()
+                        .HasForeignKey("ProfessionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProfessionProfessionSkill1", b =>
+                {
+                    b.HasOne("HeroesOfLegends.Data.Models.ProfessionSkill", null)
+                        .WithMany()
+                        .HasForeignKey("AdvancedSkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeroesOfLegends.Data.Models.Profession", null)
+                        .WithMany()
+                        .HasForeignKey("Profession1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProfessionProfessionSkill2", b =>
+                {
+                    b.HasOne("HeroesOfLegends.Data.Models.ProfessionSkill", null)
+                        .WithMany()
+                        .HasForeignKey("ExpertSkillsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HeroesOfLegends.Data.Models.Profession", null)
+                        .WithMany()
+                        .HasForeignKey("Profession2Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

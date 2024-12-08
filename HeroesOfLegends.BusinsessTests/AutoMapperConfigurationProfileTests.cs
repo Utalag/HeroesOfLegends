@@ -32,7 +32,7 @@ namespace HeroesOfLegends.Businsess.Models.Tests
             {
                 Id = 1,
                 Name = "Warrior",
-                ProfessionSkills = new List<ProfessionSkill>
+                AllSkills = new List<ProfessionSkill>
                         {
                             new ProfessionSkill { Id = 1, SkillName = "Swordsmanship" },
                             new ProfessionSkill { Id = 2, SkillName = "Shield Defense" }
@@ -50,8 +50,8 @@ namespace HeroesOfLegends.Businsess.Models.Tests
             Assert.IsNotNull(professionDto);
             Assert.AreEqual(profession.Id,professionDto.Id);
             Assert.AreEqual(profession.Name,professionDto.Name);
-            Assert.AreEqual(profession.ProfessionSkills.Count,professionDto.SkillIds.Count);
-            CollectionAssert.AreEqual(profession.ProfessionSkills.Select(ps => ps.Id).ToList(),professionDto.SkillIds);
+            Assert.AreEqual(profession.AllSkills.Count,professionDto.SkillIds.Count);
+            CollectionAssert.AreEqual(profession.AllSkills.Select(ps => ps.Id).ToList(),professionDto.SkillIds);
 
             foreach (var skillId in professionDto.SkillIds)
             {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HeroesOfLegends.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initData : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -103,7 +103,8 @@ namespace HeroesOfLegends.Data.Migrations
                     AlchemiMana = table.Column<int>(type: "int", nullable: false),
                     HasAlchemiMana = table.Column<bool>(type: "bit", nullable: false),
                     SpecialdMana = table.Column<int>(type: "int", nullable: false),
-                    HasSpecialdMana = table.Column<bool>(type: "bit", nullable: false)
+                    HasSpecialdMana = table.Column<bool>(type: "bit", nullable: false),
+                    ProfiPoints = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -296,24 +297,72 @@ namespace HeroesOfLegends.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BindingProfessionsSkills",
+                name: "BindTable_Advanced_ProfessionSkill",
                 columns: table => new
                 {
-                    ProfessionId = table.Column<int>(type: "int", nullable: false),
-                    ProfessionSkillId = table.Column<int>(type: "int", nullable: false)
+                    AdvancedSkillsId = table.Column<int>(type: "int", nullable: false),
+                    Profession1Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BindingProfessionsSkills", x => new { x.ProfessionId, x.ProfessionSkillId });
+                    table.PrimaryKey("PK_BindTable_Advanced_ProfessionSkill", x => new { x.AdvancedSkillsId, x.Profession1Id });
                     table.ForeignKey(
-                        name: "FK_BindingProfessionsSkills_ProfessionSkill_ProfessionSkillId",
-                        column: x => x.ProfessionSkillId,
+                        name: "FK_BindTable_Advanced_ProfessionSkill_ProfessionSkill_AdvancedSkillsId",
+                        column: x => x.AdvancedSkillsId,
                         principalTable: "ProfessionSkill",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BindingProfessionsSkills_Professions_ProfessionId",
+                        name: "FK_BindTable_Advanced_ProfessionSkill_Professions_Profession1Id",
+                        column: x => x.Profession1Id,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BindTable_Beginner_ProfessionSkill",
+                columns: table => new
+                {
+                    BeginnerSkillsId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BindTable_Beginner_ProfessionSkill", x => new { x.BeginnerSkillsId, x.ProfessionId });
+                    table.ForeignKey(
+                        name: "FK_BindTable_Beginner_ProfessionSkill_ProfessionSkill_BeginnerSkillsId",
+                        column: x => x.BeginnerSkillsId,
+                        principalTable: "ProfessionSkill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BindTable_Beginner_ProfessionSkill_Professions_ProfessionId",
                         column: x => x.ProfessionId,
+                        principalTable: "Professions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BindTable_Expert_ProfessionSkill",
+                columns: table => new
+                {
+                    ExpertSkillsId = table.Column<int>(type: "int", nullable: false),
+                    Profession2Id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BindTable_Expert_ProfessionSkill", x => new { x.ExpertSkillsId, x.Profession2Id });
+                    table.ForeignKey(
+                        name: "FK_BindTable_Expert_ProfessionSkill_ProfessionSkill_ExpertSkillsId",
+                        column: x => x.ExpertSkillsId,
+                        principalTable: "ProfessionSkill",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BindTable_Expert_ProfessionSkill_Professions_Profession2Id",
+                        column: x => x.Profession2Id,
                         principalTable: "Professions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -332,6 +381,7 @@ namespace HeroesOfLegends.Data.Migrations
                     ProfessionClass = table.Column<int>(type: "int", nullable: false),
                     LevelGroup = table.Column<int>(type: "int", nullable: false),
                     ProfessionSkillId = table.Column<int>(type: "int", nullable: false),
+                    ProfessionSkillName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Skill_type = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     MaxHealingPoints = table.Column<int>(type: "int", nullable: true),
                     SpeedOfHealing = table.Column<int>(type: "int", nullable: true),
@@ -491,15 +541,15 @@ namespace HeroesOfLegends.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Professions",
-                columns: new[] { "Id", "AlchemiMana", "Description", "HasAlchemiMana", "HasRengerMana", "HasSpecialdMana", "HasWizardMana", "HpRangeMax", "HpRangeMin", "Level", "Name", "RengerMana", "SpecialdMana", "WizardMana" },
+                columns: new[] { "Id", "AlchemiMana", "Description", "HasAlchemiMana", "HasRengerMana", "HasSpecialdMana", "HasWizardMana", "HpRangeMax", "HpRangeMin", "Level", "Name", "ProfiPoints", "RengerMana", "SpecialdMana", "WizardMana" },
                 values: new object[,]
                 {
-                    { 1, 0, "Zkušený bojovník, který se specializuje na zbraně a bojovou taktiku. Je fyzicky zdatný a často nosí těžké brnění. Válečníci vedou své spojence do bitvy a používají svou sílu a odvahu k ochraně ostatních. Jsou loajální a čestní, připravení postavit se jakékoli hrozbě.", false, false, false, false, 10, 1, 1, "Válečník", 0, 0, 0 },
-                    { 2, 0, "Mistr magie, ovládající sílu živlů a starodávných kouzel. Často se věnuje studiu mystických textů a hledá tajemství ukrytá ve stínech. Kouzelníci jsou schopni léčit, klamat nepřátele nebo vytvářet ničivá kouzla. Jsou intelektuálně založení a často se spoléhají na svou moudrost a znalosti.", false, false, false, true, 6, 1, 1, "Kouzelník", 0, 0, 7 },
-                    { 3, 9, "Vědec a badatel, který míchá elixíry a hledá tajemství transmutace. Alchymisté jsou známí svou schopností vytvářet léčivé lektvary, výbušniny a různé magické substance. Jejich práce často hraničí s tajemnem a někteří se snaží najít kámen mudrců. Je to povolání plné experimentů a objevů.", true, false, false, false, 8, 1, 1, "Alchymista", 0, 0, 0 },
-                    { 4, 0, "Mistr lukostřelby a lovec, který se specializuje na střelbu z dálky. Lučištníci jsou rychlí a obratní, schopní zasáhnout nepřítele z velké vzdálenosti. Používají luky, kuše a střelné zbraně k ochraně svých spojenců a lovu zvěře. Jsou často samotáři a preferují život v divočině.", false, false, false, false, 8, 1, 1, "Lučištník", 0, 0, 0 },
-                    { 5, 0, "Mistr lstí a skrytých operací, který se specializuje na krádeže a infiltraci. Je rychlý, tichý a vysoce obratný, což mu umožňuje snadno unikat nepřátelům. Zloději využívají své dovednosti k získávání informací a cenností. Jsou inteligentní a vynalézaví, často pracující ve stínu.", false, false, false, false, 6, 1, 1, "Zloděj", 0, 0, 0 },
-                    { 6, 0, "Mistr přežití v divočině, který často slouží jako stopař a strážce. Má hluboké znalosti o přírodě a umí se pohybovat nepozorovaně. Hraničáři bývají vynikající lučištníci a lovci, kteří využívají svých dovedností k ochraně říše před nebezpečím. Spojují fyzickou zdatnost s bystrým instinktem.", false, true, false, false, 7, 1, 1, "Hraničář", 0, 0, 0 }
+                    { 1, 0, "Zkušený bojovník, který se specializuje na zbraně a bojovou taktiku. Je fyzicky zdatný a často nosí těžké brnění. Válečníci vedou své spojence do bitvy a používají svou sílu a odvahu k ochraně ostatních. Jsou loajální a čestní, připravení postavit se jakékoli hrozbě.", false, false, false, false, 10, 1, 1, "Válečník", 0, 0, 0, 0 },
+                    { 2, 0, "Mistr magie, ovládající sílu živlů a starodávných kouzel. Často se věnuje studiu mystických textů a hledá tajemství ukrytá ve stínech. Kouzelníci jsou schopni léčit, klamat nepřátele nebo vytvářet ničivá kouzla. Jsou intelektuálně založení a často se spoléhají na svou moudrost a znalosti.", false, false, false, true, 6, 1, 1, "Kouzelník", 0, 0, 0, 7 },
+                    { 3, 9, "Vědec a badatel, který míchá elixíry a hledá tajemství transmutace. Alchymisté jsou známí svou schopností vytvářet léčivé lektvary, výbušniny a různé magické substance. Jejich práce často hraničí s tajemnem a někteří se snaží najít kámen mudrců. Je to povolání plné experimentů a objevů.", true, false, false, false, 8, 1, 1, "Alchymista", 0, 0, 0, 0 },
+                    { 4, 0, "Mistr lukostřelby a lovec, který se specializuje na střelbu z dálky. Lučištníci jsou rychlí a obratní, schopní zasáhnout nepřítele z velké vzdálenosti. Používají luky, kuše a střelné zbraně k ochraně svých spojenců a lovu zvěře. Jsou často samotáři a preferují život v divočině.", false, false, false, false, 8, 1, 1, "Lučištník", 0, 0, 0, 0 },
+                    { 5, 0, "Mistr lstí a skrytých operací, který se specializuje na krádeže a infiltraci. Je rychlý, tichý a vysoce obratný, což mu umožňuje snadno unikat nepřátelům. Zloději využívají své dovednosti k získávání informací a cenností. Jsou inteligentní a vynalézaví, často pracující ve stínu.", false, false, false, false, 6, 1, 1, "Zloděj", 0, 0, 0, 0 },
+                    { 6, 0, "Mistr přežití v divočině, který často slouží jako stopař a strážce. Má hluboké znalosti o přírodě a umí se pohybovat nepozorovaně. Hraničáři bývají vynikající lučištníci a lovci, kteří využívají svých dovedností k ochraně říše před nebezpečím. Spojují fyzickou zdatnost s bystrým instinktem.", false, true, false, false, 7, 1, 1, "Hraničář", 0, 0, 0, 0 }
                 });
 
             migrationBuilder.InsertData(
@@ -538,42 +588,42 @@ namespace HeroesOfLegends.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "SpecificSkill",
-                columns: new[] { "Id", "InternalName", "Level", "LevelGroup", "MaxHealingPoints", "ProfessionClass", "ProfessionSkillId", "SkillSumPrice", "Skill_type", "SpecificDescription", "SpeedOfHealing" },
+                columns: new[] { "Id", "InternalName", "Level", "LevelGroup", "MaxHealingPoints", "ProfessionClass", "ProfessionSkillId", "ProfessionSkillName", "SkillSumPrice", "Skill_type", "SpecificDescription", "SpeedOfHealing" },
                 values: new object[,]
                 {
-                    { 1, "Healing", 2, 3, 2, 1, 1, 20, "healing", "Postava si může vyléčit 2 za 2 směn/y životů", 2 },
-                    { 2, "Healing", 3, 3, 4, 1, 1, 20, "healing", "Postava si může vyléčit 4 za 3 směn/y životů", 3 },
-                    { 3, "Healing", 4, 3, 6, 1, 1, 20, "healing", "Postava si může vyléčit 6 za 3 směn/y životů", 3 },
-                    { 4, "Healing", 5, 3, 8, 1, 1, 20, "healing", "Postava si může vyléčit 8 za 3 směn/y životů", 3 },
-                    { 5, "Healing", 6, 3, 10, 1, 1, 20, "healing", "Postava si může vyléčit 10 za 3 směn/y životů", 3 },
-                    { 6, "Healing", 7, 3, 12, 1, 1, 20, "healing", "Postava si může vyléčit 12 za 3 směn/y životů", 3 },
-                    { 7, "Healing", 8, 3, 14, 1, 1, 20, "healing", "Postava si může vyléčit 14 za 3 směn/y životů", 3 },
-                    { 8, "Healing", 9, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 3 směn/y životů", 3 },
-                    { 9, "Healing", 15, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 4 směn/y životů", 4 },
-                    { 10, "Healing", 16, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 4 směn/y životů", 4 },
-                    { 11, "Healing", 25, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 5 směn/y životů", 5 },
-                    { 12, "Healing", 35, 3, 16, 1, 1, 20, "healing", "Postava si může vyléčit 16 za 6 směn/y životů", 6 },
-                    { 13, "Healing", 2, 3, 1, 18, 16, 20, "healing", "Postava si může vyléčit 1 za 1 směn/y životů", 1 },
-                    { 14, "Healing", 3, 3, 2, 18, 16, 20, "healing", "Postava si může vyléčit 2 za 2 směn/y životů", 2 },
-                    { 15, "Healing", 4, 3, 3, 18, 16, 20, "healing", "Postava si může vyléčit 3 za 3 směn/y životů", 3 },
-                    { 16, "Healing", 5, 3, 4, 18, 16, 20, "healing", "Postava si může vyléčit 4 za 3 směn/y životů", 3 },
-                    { 17, "Healing", 6, 1, 5, 18, 16, 20, "healing", "Postava si může vyléčit 5 za 3 směn/y životů", 3 },
-                    { 18, "Healing", 7, 3, 6, 18, 16, 20, "healing", "Postava si může vyléčit 6 za 3 směn/y životů", 3 },
-                    { 19, "Healing", 8, 3, 7, 18, 16, 20, "healing", "Postava si může vyléčit 7 za 3 směn/y životů", 3 },
-                    { 20, "Healing", 6, 3, 8, 18, 16, 20, "healing", "Postava si může vyléčit 8 za 3 směn/y životů", 3 }
+                    { 1, "Healing", 2, 3, 2, 1, 1, "", 20, "healing", "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.", 2 },
+                    { 2, "Healing", 3, 3, 4, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.", 3 },
+                    { 3, "Healing", 4, 3, 6, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.", 3 },
+                    { 4, "Healing", 5, 3, 8, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.", 3 },
+                    { 5, "Healing", 6, 3, 10, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 10 Hp za den.", 3 },
+                    { 6, "Healing", 7, 3, 12, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 12 Hp za den.", 3 },
+                    { 7, "Healing", 8, 3, 14, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 14 Hp za den.", 3 },
+                    { 8, "Healing", 9, 3, 16, 1, 1, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 16 Hp za den.", 3 },
+                    { 9, "Healing", 15, 3, 16, 1, 1, "", 20, "healing", "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.", 4 },
+                    { 10, "Healing", 16, 3, 16, 1, 1, "", 20, "healing", "Postava si může vyléčit 4 Hp za 1 směnu, maximálně 16 Hp za den.", 4 },
+                    { 11, "Healing", 25, 3, 16, 1, 1, "", 20, "healing", "Postava si může vyléčit 5 Hp za 1 směnu, maximálně 16 Hp za den.", 5 },
+                    { 12, "Healing", 35, 3, 16, 1, 1, "", 20, "healing", "Postava si může vyléčit 6 Hp za 1 směnu, maximálně 16 Hp za den.", 6 },
+                    { 13, "Healing", 2, 3, 1, 18, 16, "", 20, "healing", "Postava si může vyléčit 1 Hp za 1 směnu, maximálně 1 Hp za den.", 1 },
+                    { 14, "Healing", 3, 3, 2, 18, 16, "", 20, "healing", "Postava si může vyléčit 2 Hp za 1 směnu, maximálně 2 Hp za den.", 2 },
+                    { 15, "Healing", 4, 3, 3, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 3 Hp za den.", 3 },
+                    { 16, "Healing", 5, 3, 4, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 4 Hp za den.", 3 },
+                    { 17, "Healing", 6, 1, 5, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 5 Hp za den.", 3 },
+                    { 18, "Healing", 7, 3, 6, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 6 Hp za den.", 3 },
+                    { 19, "Healing", 8, 3, 7, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 7 Hp za den.", 3 },
+                    { 20, "Healing", 6, 3, 8, 18, 16, "", 20, "healing", "Postava si může vyléčit 3 Hp za 1 směnu, maximálně 8 Hp za den.", 3 }
                 });
 
             migrationBuilder.InsertData(
                 table: "SpecificSkill",
-                columns: new[] { "Id", "CategoryWeapon", "Initiative", "InitiativeText", "InternalName", "Level", "LevelGroup", "ProfessionClass", "ProfessionSkillId", "SkillSumPrice", "Skill_type", "SpecificDescription" },
+                columns: new[] { "Id", "CategoryWeapon", "Initiative", "InitiativeText", "InternalName", "Level", "LevelGroup", "ProfessionClass", "ProfessionSkillId", "ProfessionSkillName", "SkillSumPrice", "Skill_type", "SpecificDescription" },
                 values: new object[,]
                 {
-                    { 21, 3, 3, "3/2", "MultipleAttack", 5, 0, 1, 7, 20, "multiple_attack", "Postava může zaútočit 2x v prvním kole a v dalším kole 1x" },
-                    { 22, 1, 6, "2/1", "MultipleAttack", 10, 1, 4, 7, 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
-                    { 23, 3, 6, "2/1", "MultipleAttack", 15, 1, 4, 7, 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
-                    { 24, 1, 9, "5/2", "MultipleAttack", 16, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" },
-                    { 25, 1, 12, "3/1", "MultipleAttack", 27, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 3x v každém kole" },
-                    { 26, 3, 9, "5/2", "MultipleAttack", 28, 2, 4, 7, 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" }
+                    { 21, 3, 3, "3/2", "MultipleAttack", 5, 0, 1, 7, "", 20, "multiple_attack", "Postava může zaútočit 2x v prvním kole a v dalším kole 1x" },
+                    { 22, 1, 6, "2/1", "MultipleAttack", 10, 1, 4, 7, "", 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
+                    { 23, 3, 6, "2/1", "MultipleAttack", 15, 1, 4, 7, "", 20, "multiple_attack", "Postava může zaútočit 2x v každém kole" },
+                    { 24, 1, 9, "5/2", "MultipleAttack", 16, 2, 4, 7, "", 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" },
+                    { 25, 1, 12, "3/1", "MultipleAttack", 27, 2, 4, 7, "", 20, "multiple_attack", "Postava může zaútočit 3x v každém kole" },
+                    { 26, 3, 9, "5/2", "MultipleAttack", 28, 2, 4, 7, "", 20, "multiple_attack", "Postava může zaútočit 5x v prvním kole a v dalším kole 2x" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -616,9 +666,19 @@ namespace HeroesOfLegends.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BindingProfessionsSkills_ProfessionSkillId",
-                table: "BindingProfessionsSkills",
-                column: "ProfessionSkillId");
+                name: "IX_BindTable_Advanced_ProfessionSkill_Profession1Id",
+                table: "BindTable_Advanced_ProfessionSkill",
+                column: "Profession1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BindTable_Beginner_ProfessionSkill_ProfessionId",
+                table: "BindTable_Beginner_ProfessionSkill",
+                column: "ProfessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BindTable_Expert_ProfessionSkill_Profession2Id",
+                table: "BindTable_Expert_ProfessionSkill",
+                column: "Profession2Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Naratives_WorldId",
@@ -660,7 +720,13 @@ namespace HeroesOfLegends.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "BindingProfessionsSkills");
+                name: "BindTable_Advanced_ProfessionSkill");
+
+            migrationBuilder.DropTable(
+                name: "BindTable_Beginner_ProfessionSkill");
+
+            migrationBuilder.DropTable(
+                name: "BindTable_Expert_ProfessionSkill");
 
             migrationBuilder.DropTable(
                 name: "Characters");

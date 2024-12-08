@@ -169,7 +169,7 @@ namespace HeroesOfLegends.Data.Repositories
         ///Async variant Lists all items
         /// </summary>
         /// <returns>IList</returns>
-        public async Task<IList<TEntity>> AllAsync()
+        public virtual async Task<IList<TEntity>> AllAsync()
         {
             return await dbSet.ToListAsync();
         }

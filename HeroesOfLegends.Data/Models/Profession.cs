@@ -1,16 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using HeroesOfLegends.Data.Models.BindingTables;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace HeroesOfLegends.Data.Models
 {
-    
+
 
     public class Profession
     {
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public int Id { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;            // [Display (Name = "Název povolání")]
         public string Description { get; set; } = string.Empty;     // [Display (Description = "Popis")]
@@ -26,15 +27,18 @@ namespace HeroesOfLegends.Data.Models
         public int SpecialdMana { get; set; }
         public bool HasSpecialdMana { get; set; } = false;
 
+        public int ProfiPoints { get; set; }
+
 
 
 
 
         //-----------------------------------------------------------  BINDING  ---------------
-        
-        //M:N 
-        // bindingTable: BindingProfessionsSkills
-        public virtual IList<ProfessionSkill> ProfessionSkills { get; set; } = new List<ProfessionSkill>();
+
+        public virtual ICollection<ProfessionSkill>? BeginnerSkills { get; set; } = new List<ProfessionSkill>();
+        public virtual ICollection<ProfessionSkill>? AdvancedSkills { get; set; } = new List<ProfessionSkill>();
+        public virtual ICollection<ProfessionSkill>? ExpertSkills { get; set; } = new List<ProfessionSkill>();
+
 
         public virtual IList<Narrative> Narratives { get; set; } = new List<Narrative>();
 

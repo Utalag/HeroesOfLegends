@@ -29,22 +29,38 @@ namespace HeroesOfLegends.Businsess.Models
         public int HpRangeMax { get; set; }
 
         [Display(Name = "Kouzelnická Mana")]
-        [Range(1, 1000000)]
+        [Range(0, 1000000)]
         public int WizardMana { get; set; }
 
-        [Range(1,1000000)]
+        [Range(0,1000000)]
         [Display(Name = "Hraničářská Mana")]
         public int RengerMana { get; set; }
 
-        [Range(1,1000000)]
+        [Range(0,1000000)]
         [Display(Name = "Kouzelnická Mana")]
         public int AlchemiMana { get; set; }
 
-        [Range(1,1000000)]
+        [Range(0,1000000)]
         [Display(Name = "Speciální Mana")]
         public int SpecialdMana { get; set; }
 
-        public List<int> SkillIds { get; set; } = new List<int>();
+        [Range(18,23)]
+        [Display(Name = "Profesní body")]
+        public int ProfiPoints { get; set; } 
+
+        public bool HasWizardMana { get; set; }
+        public bool HasRengerMana { get; set; }
+        public bool HasAlchemiMana { get; set; }
+        public bool HasSpecialdMana { get; set; }
+
+
+        public List<int>? BeginnerSkillIds { get; set; } = new List<int>();
+        public List<int>? AdvancedSkillIds { get; set; } = new List<int>();
+        public List<int>? ExpertSkillIds { get; set; } = new List<int>();
+
+        
+
+
 
     }
 }

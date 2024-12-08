@@ -1,6 +1,5 @@
-﻿using HeroesOfLegends.Data.Interfaces.ISkills;
+﻿using HeroesOfLegends.Data.Models.BindingTables;
 using HeroesOfLegends.Data.Models.SkillsModels;
-using HeroesOfLegends.Database;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace HeroesOfLegends.Data.Models
@@ -29,7 +28,7 @@ namespace HeroesOfLegends.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string SkillName { get; set; } = string.Empty;
-        public string NormalizeSkillName { get => SkillName.ToUpper(); } 
+        public string NormalizeSkillName { get => SkillName.ToUpper(); }
         public LevelGroupEnum KnowledgeGroup { get; set; } // example: novice, advanced, expert
         public SkillClassEnum SkillClass { get; set; } // (Cz: Profesní třída)
         public ProfessionClassEnum ProfessionClass { get; set; } // (Cz: Profesní třída)
@@ -39,13 +38,6 @@ namespace HeroesOfLegends.Data.Models
         public string BaseDescription { get; set; } = string.Empty; // (Cz: Základní popis)
         public string CreatetByUserName { get; set; } = string.Empty;
         public virtual IList<BaseSpecificSkill>? BaseSpecificSkills { get; set; } = new List<BaseSpecificSkill>(); // (Cz: Základní specifické dovednosti)
-
-
-
-        //M:N 
-        // bindingTable: BindingProfessionsSkills
-        public virtual IList<Profession>? Professions { get; set; } = new List<Profession>();
-
 
 
 

@@ -1,10 +1,7 @@
-﻿using HeroesOfLegends.Data.Builders;
-using HeroesOfLegends.Data.Database;
-using HeroesOfLegends.Data.Models;
+﻿using HeroesOfLegends.Data.Models;
 using HeroesOfLegends.Data.Models.SkillsModels;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 
 
 namespace HeroesOfLegends.Database
@@ -18,10 +15,10 @@ namespace HeroesOfLegends.Database
         public DbSet<Character>? Characters { get; set; }
         public DbSet<ProfessionSkill>? ProfessionSkill { get; set; }
         public DbSet<BaseSpecificSkill>? SpecificSkill { get; set; }
-        //public DbSet<MultipleAttack>? MultipleAttacks { get; set; }
 
 
-   
+
+
 
 
         public HoLDbContext(DbContextOptions<HoLDbContext> options) : base(options)
@@ -34,8 +31,10 @@ namespace HeroesOfLegends.Database
             Configure_BaseSpecificSkill(builder);
             // ----------------- 1:1 -----------------
 
-            // ----------------- M:N -----------------
+            // -----------------M:N One-way -----------------
             Configure_Profession(builder);
+            // ----------------- M:N -----------------
+
             // ----------------- INIT -----------------
             InitializeData(builder);
             // ----------------- TODO -----------------
@@ -47,15 +46,21 @@ namespace HeroesOfLegends.Database
 
         private void Configure_Profession(ModelBuilder builder)
         {
-            //M:N
-            // bindingTable: BindingProfessionsSkills
+            //One - way M: N
             builder.Entity<Profession>()
-                .HasMany(m => m.ProfessionSkills)
-                .WithMany(g => g.Professions)
-                .UsingEntity<Dictionary<string, object>>("BindingProfessionsSkills",
-                j => j.HasOne<ProfessionSkill>().WithMany().HasForeignKey("ProfessionSkillId"),
-                j => j.HasOne<Profession>().WithMany().HasForeignKey("ProfessionId")
-            );
+                .HasMany(p => p.BeginnerSkills)
+                .WithMany()
+                .UsingEntity(t => t.ToTable("BindTable_Beginner_ProfessionSkill"));
+            //One - way M: N
+            builder.Entity<Profession>()
+                .HasMany(p => p.AdvancedSkills)
+                .WithMany()
+                .UsingEntity(t => t.ToTable("BindTable_Advanced_ProfessionSkill"));
+            //One - way M: N
+            builder.Entity<Profession>()
+                .HasMany(p => p.ExpertSkills)
+                .WithMany()
+                .UsingEntity(t => t.ToTable("BindTable_Expert_ProfessionSkill"));
         }
         private void Configure_BaseSpecificSkill(ModelBuilder builder)
         {
@@ -84,18 +89,19 @@ namespace HeroesOfLegends.Database
 
             //Skills
             int baseSpecificSkillId = 1;
-            baseSpecificSkillId = InitBaseSpecificSkill<Healing>(baseSpecificSkillId,builder);
-            baseSpecificSkillId = InitBaseSpecificSkill<MultipleAttack>(baseSpecificSkillId,builder);
+            baseSpecificSkillId = Increment_Id_BaseSpecificSkill<Healing>(baseSpecificSkillId,builder);
+            baseSpecificSkillId = Increment_Id_BaseSpecificSkill<MultipleAttack>(baseSpecificSkillId,builder);
         }
 
-        private int InitBaseSpecificSkill<T>(int firstId,ModelBuilder builder) where T : BaseSpecificSkill, new()
+        private int Increment_Id_BaseSpecificSkill<T>(int firstId,ModelBuilder builder) where T : BaseSpecificSkill, new()
         {
             var skills = new T().Initial(firstId);
             builder.Entity<T>().HasData(skills);
-            return firstId+skills.Length;
+            return firstId + skills.Length;
         }
 
 
-        
+
     }
+
 }

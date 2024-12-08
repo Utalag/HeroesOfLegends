@@ -1,0 +1,11 @@
+﻿@HeroesOfLegends_HostAddress = https://localhost:7252
+
+GET {{HeroesOfLegends_HostAddress}}/api/apiprofession
+Content-Type: application/json
+{
+}
+###
+
+GET {{HeroesOfLegends_HostAddress}}/api/race/3
+
+###

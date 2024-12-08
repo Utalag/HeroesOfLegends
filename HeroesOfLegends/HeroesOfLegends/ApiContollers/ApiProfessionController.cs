@@ -28,5 +28,21 @@ namespace CharacterBook.Controllers.Api
             ProfessionDto professionDto = professionManager.AddData(profession);
             return StatusCode(StatusCodes.Status201Created,professionDto);
         }
+
+        [HttpPut("UpdateProfession")]
+        public IActionResult UpdateProfession([FromBody] ProfessionDto profession)
+        {
+            ProfessionDto professionDto = professionManager.UpdateData(profession,profession.Id);
+            return StatusCode(StatusCodes.Status202Accepted,professionDto);
+        }
+
+
+        [HttpDelete("DeleteProfession/{id}")]
+        public IActionResult DeleteProfession(int id)
+        {
+            professionManager.DeleteDate(id);
+            return StatusCode(StatusCodes.Status204NoContent);
+        }
+        
     }
 }

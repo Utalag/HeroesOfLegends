@@ -1,63 +1,131 @@
-﻿using Azure.Messaging;
+﻿using AutoMapper;
 using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Models;
 using HeroesOfLegends.Database;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
-using Serilog.Events;
-using System.Collections.Generic;
+using Serilog;
 using System.Data;
 
 namespace HeroesOfLegends.Data.Repositories
 {
     public class ProfessionRepository : GenericCRUD<Profession>, IProfessionRepository
     {
-        public ProfessionRepository(HoLDbContext db,ILogger<DbSet<Profession>> logger) : base(db,logger)
+        private readonly IMapper _mapper;
+        public ProfessionRepository(HoLDbContext db,ILogger<DbSet<Profession>> logger,IMapper _mapper) : base(db,logger)
         {
+            this._mapper = _mapper;
         }
 
-        // Include properties for eager loading of related entities (Cz: včetně vlastností pro okamžité načtení souvisejících entit)
-        public IQueryable<Profession> IncludeProperties(IQueryable<Profession> query)
-        {
-            return query.Include(p => p.ProfessionSkills);
-        }
 
-        public override IList<Profession> All()
-        {
-            dbSet.Include(p => p.ProfessionSkills).Load();
-            var data = dbSet.ToList();
-            return data;
-            
-        }
 
         //------ Synchronous methods --------
+        public override IList<Profession> All()
+        {
+            var data = dbSet;
+                data.Include(p => p.ExpertSkills);
+            //data.Include(p => p.BeginnerSkills);
+            //data.Include(p => p.AdvancedSkills);
+            //data.Include(p => p.ExpertSkills);
+            data.ToList();
+            
+            return data.ToList();
+        }
 
-        
-        /// <exception cref="DataException"></exception>
-        public Profession AddProfessionWithSkills(Profession profession,List<int> skillIds)
+
+        public Profession AddProfessionWithSkills(Profession profession,List<int> beginnerSkills,List<int> advancedSkills,List<int> expertSkills)
         {
 
-            ProfessionSkill skill;
-
-            foreach(var id in skillIds)
+            foreach(var id in beginnerSkills)
             {
-                skill = db.ProfessionSkill.FirstOrDefault(ps => ps.Id == id);
-
-                if(skill == null)
-                {
-
-                    logger.LogError(String.Format("Skill with id {0} not found",id));
-                }
-                else
-                {
-                    
-                        profession.ProfessionSkills.Add(skill);
-                    
-                }
+                var skill = CheckSkill(id);
+                profession.BeginnerSkills.Add(skill);
             }
 
+            foreach(var id in advancedSkills)
+            {
+                var skill = CheckSkill(id);
+                profession.AdvancedSkills.Add(skill);
+            }
+
+            foreach(var id in expertSkills)
+            {
+                var skill = CheckSkill(id);
+                profession.ExpertSkills.Add(skill);
+            }
+
+
             profession = dbSet.Add(profession).Entity;
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(Exception)
+            {
+                logger.LogDebug("Error while saving changes");
+                throw new DataException("Error while saving changes");
+            }
+            return profession;
+        }
+
+        public Profession UpdateProfessionWithSkills(Profession profession,List<int> beginnerSkills,List<int> advancedSkills,List<int> expertSkills)
+        {
+
+            var oldProfession = dbSet
+                .Include(p => p.ExpertSkills)
+                .Include(p => p.AdvancedSkills)
+                .Include(p => p.BeginnerSkills)
+                .FirstOrDefault(p => p.Id == profession.Id);
+
+            if(oldProfession == null)
+            {
+                throw new DataException("Profession not found");
+            }
+
+            ChangeSkills(oldProfession.BeginnerSkills,beginnerSkills);
+            ChangeSkills(oldProfession.AdvancedSkills,advancedSkills);
+            ChangeSkills(oldProfession.ExpertSkills,expertSkills);
+            /*
+            //List<int> oldSkills = oldProfession.ExpertSkills.Select(i=>i.Id).ToList();
+            
+            //List<int> addSkillsId = oldSkills.Except(beginnerSkills).ToList();
+            //List<int> removeSkillsId = beginnerSkills.Except(oldSkills).ToList();
+            
+            //foreach(var id in addSkillsId)
+            //{
+            //    var skill = CheckSkill(id);
+            //    if(skill != null)
+            //    {
+            //        oldProfession.ExpertSkills.Add(skill);
+            //    }
+            //}
+
+            //foreach(var id in removeSkillsId)
+            //{
+            //    var skill = CheckSkill(id);
+            //    if(skill != null)
+            //    {
+            //        oldProfession.ExpertSkills.Remove(skill);
+            //    }
+            //}
+             */
+            
+            oldProfession.Name = profession.Name;
+            oldProfession.Description = profession.Description;
+            oldProfession.Level = profession.Level;
+            oldProfession.HpRangeMin = profession.HpRangeMin;
+            oldProfession.HpRangeMax = profession.HpRangeMax;
+            oldProfession.WizardMana = profession.WizardMana;
+            oldProfession.HasWizardMana = profession.HasWizardMana;
+            oldProfession.RengerMana = profession.RengerMana;
+            oldProfession.HasRengerMana = profession.HasRengerMana;
+            oldProfession.AlchemiMana = profession.AlchemiMana;
+            oldProfession.HasAlchemiMana = profession.HasAlchemiMana;
+            oldProfession.SpecialdMana = profession.SpecialdMana;
+            oldProfession.HasSpecialdMana = profession.HasSpecialdMana;
+
+            profession = dbSet.Update(oldProfession).Entity;
 
             try
             {
@@ -74,7 +142,7 @@ namespace HeroesOfLegends.Data.Repositories
         public void AddSkillToProfession(int professionId,int skillId)
         {
             // Find profession
-            var profession = dbSet.Include(p => p.ProfessionSkills).FirstOrDefault(p => p.Id == professionId);
+            var profession = dbSet.Include(p => p.ExpertSkills).FirstOrDefault(p => p.Id == professionId);
             if(profession == null)
             {
                 throw new DataException("Profession not found");
@@ -87,16 +155,16 @@ namespace HeroesOfLegends.Data.Repositories
                 throw new DataException("Skill not found");
             }
             // Add skill to profession
-            if(!profession.ProfessionSkills.Contains(skill))
+            if(!profession.ExpertSkills.Contains(skill))
             {
-                profession.ProfessionSkills.Add(skill);
+                profession.ExpertSkills.Add(skill);
                 db.SaveChanges();
             }
         }
         public void RemoveSkillFromProfession(int professionId,int skillId)
         {
             // Find profession
-            var profession = dbSet.Include(p => p.ProfessionSkills).FirstOrDefault(p => p.Id == professionId);
+            var profession = dbSet.Include(p => p.ExpertSkills).FirstOrDefault(p => p.Id == professionId);
             if(profession == null)
             {
                 throw new DataException("Profession not found");
@@ -110,16 +178,16 @@ namespace HeroesOfLegends.Data.Repositories
             }
 
             // Remove skill from profession
-            if(profession.ProfessionSkills.Contains(skill))
+            if(profession.ExpertSkills.Contains(skill))
             {
-                profession.ProfessionSkills.Remove(skill);
+                profession.ExpertSkills.Remove(skill);
                 db.SaveChanges();
             }
         }
         public void ChangeBindingProfessionSkillsData(int professionId,IEnumerable<int> skillIds)
         {
             // Find profession
-            var profession = dbSet.Include(p => p.ProfessionSkills).FirstOrDefault(p => p.Id == professionId);
+            var profession = dbSet.Include(p => p.ExpertSkills).FirstOrDefault(p => p.Id == professionId);
             if(profession == null)
             {
                 logger.LogError("Profession not found");
@@ -133,24 +201,24 @@ namespace HeroesOfLegends.Data.Repositories
 
                 if(skill == null)
                 {
-                   
+
                     logger.LogError(String.Format("Skill with id {0} not found",id));
                 }
-                else 
+                else
                 {
-                    if(profession.ProfessionSkills.Contains(skill))
+                    if(profession.ExpertSkills.Contains(skill))
                     {
-                        profession.ProfessionSkills.Remove(skill);
+                        profession.ExpertSkills.Remove(skill);
                     }
                     else
                     {
-                        profession.ProfessionSkills.Add(skill);
+                        profession.ExpertSkills.Add(skill);
                     }
                 }
             }
             try
             {
-            db.SaveChanges();
+                db.SaveChanges();
             }
             catch(Exception)
             {
@@ -160,11 +228,16 @@ namespace HeroesOfLegends.Data.Repositories
         }
 
         //------ Asynchronous methods --------
+        public override async Task<IList<Profession>> AllAsync()
+        {
+            var data = await dbSet.Include(p => p.ExpertSkills).ToListAsync();
+            return data;
+        }
 
         public async Task AddSkillToProfessionAsync(int professionId,int skillId)
         {
             // Find profession
-            var profession = await dbSet.Include(p => p.ProfessionSkills).FirstOrDefaultAsync(p => p.Id == professionId);
+            var profession = await dbSet.Include(p => p.ExpertSkills).FirstOrDefaultAsync(p => p.Id == professionId);
             if(profession == null)
             {
                 throw new DataException("Profession not found");
@@ -178,16 +251,16 @@ namespace HeroesOfLegends.Data.Repositories
             }
 
             // Add skill to profession
-            if(!profession.ProfessionSkills.Contains(skill))
+            if(!profession.ExpertSkills.Contains(skill))
             {
-                profession.ProfessionSkills.Add(skill);
+                profession.ExpertSkills.Add(skill);
                 await db.SaveChangesAsync();
             }
         }
         public async Task RemoveSkillFromProfessionAsync(int professionId,int skillId)
         {
             // Find profession
-            var profession = await dbSet.Include(p => p.ProfessionSkills).FirstOrDefaultAsync(p => p.Id == professionId);
+            var profession = await dbSet.Include(p => p.ExpertSkills).FirstOrDefaultAsync(p => p.Id == professionId);
             if(profession == null)
             {
                 throw new DataException("Profession not found");
@@ -201,16 +274,16 @@ namespace HeroesOfLegends.Data.Repositories
             }
 
             // Remove skill from profession
-            if(profession.ProfessionSkills.Contains(skill))
+            if(profession.ExpertSkills.Contains(skill))
             {
-                profession.ProfessionSkills.Remove(skill);
+                profession.ExpertSkills.Remove(skill);
                 await db.SaveChangesAsync();
             }
         }
         public async Task ChangeBindingProfessionSkillsDataAsync(int professionId,IEnumerable<int> skillIds)
         {
             // Find profession
-            var profession = await dbSet.Include(p => p.ProfessionSkills).FirstOrDefaultAsync(p => p.Id == professionId);
+            var profession = await dbSet.Include(p => p.ExpertSkills).FirstOrDefaultAsync(p => p.Id == professionId);
             if(profession == null)
             {
                 logger.LogError("Profession not found");
@@ -229,13 +302,13 @@ namespace HeroesOfLegends.Data.Repositories
                 }
                 else
                 {
-                    if(profession.ProfessionSkills.Contains(skill))
+                    if(profession.ExpertSkills.Contains(skill))
                     {
-                        profession.ProfessionSkills.Remove(skill);
+                        profession.ExpertSkills.Remove(skill);
                     }
                     else
                     {
-                        profession.ProfessionSkills.Add(skill);
+                        profession.ExpertSkills.Add(skill);
                     }
                 }
             }
@@ -251,6 +324,162 @@ namespace HeroesOfLegends.Data.Repositories
             }
         }
 
+        public async Task<Profession> AddProfessionWithSkillsAsync(Profession profession,List<int> beginnerSkills,List<int> advancedSkills,List<int> expertSkills)
+        {
+            
+            foreach(var id in beginnerSkills)
+            {
+                var skill = CheckSkill(id);
+                profession.BeginnerSkills.Add(skill);
+            }
+
+            foreach(var id in advancedSkills)
+            {
+                var skill = CheckSkill(id);
+                profession.AdvancedSkills.Add(skill);
+            }
+
+            foreach(var id in expertSkills)
+            {
+                var skill = CheckSkill(id);
+                profession.ExpertSkills.Add(skill);
+            }
+
+            profession = (await dbSet.AddAsync(profession)).Entity;
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                logger.LogDebug("Error while saving changes",ex);
+                throw new DataException("Error while saving changes",ex);
+            }
+            return profession;
+        }
+
+        public async Task<Profession> UpdateProfessionWithSkillsAsync(Profession profession,List<int> beginnerSkills,List<int> advancedSkills,List<int> expertSkills)
+        {
+            var oldProfession = await dbSet
+                .Include(p => p.ExpertSkills)
+                .Include(p => p.AdvancedSkills)
+                .Include(p => p.BeginnerSkills)
+                .FirstOrDefaultAsync(p => p.Id == profession.Id);
+
+            if(oldProfession == null)
+            {
+                throw new DataException("Profession not found");
+            }
+            ChangeSkills(oldProfession.BeginnerSkills,beginnerSkills);
+            ChangeSkills(oldProfession.AdvancedSkills,advancedSkills);
+            ChangeSkills(oldProfession.ExpertSkills,expertSkills);
+            /*
+                        var oldSkills = oldProfession.ExpertSkills.Select(i => i.Id).ToList();
+                        var addSkillsId = skillIds.Except(oldSkills).ToList();
+                        var removeSkillsId = oldSkills.Except(skillIds).ToList();
+
+                        foreach(var id in addSkillsId)
+                        {
+                            var skill = await CheckSkillAsync(id);
+                            if(skill != null)
+                            {
+                                oldProfession.ExpertSkills.Add(skill);
+                            }
+                        }
+
+                        foreach(var id in removeSkillsId)
+                        {
+                            var skill = await CheckSkillAsync(id);
+                            if(skill != null)
+                            {
+                                oldProfession.ExpertSkills.Remove(skill);
+                            }
+                        }
+            */
+            oldProfession.Name = profession.Name;
+            oldProfession.Description = profession.Description;
+            oldProfession.Level = profession.Level;
+            oldProfession.HpRangeMin = profession.HpRangeMin;
+            oldProfession.HpRangeMax = profession.HpRangeMax;
+            oldProfession.WizardMana = profession.WizardMana;
+            oldProfession.HasWizardMana = profession.HasWizardMana;
+            oldProfession.RengerMana = profession.RengerMana;
+            oldProfession.HasRengerMana = profession.HasRengerMana;
+            oldProfession.AlchemiMana = profession.AlchemiMana;
+            oldProfession.HasAlchemiMana = profession.HasAlchemiMana;
+            oldProfession.SpecialdMana = profession.SpecialdMana;
+            oldProfession.HasSpecialdMana = profession.HasSpecialdMana;
+
+            dbSet.Update(oldProfession);
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                logger.LogDebug("Error while saving changes",ex);
+                throw new DataException("Error while saving changes",ex);
+            }
+            return oldProfession;
+        }
+        private async Task<ProfessionSkill> CheckSkillAsync(int id)
+        {
+            var skill = await db.ProfessionSkill.FirstOrDefaultAsync(ps => ps.Id == id);
+
+            if(skill == null)
+            {
+                logger.LogWarning($"Skill with id {id} not found");
+                return null;
+            }
+            else
+            {
+                return skill;
+            }
+        }
+
+        //------ Private methods --------
+        private ProfessionSkill CheckSkill(int id)
+        {
+            ProfessionSkill skill = db.ProfessionSkill.FirstOrDefault(ps => ps.Id == id);
+
+            if(skill == null)
+            {
+                logger.LogWarning(String.Format("Skill with id {0} not found",id));
+                return null;
+            }
+            else
+            {
+                return skill;
+            }
+        }
+        private void ChangeSkills(ICollection<ProfessionSkill> skills,List<int> skillIds )
+            {
+                List<int> oldSkills = skills.Select(i => i.Id).ToList();
+
+                List<int> addSkillsId = oldSkills.Except(skillIds).ToList();
+                List<int> removeSkillsId = skillIds.Except(oldSkills).ToList();
+
+                foreach(var id in addSkillsId)
+                {
+                    var skill = CheckSkill(id);
+                    if(skill != null)
+                    {
+                        skills.Add(skill);
+                    }
+                }
+
+                foreach(var id in removeSkillsId)
+                {
+                    var skill = CheckSkill(id);
+                    if(skill != null)
+                    {
+                        skills.Remove(skill);
+                    }
+                }
+            }
+        
 
 
 

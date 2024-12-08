@@ -18,8 +18,6 @@ namespace HeroesOfLegends.Businsess.Managers
         protected GenericManager(HoLDbContext db,ILogger<DbSet<T>> logger,IMapper mapper) : base(db,logger)
         {
             this.logger = logger;
-            //var config = new MapperConfiguration(cfg => cfg.CreateMap<T,TDto>());
-            //mapper = config.CreateMapper(); 
             this.mapper = mapper;
         }
 
@@ -95,7 +93,7 @@ namespace HeroesOfLegends.Businsess.Managers
         /// <param name="dto">Dto model</param>
         /// <param name="id">id záznamu</param>
         /// <returns></returns>
-        public TDto? UpdateData(TDto dto,int id)
+        public virtual TDto? UpdateData(TDto dto,int id)
         {
             if(!ExistsWithId(id))
                 return null;
@@ -146,7 +144,7 @@ namespace HeroesOfLegends.Businsess.Managers
             return await Task.Run(() => mapper.Map<TDto>(data));
         }
 
-        public async Task<TDto> AddDataAsync(TDto dto)
+        public virtual async Task<TDto> AddDataAsync(TDto dto)
         {
             return await Task.Run(() => mapper.Map<TDto>(Insert(mapper.Map<T>(dto))));
         }
@@ -162,7 +160,7 @@ namespace HeroesOfLegends.Businsess.Managers
             return dateDto;
         }
 
-        public async Task<TDto?> UpdateDataAsync(TDto dto,int id)
+        public virtual async Task<TDto?> UpdateDataAsync(TDto dto,int id)
         {
             if(!ExistsWithId(id))
                 return null;

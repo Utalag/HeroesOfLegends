@@ -1,6 +1,7 @@
 ﻿
 
 using AutoMapper;
+using HeroesOfLegends.Data.Interfaces;
 using HeroesOfLegends.Data.Models;
 using HeroesOfLegends.Data.Models.SkillsModels;
 
@@ -9,6 +10,7 @@ namespace HeroesOfLegends.Businsess.Models
 {
     public class AutoMapperConfigurationProfile : Profile
     {
+
         public AutoMapperConfigurationProfile()
         {
             Map_Profession();
@@ -18,19 +20,27 @@ namespace HeroesOfLegends.Businsess.Models
             Map_Character();
             Map_ProfessionSkill();
             Map_SpecificSkill();
-            Map_ValueTuple();
-
-
+            Map_ValueTuple();  
         }
 
         private void Map_Profession()
         {
             CreateMap<Profession,ProfessionDto>()
-                 .ForMember(m => m.SkillIds,options => options.MapFrom(m => m.ProfessionSkills.Select(s => s.Id).ToList()));
+                .ForMember(m => m.BeginnerSkillIds,opt => opt.MapFrom(m => m.BeginnerSkills != null ? m.BeginnerSkills.Select(s => s.Id).ToList() : new List<int>()))
+                .ForMember(m => m.AdvancedSkillIds,opt => opt.MapFrom(m => m.AdvancedSkills != null ? m.AdvancedSkills.Select(s => s.Id).ToList() : new List<int>()))
+                .ForMember(m => m.ExpertSkillIds,opt => opt.MapFrom(m => m.ExpertSkills != null ? m.ExpertSkills.Select(s => s.Id).ToList() : new List<int>()));
+            //.ForMember(m => m.NarrativeIds,opt => opt.MapFrom(m => m.Narratives != null ? m.Narratives.Select(s => s.Id).ToList() : new List<int>()));
+
+
 
             CreateMap<ProfessionDto,Profession>()
-                .ForMember(s => s.ProfessionSkills,opt => opt.Ignore())
-                .ForMember(s => s.Narratives,opt => opt.Ignore());
+                .ForMember(s => s.Narratives,opt => opt.Ignore())
+                .ForMember(s => s.BeginnerSkills,opt => opt.Ignore())
+                .ForMember(s => s.AdvancedSkills,opt => opt.Ignore())
+                .ForMember(s => s.ExpertSkills,opt => opt.Ignore());
+
+            //.ForMember(s => s.BeginnerSkills,opt => opt.MapFrom(s => s.BeginnerSkillIds.Select(id => professionRepository.FindById(id)).Where(skill => skill != null).ToList()));
+
         }
         private void Map_Race()
         {

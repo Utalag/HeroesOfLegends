@@ -28,6 +28,18 @@ Detailně popisuje konkrétní dovednost, která je součástí ProfessionSkill.
         //Navigation
         [ForeignKey("ProfessionSkill")]
         public int ProfessionSkillId { get; set; } // ForeignKey k ProfessionSkill
+
+        private string professionSkillName = string.Empty;
+        public string ProfessionSkillName 
+        { 
+            get=>professionSkillName;
+            set 
+            {
+                professionSkillName = value;
+                //TOTO vyhledat v Db název ProfessionSkill a nastavit Id do ProfessionSkillId
+            } 
+        } // Název ProfessionSkill
+
         public virtual ProfessionSkill? ProfessionSkill { get; set; }  // Navigační vlastnost k ProfessionSkill
 
         public virtual BaseSpecificSkill[] Initial(int firstId)

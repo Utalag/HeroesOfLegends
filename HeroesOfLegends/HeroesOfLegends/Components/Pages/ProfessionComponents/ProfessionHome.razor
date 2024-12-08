@@ -1,478 +1,64 @@
 ﻿@page "/ProfessionHome"
 @rendermode InteractiveServer
 @using HeroesOfLegends.Data.Models
-@inject IProfessionSkillManager professionSkillManager
-@inject ISpecificSkillManager specificSkillManager
-@inject IProfessionManager professionManager
 @using BlazorBootstrap
 
+<div class="row">
+    <div class="col-3 col-l-2 ">
 
-<EditForm Model="selectedProfession" OnValidSubmit="HandleValidSubmit">
-    <div>
-        <label for="professionSelect">Připravené sety:</label>
-        <select id="professionSelect" @bind="ProfessionId">
-            <option value="0">Nové</option>
-            @foreach(var item in allProfessions)
-            {
-                <option value="@item.Id">@item.Name</option>
-            }
-        </select>
-
-        <label for="professionName">Název:</label>
-        <input type="text" id="professionName" @bind="selectedProfession.Name" />
-
-        <label for="professionDescription">Popis:</label>
-        <input type="text" id="professionDescription" @bind="selectedProfession.Description" />
-
-        <label for="level">Level:</label>
-        <input type="number" id="level" @bind="selectedProfession.Level" />
-
-        <label for="manaW">Mana kouzelníka:</label>
-        <input type="number" id="manaW" @bind="selectedProfession.WizardMana" />
-        <label for="manaR">Mana kouzelníka:</label>
-        <input type="number" id="manaR" @bind="selectedProfession.RengerMana" />
-        <label for="manaA">Mana kouzelníka:</label>
-        <input type="number" id="manaA" @bind="selectedProfession.AlchemiMana" />
-
-        <label for="health">Životy:</label>
-        <input type="number" id="health" @bind="selectedProfession.HpRangeMin" />
-        <label for="health">Životy:</label>
-        <input type="number" id="health" @bind="selectedProfession.HpRangeMax" />
-
-        <p>Seznam dovedností:</p>
-           
-            @foreach(var item in selectedProfession.SkillIds)
-            
-            
-                {
-                    <p>@item</p>
-                }
-
-           
-          
+        <h3>Vlastní povolání</h3>
+        <ProfessionForm 
+            Novic_Skill_Ids="@novicInventoryIds"
+            Advanced_Skill_Ids="@advancedInventoryIds"
+            Expert_Skill_Ids="@expertInventoryIds"
+            Novic_Skill_IdsChanged="OnNovicInventoryIdsChanged"
+            Advanced_Skill_IdsChanged="OnAdvancedInventoryIdsChanged"
+            Expert_Skill_IdsChanged="OnExpertInventoryIdsChanged">
+        </ProfessionForm>
 
     </div>
 
+    <div class="col-9 col-l-10">
+        <ProfessionSkillCreator 
+            Level="Level"
+            Profipoint="@Profipoint"
+            Novic_Skill_Ids="@novicInventoryIds"
+            Advanced_Skill_Ids="advancedInventoryIds"
+            Expert_Skill_Ids="@expertInventoryIds"
+            Novic_Inventory_IdsChanged="OnNovicInventoryIdsChanged"
+            Advanced_Inventory_IdsChanged="OnAdvancedInventoryIdsChanged"
+            Expert_Inventory_IdsChanged="OnExpertInventoryIdsChanged">
+        </ProfessionSkillCreator>
 
-    <button type="submit">Uložit</button>
-</EditForm>
+        <h3>Podrobné informace o dovednosti</h3>
+    </div>
 
-
-
-<div>
-    
 </div>
-<hr />
-
-<h3>Podrobné informace o dovednosti</h3>
-@if(selectedSkillForDetail.SkillName is null)
-{
-    <div>
-        <p>Název: @selectedSkillForDetail.SkillName</p>
-        <p>Znalost: @Enums.GetEnumDisplayName(selectedSkillForDetail.KnowledgeGroup)</p>
-        <p>Třída dovedností:  @Enums.GetEnumDisplayName(selectedSkillForDetail.SkillClass) </p>
-        <p>Základní body povolání: @selectedSkillForDetail.BaseProfessionPoint</p>
-        <li>@GetSkillText(selectedSkillForDetail)</li>
-
-    </div>
-}
-else
-{
-    <p>Klikněte na dovednost pro zobrazení podrobností.</p>
-}
-
-<hr />
-<h3 class="text-center">Vyberte Povolání</h3>
-
-
-
-<Tabs NavStyle="NavStyle.Underline">
-    @foreach(var name in professionsClasses)
-    {
-        <Tab Title="@Enums.GetEnumDisplayName(name)" Active="true">
-            <Content>
-
-                @if(name == null)
-                {
-                <li>Loading... No Data</li>
-                }
-                else
-                {
-                <hr />
-                <div class="row">
-                    <div class=" col-12 col-lg-6">
-                        <h3 class="text-center">Dovednosti podle povolání</h3>
-                        <table class="skill-table">
-                            <thead>
-                                <tr>
-                                    <th>Dovednost</th>
-                                    <th>uroven</th>
-                                    <th>skupina</th>
-                                    <th>Body</th>
-                                    <th>1-5</th>
-                                        @if(level > 5)
-                                        {
-                                        <th>6-15</th>
-                                        }
-                                        @if(level > 15)
-                                        {
-                                        <th>16-36</th>
-                                        }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                    @foreach(var skill in allDataSkills.Where(x => x.ProfessionClass == name))
-                                    {
-                                    <tr>
-                                        <td>
-                                            <label for="skill-@skill.Id">
-                                                    @skill.SkillName
-                                            </label>
-                                        </td>
-                                        <td>
-                                                @Enums.GetEnumDisplayName(skill.KnowledgeGroup)
-                                        </td>
-                                        <td>
-                                                @Enums.GetEnumDisplayName(skill.SkillClass)
-                                        </td>
-                                        <td>
-                                            <label for="skill-@skill.Id">
-                                                    @skill.BaseProfessionPoint
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <input type="checkbox" id="skill-@skill.Id" @onchange="(e) => ToggleSkillNovic(e, skill)" @onclick="() => ShowSkillDetails(skill)"
-                                                   hidden="@((adenced_Inventory.Contains(skill) || expert_Inventory.Contains(skill)) ? "hidden" : null)"
-                                                   disabled="@((skill.BaseProfessionPoint > profipoint_novic && !novic_Inventory.Contains(skill)) ? "disabled" : null)" />
-                                        </td>
-                                            @if(level > 5)
-                                            {
-                                            <td>
-                                                <input type="checkbox" id="skill-@skill.Id" @onchange="(e) => ToggleSkillAdvancer(e, skill)" @onclick="() => ShowSkillDetails(skill)"
-                                                   hidden="@((expert_Inventory.Contains(skill) ||novic_Inventory.Contains(skill)) ? "hidden" : null)"
-                                                       disabled="@((skill.BaseProfessionPoint > profipoint_advancer && !adenced_Inventory.Contains(skill)) ? "disabled" : null)" />
-                                            </td>
-                                            }
-
-                                            @if(level > 15)
-                                            {
-
-                                            <td>
-                                                <input type="checkbox" id="skill-@skill.Id" @onchange="(e) => ToggleSkillExpert(e, skill)" @onclick="() => ShowSkillDetails(skill)"
-                                                       hidden="@((novic_Inventory.Contains(skill)||adenced_Inventory.Contains(skill)) ? "hidden" : null)"
-                                                       disabled="@((skill.BaseProfessionPoint > profipoint_expert && !expert_Inventory.Contains(skill)) ? "disabled" : null)" />
-                                            </td>
-                                            }
-
-                                    </tr>
-                                    }
-                            </tbody>
-                        </table>
-
-                    </div>
-
-
-
-
-                    <div class="col-12 col-lg-6">
-                        <h3 class="text-center">Seznam vybraných dovedností</h3>
-                        <table class="skill-table">
-
-                            <thead>
-                                <tr>
-                                    <th>Dovednost</th>
-                                    <th>XXX</th>
-                                    <th>YYY</th>
-
-                                </tr>
-                            </thead>
-
-
-
-                            <tbody>
-                                    @if(novic_Inventory.Count() > 0)
-                                    {
-                                    <h6>1-5</h6>
-                                    }
-
-
-                                    @foreach(var skill in novic_Inventory)
-                                    {
-                                    <tr>
-                                        <td>
-                                            <label for="skill-@skill.Id">
-                                                    @skill.SkillName
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label for="">
-                                                    @Enums.GetEnumDisplayName(skill.ProfessionClass)
-                                            </label>
-                                        </td>
-                                        <td>
-                                                @GetSkillText(skill)
-                                        </td>
-
-                                    </tr>
-                                    }
-                            </tbody>
-
-
-                            <tbody>
-                                    @if(adenced_Inventory.Count() > 0)
-                                    {
-                                    <h6>6-15</h6>
-                                    }
-                                    @foreach(var skill in adenced_Inventory)
-                                    {
-                                    <tr>
-                                        <td>
-                                            <label for="">
-                                                    @skill.SkillName
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label for="">
-                                                    @Enums.GetEnumDisplayName(skill.ProfessionClass)
-                                            </label>
-                                        </td>
-                                        <td>
-                                                @GetSkillText(skill)
-                                        </td>
-
-                                    </tr>
-                                    }
-                            </tbody>
-
-                            <tbody>
-                                    @if(expert_Inventory.Count() > 0)
-                                    {
-                                    <h6>16-36</h6>
-                                    }
-                                    @foreach(var skill in expert_Inventory)
-                                    {
-                                    <tr>
-                                        <td>
-                                            <label for="">
-                                                    @skill.SkillName
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label for="">
-                                                    @Enums.GetEnumDisplayName(skill.ProfessionClass)
-                                            </label>
-                                        </td>
-                                        <td>
-                                                @GetSkillText(skill)
-                                        </td>
-
-                                    </tr>
-                                    }
-                            </tbody>
-                        </table>
-
-
-                    </div>
-                </div>
-                }
-            </Content>
-        </Tab>
-    }
-</Tabs>
-
-
-
-
-
- 
-
 
 
 
 @code {
-    private int level = 17;
-    private int profipoint_novic = 20;
-    private int profipoint_advancer = 20;
-    private int profipoint_expert = 20;
-
-    private ProfessionDto selectedProfession = new ProfessionDto();
-    private IEnumerable<ProfessionDto> allProfessions = new List<ProfessionDto>(); // Všechny povolání
-    private int ProfessionId 
-    { 
-        get=>professionId;
-        set
-        {
-            professionId = value;
-            selectedProfession = professionManager.GetDateById(value);
-        } 
-    } // vybrané povolání
-    private int professionId = 0;
-
-
-    private void HandleValidSubmit()
+    // --- ProfessionSkillCreator ---
+    private int Level { get; set; } = 6;
+    private int Profipoint { get; set; } = 20;
+    private List<int> novicInventoryIds = new();
+    private List<int> advancedInventoryIds = new();
+    private List<int> expertInventoryIds = new();
+    private void OnNovicInventoryIdsChanged(List<int> ids)
     {
-        // Implement saving logic here
+        novicInventoryIds = ids;
+        StateHasChanged ();
+    }
+    private void OnAdvancedInventoryIdsChanged(List<int> ids)
+    {
+        advancedInventoryIds = ids;
+    }
+    private void OnExpertInventoryIdsChanged(List<int> ids)
+    {
+        expertInventoryIds = ids;
     }
 
+    // --- ProfessionForm ---
 
-    private IEnumerable<ProfessionSkillDto> allDataSkills = new List<ProfessionSkillDto>(); // Všechny dovednosti
-    private HashSet<ProfessionClassEnum> professionsClasses = new HashSet<ProfessionClassEnum>(); // kolekce jedinečných povolání (ProfessionClassEnum)
-    private ProfessionSkillDto selectedSkillForDetail = new(); // vybraná dovednost pro zobrazení podrobností
-
-
-
-    private List<ProfessionSkillDto> novic_Inventory = new();       // Seznam dovedností, které jsou vybrány novic
-    private List<ProfessionSkillDto> adenced_Inventory = new();     // Seznam dovedností, které jsou vybrány adenced
-    private List<ProfessionSkillDto> expert_Inventory = new();      // Seznam dovedností, které jsou vybrány expert
-
-
-
-
-
-
-    protected override void OnInitialized()
-    {
-        allProfessions = professionManager.GetAllData(); // načtení všech povolání
-         // načtení všech dovedností
-
-        profipoint_novic = 18;
-        profipoint_advancer = 36;
-        profipoint_expert = 54;
-
-        allDataSkills = professionSkillManager.GetAllData(); // načtení všech dovedností
-        professionsClasses = allDataSkills.Select(x => x.ProfessionClass).ToHashSet(); // Najdi všechny použité třídy dovedností
-
-    }
-
-    private void ShowSkillDetails(ProfessionSkillDto skill)
-    {
-        selectedSkillForDetail = skill;
-    }
-
-    private void ToggleSkillNovic(ChangeEventArgs e,ProfessionSkillDto skill)
-    {
-        if(Convert.ToBoolean(e.Value))
-        {
-            novic_Inventory.Add(skill);
-            profipoint_novic -= skill.BaseProfessionPoint;
-            profipoint_advancer -= skill.BaseProfessionPoint;
-            profipoint_expert -= skill.BaseProfessionPoint;
-        }
-        else
-        {
-
-            if(novic_Inventory.Contains(skill))
-            {
-                novic_Inventory.Remove(skill);
-            }
-            profipoint_novic += skill.BaseProfessionPoint;
-            profipoint_advancer += skill.BaseProfessionPoint;
-            profipoint_expert += skill.BaseProfessionPoint;
-
-        }
-    }
-
-    private void ToggleSkillAdvancer(ChangeEventArgs e,ProfessionSkillDto skill)
-    {
-        if(Convert.ToBoolean(e.Value))
-        {
-            adenced_Inventory.Add(skill);
-            profipoint_advancer -= skill.BaseProfessionPoint;
-            profipoint_expert -= skill.BaseProfessionPoint;
-        }
-        else
-        {
-
-            if(adenced_Inventory.Contains(skill))
-            {
-                adenced_Inventory.Remove(skill);
-            }
-            profipoint_advancer += skill.BaseProfessionPoint;
-            profipoint_expert += skill.BaseProfessionPoint;
-
-        }
-    }
-
-    private void ToggleSkillExpert(ChangeEventArgs e,ProfessionSkillDto skill)
-    {
-        if(Convert.ToBoolean(e.Value))
-        {
-            expert_Inventory.Add(skill);
-            profipoint_expert -= skill.BaseProfessionPoint;
-        }
-        else
-        {
-
-            if(expert_Inventory.Contains(skill))
-            {
-                expert_Inventory.Remove(skill);
-            }
-            profipoint_expert += skill.BaseProfessionPoint;
-
-        }
-    }
-
-    private string GetSkillText(ProfessionSkillDto skill)
-    {
-        if(skill.BaseSpecificSkills.Count() == 0)
-        {
-            return "!!!Chybí data!!!";
-        }
-        var text = skill.BaseSpecificSkills.Where(x => x.ProfessionClass == skill.ProfessionClass).Where(x => x.Level <= level).LastOrDefault();
-
-        if(text == null)
-        {
-            return "Nemáte ještě dostatečnou úroveň pro tuto dovednost!";
-        }
-        else
-            return text.ToString();
-
-    }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<style>
-    .skill-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-        .skill-table th, .skill-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: center;
-            height: 1rem;
-            padding: 0.2rem;
-        }
-
-        .skill-table th {
-            background-color: #f2f2f2;
-        }
-
-        .skill-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        .skill-table tr:hover {
-            background-color: #f1f1f1;
-        }
-
-        .skill-table input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-        }
-</style>
