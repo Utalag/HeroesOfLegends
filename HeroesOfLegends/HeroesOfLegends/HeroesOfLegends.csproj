@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Pages\NarrativComponents\" />
     <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 

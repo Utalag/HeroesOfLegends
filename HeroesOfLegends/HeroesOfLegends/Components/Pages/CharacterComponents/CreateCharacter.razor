@@ -1,0 +1,98 @@
+﻿@page "/create-character"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using HeroesOfLegends.Businsess.Models
+@using HeroesOfLegends.Businsess.Interfaces
+@inject IRaceManager raceManager
+@inject IProfessionManager professionManager
+
+<EditForm Model="@character" OnValidSubmit="@HandleValidSubmit" Enhance>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="character.Name" />
+    </div>
+    <div>
+        <label for="description">Description:</label>
+        <InputText id="description" @bind-Value="character.Description" />
+    </div>
+
+    <div>
+        <label for="race">Rasa:</label>
+        <InputSelect id="race" @bind-Value="character.RaceId">
+            @foreach(var race in races)
+            {
+                <option value="@race.RaceId">@race.RaceName</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div>
+        <label for="profession">Povolání:</label>
+        <InputSelect id="profession" @bind-Value="character.ProfessionId">
+            @foreach(var profession in professions)
+            {
+                <option value="@profession.Id">@profession.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div>
+        <label for="raceId">Race ID:</label>
+        <InputNumber id="raceId" @bind-Value="character.RaceId" />
+    </div>
+    <div>
+        <label for="profipoints">Profipoints:</label>
+        <InputNumber id="profipoints" @bind-Value="character.Profipoints" />
+    </div>
+    <div>
+        <label for="primaryAtribut1">Primary Atribut 1:</label>
+        <InputSelect id="primaryAtribut1" @bind-Value="character.PrimaryAtribut_1">
+            @foreach (var value in Enum.GetValues(typeof(AtributEnum)))
+            {
+                <option value="@value">@value</option>
+            }
+        </InputSelect>
+    </div>
+    <div>
+        <label for="primaryAtribut2">Primary Atribut 2:</label>
+        <InputSelect id="primaryAtribut2" @bind-Value="character.PrimaryAtribut_2">
+            @foreach (var value in Enum.GetValues(typeof(AtributEnum)))
+            {
+                <option value="@value">@value</option>
+            }
+        </InputSelect>
+    </div>
+    <div>
+        <label for="primarValueIndex1">Primary Value Index 1:</label>
+        <InputNumber id="primarValueIndex1" @bind-Value="character.PrimarValueIndex_1" />
+    </div>
+    <div>
+        <label for="primarValueIndex2">Primary Value Index 2:</label>
+        <InputNumber id="primarValueIndex2" @bind-Value="character.PrimarValueIndex_2" />
+    </div>
+
+    <button type="submit">Save</button>
+</EditForm>
+
+@code {
+    private CharacterDto character = new CharacterDto();
+    private IList<RaceDto> races = new List<RaceDto>();
+    private RaceDto selectedRace = new RaceDto();
+    private IList<ProfessionDto> professions = new List<ProfessionDto>();
+    private ProfessionDto selectedProfession = new ProfessionDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        races = await raceManager.GetAllDataAsync();
+        professions = await professionManager.GetAllDataAsync();
+    }
+
+    private void HandleValidSubmit()
+    {
+
+    }
+}

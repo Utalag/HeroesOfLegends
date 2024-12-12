@@ -16,7 +16,7 @@ namespace HeroesOfLegends.Data.Models
         public string Name { get; set; } = string.Empty;            // [Display (Name = "Název povolání")]
         public string Description { get; set; } = string.Empty;     // [Display (Description = "Popis")]
         public int Level { get; set; }                              // [Display (Level = "Úroveň")]
-        public int HpRangeMin { get; set; }                                 // [Display (Hp = "Životy")]
+        public int HpRangeMin { get; set; }                         // [Display (Hp = "Životy")]
         public int HpRangeMax { get; set; }
         public int WizardMana { get; set; }
         public bool HasWizardMana { get; set; } = false;
@@ -41,6 +41,7 @@ namespace HeroesOfLegends.Data.Models
 
 
         public virtual IList<Narrative> Narratives { get; set; } = new List<Narrative>();
+        public virtual IList<Character> Characters { get; set; } = new List<Character>();
 
 
         //---------------------------------INIT--------------------------------------------

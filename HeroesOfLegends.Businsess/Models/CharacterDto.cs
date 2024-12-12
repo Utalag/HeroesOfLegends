@@ -12,6 +12,7 @@ namespace HeroesOfLegends.Businsess.Models
         public string Name { get; set; } = string.Empty;        // example : "Bilbo"
         public string Description { get; set; } = string.Empty; // example : "Lorem Ypsum"
         public int RaceId { get; set; }                         // example : 1
+        public int ProfessionId { get; set; }                   // example : 1
 
 
         /// <summary>

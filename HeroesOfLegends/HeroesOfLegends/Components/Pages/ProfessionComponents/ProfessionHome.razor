@@ -2,29 +2,123 @@
 @rendermode InteractiveServer
 @using HeroesOfLegends.Data.Models
 @using BlazorBootstrap
+@inject IProfessionManager professionManager
 
+<h1>Konfigurace nového povolání</h1>
 <div class="row">
     <div class="col-3 col-l-2 ">
 
-        <h3>Vlastní povolání</h3>
-        <ProfessionForm 
-            Novic_Skill_Ids="@novicInventoryIds"
-            Advanced_Skill_Ids="@advancedInventoryIds"
-            Expert_Skill_Ids="@expertInventoryIds"
-            Novic_Skill_IdsChanged="OnNovicInventoryIdsChanged"
-            Advanced_Skill_IdsChanged="OnAdvancedInventoryIdsChanged"
-            Expert_Skill_IdsChanged="OnExpertInventoryIdsChanged">
-        </ProfessionForm>
+        <EditForm Enhance Model="@selectedProfession" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <select id="professionSelect" @bind="ProfessionId">
+                <option value="0">Nové</option>
+                @foreach(var item in allProfessions)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+
+            <div class="form-group">
+                <label for="name">ID: @selectedProfession.Id</label>
+
+            </div>
+
+            <div class="form-group">
+                <label for="name">Název povolání</label>
+                <InputText id="name" class="form-control" @bind-Value="selectedProfession.Name" />
+                <ValidationMessage For="@(() => selectedProfession.Name)" />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Popis</label>
+                <InputTextArea id="description" class="form-control" @bind-Value="selectedProfession.Description" />
+                <ValidationMessage For="@(() => selectedProfession.Description)" />
+            </div>
+
+            <div class="form-group">
+                <label for="level">Úroveň</label>
+                <InputNumber id="level" class="form-control" @bind-Value="selectedProfession.Level" />
+                <ValidationMessage For="@(() => selectedProfession.Level)" />
+            </div>
+
+            <div class="form-group">
+                <label for="profipoints">Profibody</label>
+                <InputNumber id="profipoints" class="form-control" @bind-Value="selectedProfession.ProfiPoints" />
+                <ValidationMessage For="@(() => selectedProfession.ProfiPoints)" />
+            </div>
+
+            <div class="form-group">
+                <label for="hpRangeMin">Životy Min</label>
+                <InputNumber id="hpRangeMin" class="form-control" @bind-Value="selectedProfession.HpRangeMin" />
+                <ValidationMessage For="@(() => selectedProfession.HpRangeMin)" />
+            </div>
+
+            <div class="form-group">
+                <label for="hpRangeMax">Životy Max</label>
+                <InputNumber id="hpRangeMax" class="form-control" @bind-Value="selectedProfession.HpRangeMax" />
+                <ValidationMessage For="@(() => selectedProfession.HpRangeMax)" />
+            </div>
+
+            <div class="form-group">
+                <label for="wizardMana">Kouzelnická Mana</label>
+                <InputNumber id="wizardMana" class="form-control" @bind-Value="selectedProfession.WizardMana" />
+                <ValidationMessage For="@(() => selectedProfession.WizardMana)" />
+            </div>
+
+            <div class="form-group">
+                <label for="rengerMana">Hraničářská Mana</label>
+                <InputNumber id="rengerMana" class="form-control" @bind-Value="selectedProfession.RengerMana" />
+                <ValidationMessage For="@(() => selectedProfession.RengerMana)" />
+            </div>
+
+            <div class="form-group">
+                <label for="alchemiMana">Alchemi Mana</label>
+                <InputNumber id="alchemiMana" class="form-control" @bind-Value="selectedProfession.AlchemiMana" />
+                <ValidationMessage For="@(() => selectedProfession.AlchemiMana)" />
+            </div>
+
+            <div class="form-group">
+                <label for="specialdMana">Speciální Mana</label>
+                <InputNumber id="specialdMana" class="form-control" @bind-Value="selectedProfession.SpecialdMana" />
+                <ValidationMessage For="@(() => selectedProfession.SpecialdMana)" />
+            </div>
+
+            <div class="form-group form-check">
+                <InputCheckbox id="hasWizardMana" class="form-check-input" @bind-Value="selectedProfession.HasWizardMana" />
+                <label class="form-check-label" for="hasWizardMana">Má Kouzelnickou Manu</label>
+            </div>
+
+            <div class="form-group form-check">
+                <InputCheckbox id="hasRengerMana" class="form-check-input" @bind-Value="selectedProfession.HasRengerMana" />
+                <label class="form-check-label" for="hasRengerMana">Má Hraničářskou Manu</label>
+            </div>
+
+            <div class="form-group form-check">
+                <InputCheckbox id="hasAlchemiMana" class="form-check-input" @bind-Value="selectedProfession.HasAlchemiMana" />
+                <label class="form-check-label" for="hasAlchemiMana">Má Alchemi Manu</label>
+            </div>
+
+            <div class="form-group form-check">
+                <InputCheckbox id="hasSpecialdMana" class="form-check-input" @bind-Value="selectedProfession.HasSpecialdMana" />
+                <label class="form-check-label" for="hasSpecialdMana">Má Speciální Manu</label>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Uložit</button>
+            <button type="button" class="btn btn-primary" @onclick=RemoveProfession>Smaž</button>
+        </EditForm>
 
     </div>
 
     <div class="col-9 col-l-10">
         <ProfessionSkillCreator 
-            Level="Level"
-            Profipoint="@Profipoint"
-            Novic_Skill_Ids="@novicInventoryIds"
-            Advanced_Skill_Ids="advancedInventoryIds"
-            Expert_Skill_Ids="@expertInventoryIds"
+            Level="selectedProfession.Level"
+            Profipoint="@selectedProfession.ProfiPoints"
+            Novic_Skill_Ids="@selectedProfession.BeginnerSkillIds"
+            Advanced_Skill_Ids="selectedProfession.AdvancedSkillIds"
+            Expert_Skill_Ids="@selectedProfession.ExpertSkillIds"
             Novic_Inventory_IdsChanged="OnNovicInventoryIdsChanged"
             Advanced_Inventory_IdsChanged="OnAdvancedInventoryIdsChanged"
             Expert_Inventory_IdsChanged="OnExpertInventoryIdsChanged">
@@ -39,8 +133,6 @@
 
 @code {
     // --- ProfessionSkillCreator ---
-    private int Level { get; set; } = 6;
-    private int Profipoint { get; set; } = 20;
     private List<int> novicInventoryIds = new();
     private List<int> advancedInventoryIds = new();
     private List<int> expertInventoryIds = new();
@@ -58,7 +150,57 @@
         expertInventoryIds = ids;
     }
 
-    // --- ProfessionForm ---
+    protected override void OnInitialized()
+    {
+        allProfessions = professionManager.GetAllData(); // načtení všech povolání
+        selectedProfession.ProfiPoints = 20;
+        selectedProfession.Level = 1;
+    }
 
+    private IEnumerable<ProfessionDto> allProfessions = new List<ProfessionDto>();
+    private ProfessionDto selectedProfession = new ProfessionDto();
+    private int ProfessionId
+    {
+        get => professionId;
+        set
+        {
+            professionId = value;
+            if(value == 0)
+            {
+                selectedProfession = new ProfessionDto();
+            }
+            else
+            {
+                selectedProfession = allProfessions.FirstOrDefault(x => x.Id == value) ?? new ProfessionDto();
+            }
+
+        }
+    } // vybrané povolání
+    private int professionId = 0;
+
+    private async Task HandleValidSubmit()
+    {
+        selectedProfession.BeginnerSkillIds = novicInventoryIds;
+        selectedProfession.AdvancedSkillIds = advancedInventoryIds;
+        selectedProfession.ExpertSkillIds = expertInventoryIds;
+
+        if(selectedProfession.Id == 0)
+        {
+            await professionManager.AddDataAsync(selectedProfession);
+            allProfessions = await professionManager.GetAllDataAsync();
+        }
+        else
+        {
+            await professionManager.UpdateDataAsync(selectedProfession,professionId);
+        }
+
+    }
+    private async Task RemoveProfession()
+    {
+        await professionManager.DeleteDateAsync(selectedProfession.Id);
+        selectedProfession = new ProfessionDto(); // Reset the form
+        allProfessions = professionManager.GetAllData(); // Refresh the list of professions
+        StateHasChanged(); // Re-render the page
+    }
 }
 
